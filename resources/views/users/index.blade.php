@@ -4,15 +4,13 @@
     <div class="page-header">
         <div class="row">
             <div class="col">
-                <h3 class="page-title">Users Management</h3>
+                <h3 class="page-title">Manajemen Akun</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Users</li>
                 </ul>
             </div>
-            <div class="col-auto">
-                <a class="btn btn-success" href="{{ route('users.create') }}">Create New User</a>
-            </div>
+
         </div>
     </div>
 
@@ -22,26 +20,31 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
+    <div class="row mb-3">
+        <div class="col text-end">
+            <a class="btn btn-primary" href="{{ route('users.create') }}">Buat Akun Baru</a>
+        </div>
+    </div>
     <div class="row">
+
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">User List</h4>
+                <div class="card-header bg-dark">
+                    <h4 class="card-title">Daftar Akun</h4>
                     <p class="card-text">
-                        This table shows all registered users and their assigned roles.
+                        Tabel ini menampilkan seluruh pengguna yang terdaftar beserta peran yang telah diberikan.
                     </p>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table datanew">
+                        <table class="table datanew cell-border compact stripe">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th width="5%">No</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Roles</th>
-                                    <th width="280px">Action</th>
+                                    <th width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,11 +61,15 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="{{ route('users.show', $user->id) }}">Show</a>
-                                            <a class="btn btn-primary btn-sm"
-                                                href="{{ route('users.edit', $user->id) }}">Edit</a>
+
+                                            <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $user->id) }}">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
                                             {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id], 'style' => 'display:inline']) !!}
-                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus?')">
+                                                <i class="fa fa-trash"></i> Hapus
+                                            </button>
                                             {!! Form::close() !!}
                                         </td>
                                     </tr>

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/all.min.css">
 
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
 
@@ -1818,21 +1819,23 @@
     </div>
 
     <!-- jQuery -->
-    <script src="{{asset('')}}assets/js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Feather Icon JS -->
     <script src="{{asset('')}}assets/js/feather.min.js"></script>
-
+    @stack('js')
     <!-- Slimscroll JS -->
     <script src="{{asset('')}}assets/js/jquery.slimscroll.min.js"></script>
-
+    <script src="{{asset('')}}assets/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('')}}assets/js/dataTables.bootstrap5.min.js"></script>
     <!-- Bootstrap Core JS -->
     <script src="{{asset('')}}assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
     <script src="{{asset('')}}assets/js/theme-script.js"></script>
     <script src="{{asset('')}}assets/js/script.js"></script>
-
 </body>
 
 </html>
