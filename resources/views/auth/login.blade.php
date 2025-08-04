@@ -12,17 +12,17 @@
     <title>Login - Pos admin template</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('')}}assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('') }}assets/img/favicon.png">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap.min.css">
 
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/all.min.css">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
 
 </head>
 
@@ -41,14 +41,12 @@
                         @csrf
                         <div class="login-userset">
                             <div class="login-logo logo-normal">
-                                <img src="{{asset('')}}assets/img/logo.png" alt="img">
+                                <img src="{{ asset('assets/img/logo.png') }}" alt="img">
                             </div>
-                            <a href="{{ url('/') }}" class="login-logo logo-white">
-                                <img src="{{asset('')}}assets/img/logo-white.png" alt="">
-                            </a>
+
                             <div class="login-userheading">
                                 <h3>Masuk</h3>
-                                <h4>Akses panel Dreamspos menggunakan email dan kata sandi Anda.</h4>
+                                <h4>Akses aplikasi eLaporDinas menggunakan email dan kata sandi Anda.</h4>
                             </div>
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -64,7 +62,7 @@
                                 <div class="form-addons">
                                     <input type="email" name="email" id="email" class="form-control"
                                         value="{{ old('email') }}" required autofocus>
-                                    <img src="{{asset('')}}assets/img/icons/mail.svg" alt="img">
+                                    <img src="{{ asset('') }}assets/img/icons/mail.svg" alt="img">
                                 </div>
                             </div>
                             <div class="form-login">
@@ -79,17 +77,18 @@
                                     <div class="col-6">
                                         <div class="custom-control custom-checkbox">
                                             <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
-                                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <input type="checkbox" name="remember"
+                                                    {{ old('remember') ? 'checked' : '' }}>
                                                 <span class="checkmarks"></span>Ingat saya
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-6 text-end">
+                                    {{-- <div class="col-6 text-end">
                                         @if (Route::has('password.request'))
                                             <a class="forgot-link" href="{{ route('password.request') }}">Lupa Kata
                                                 Sandi?</a>
                                         @endif
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="form-login">
@@ -101,7 +100,7 @@
                     </form>
                 </div>
                 <div class="login-img">
-                    <img src="{{asset('')}}assets/img/authentication/login02.png" alt="img">
+                    <img src="{{ asset('') }}assets/img/authentication/login02.png" alt="img">
                 </div>
             </div>
         </div>
@@ -120,17 +119,17 @@
     </div>
 
     <!-- jQuery -->
-    <script src="{{asset('')}}assets/js/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('') }}assets/js/jquery-3.7.1.min.js"></script>
 
     <!-- Feather Icon JS -->
-    <script src="{{asset('')}}assets/js/feather.min.js"></script>
+    <script src="{{ asset('') }}assets/js/feather.min.js"></script>
 
     <!-- Bootstrap Core JS -->
-    <script src="{{asset('')}}assets/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('') }}assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="{{asset('')}}assets/js/theme-script.js"></script>
-    <script src="{{asset('')}}assets/js/script.js"></script>
+    <script src="{{ asset('') }}assets/js/theme-script.js"></script>
+    <script src="{{ asset('') }}assets/js/script.js"></script>
 
 </body>
 

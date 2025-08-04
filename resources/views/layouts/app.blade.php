@@ -26,7 +26,8 @@
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/all.min.css">
-
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="http://e-lapor.test/assets/plugins/select2/css/select2.min.css">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
@@ -362,24 +363,28 @@
                             </ul>
                         </li>
                         <li class="submenu-open">
+                            <h6 class="submenu-hdr">Data Master</h6>
+                            <ul>
+                                <li><a href="{{route('kategori.index')}}"><i data-feather="package"></i><span>Kategori
+                                            Item</span></a></li>
+                                <li><a href="{{route('jenis.index')}}"><i data-feather="package"></i><span>Jenis
+                                            Item</span></a></li>
+                                <li><a href="{{route('item.index')}}"><i
+                                            data-feather="clipboard"></i><span>Item</span></a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="submenu-open">
                             <h6 class="submenu-hdr">Kelola Pengguna</h6>
                             <ul>
                                 <li><a href="{{route('users.index')}}"><i data-feather="user"></i><span>Akun</span></a>
                                 </li>
-                                <li><a href="role.html"><i data-feather="shield"></i><span>Role</span></a></li>
+                                <li><a href="{{route('roles.index')}}"><i
+                                            data-feather="shield"></i><span>Role</span></a></li>
                             </ul>
                         </li>
-                        <li class="submenu-open">
-                            <h6 class="submenu-hdr">Stock</h6>
-                            <ul>
-                                <li><a href="manage-stocks.html"><i data-feather="package"></i><span>Manage
-                                            Stock</span></a></li>
-                                <li><a href="stock-adjustment.html"><i data-feather="clipboard"></i><span>Stock
-                                            Adjustment</span></a></li>
-                                <li><a href="stock-transfer.html"><i data-feather="truck"></i><span>Stock
-                                            Transfer</span></a></li>
-                            </ul>
-                        </li>
+
                         <li class="submenu-open">
                             <h6 class="submenu-hdr">Sales</h6>
                             <ul>
@@ -1823,9 +1828,9 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="{{asset('')}}assets/plugins/select2/js/select2.min.js"></script>
     <!-- Feather Icon JS -->
     <script src="{{asset('')}}assets/js/feather.min.js"></script>
-    @stack('js')
     <!-- Slimscroll JS -->
     <script src="{{asset('')}}assets/js/jquery.slimscroll.min.js"></script>
     <script src="{{asset('')}}assets/js/jquery.dataTables.min.js"></script>
@@ -1836,6 +1841,9 @@
     <!-- Custom JS -->
     <script src="{{asset('')}}assets/js/theme-script.js"></script>
     <script src="{{asset('')}}assets/js/script.js"></script>
+    <script src="{{asset('')}}assets/js/custom-select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('js')
 </body>
 
 </html>

@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\DependentDropdownController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\JenisItemController;
+use App\Http\Controllers\KategoriItemController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -32,7 +35,38 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
 });
-
+Route::prefix('master-kategori-item')->group(function () {
+    Route::GET('/', [KategoriItemController::class, 'index'])->name('kategori.index');
+    Route::GET('/create', [KategoriItemController::class, 'create'])->name('kategori.create');
+    Route::POST('/simpan', [KategoriItemController::class, 'store'])->name('kategori.store');
+    Route::GET('/edit/{id}', [KategoriItemController::class, 'edit'])->name('kategori.edit');
+    Route::PUT('/update/{id}', [KategoriItemController::class, 'update'])->name('kategori.update');
+    Route::delete('hapus/{id}', [KategoriItemController::class, 'destroy'])->name('kategori.destroy');
+});
+Route::prefix('master-item')->group(function () {
+    Route::GET('/', [ItemController::class, 'index'])->name('item.index');
+    Route::GET('/create', [ItemController::class, 'create'])->name('item.create');
+    Route::POST('/simpan', [ItemController::class, 'store'])->name('item.store');
+    Route::GET('/edit/{id}', [ItemController::class, 'edit'])->name('item.edit');
+    Route::PUT('/update/{id}', [ItemController::class, 'update'])->name('item.update');
+    Route::delete('hapus/{id}', [ItemController::class, 'destroy'])->name('item.destroy');
+});
+Route::prefix('jenis-item')->group(function () {
+    Route::GET('/', [JenisItemController::class, 'index'])->name('jenis.index');
+    Route::GET('/create', [JenisItemController::class, 'create'])->name('jenis.create');
+    Route::POST('/simpan', [JenisItemController::class, 'store'])->name('jenis.store');
+    Route::GET('/edit/{id}', [JenisItemController::class, 'edit'])->name('jenis.edit');
+    Route::PUT('/update/{id}', [JenisItemController::class, 'update'])->name('jenis.update');
+    Route::delete('hapus/{id}', [JenisItemController::class, 'destroy'])->name('jenis.destroy');
+});
+Route::prefix('produk')->group(function () {
+    Route::GET('/', [JenisItemController::class, 'index'])->name('jenis.index');
+    Route::GET('/create', [JenisItemController::class, 'create'])->name('jenis.create');
+    Route::POST('/simpan', [JenisItemController::class, 'store'])->name('jenis.store');
+    Route::GET('/edit/{id}', [JenisItemController::class, 'edit'])->name('jenis.edit');
+    Route::PUT('/update/{id}', [JenisItemController::class, 'update'])->name('jenis.update');
+    Route::delete('hapus/{id}', [JenisItemController::class, 'destroy'])->name('jenis.destroy');
+});
 Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');
 Route::get('districts', [DependentDropdownController::class, 'districts'])->name('districts');
