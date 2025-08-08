@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DependentDropdownController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JenisItemController;
@@ -68,6 +69,14 @@ Route::prefix('produk')->group(function () {
     Route::GET('/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::PUT('/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
     Route::delete('hapus/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+});
+Route::prefix('barang-masuk')->group(function () {
+    Route::GET('/', [BarangMasukController::class, 'index'])->name('bm.index');
+    Route::GET('/create', [BarangMasukController::class, 'create'])->name('bm.create');
+    Route::POST('/simpan', [BarangMasukController::class, 'store'])->name('bm.store');
+    Route::GET('/edit/{id}', [BarangMasukController::class, 'edit'])->name('bm.edit');
+    Route::PUT('/update/{id}', [BarangMasukController::class, 'update'])->name('bm.update');
+    Route::delete('hapus/{id}', [BarangMasukController::class, 'destroy'])->name('bm.destroy');
 });
 Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');

@@ -158,6 +158,13 @@
                             </ul>
                         </li>
                         <li class="submenu-open">
+                            <h6 class="submenu-hdr">Stok</h6>
+                            <ul>
+                                <li><a href="{{route('bm.index')}}"><i data-feather="package"></i><span>Barang
+                                            Masuk</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu-open">
                             <h6 class="submenu-hdr">Kelola Pengguna</h6>
                             <ul>
                                 <li><a href="{{route('users.index')}}"><i data-feather="user"></i><span>Akun</span></a>
