@@ -110,7 +110,8 @@
                                         value="0" required>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control subtotal-input" value="0" readonly>
+                                    <input type="text" class="form-control subtotal-input" name="Subtotal[]" value="0"
+                                        readonly>
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-danger btn-sm btn-remove-row" disabled>
@@ -126,6 +127,14 @@
                                         <i class="fa fa-plus"></i> Tambah Baris
                                     </button>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                <td>
+                                    <input type="text" name="Total" id="total-barang-masuk" class="form-control" value="0"
+                                        readonly>
+                                </td>
+                                <td></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -148,11 +157,11 @@
         let rowIdx = 1;
         // Perbaiki: gunakan variabel produk yang sama dengan yang di form utama
         const produkOptions = `
-                                                                                                                <option value="">Pilih Produk</option>
-                                                                                                                @foreach($produk ?? [] as $p)
-                                                                                                                    <option value="{{ $p->id }}">{{ $p->Nama }}</option>
-                                                                                                                @endforeach
-                                                                                                            `;
+                                                                                                                                                <option value="">Pilih Produk</option>
+                                                                                                                                                @foreach($produk ?? [] as $p)
+                                                                                                                                                    <option value="{{ $p->id }}">{{ $p->Nama }}</option>
+                                                                                                                                                @endforeach
+                                                                                                                                            `;
 
         // Fungsi untuk format angka ke format rupiah dengan titik
         function formatRupiah(angka) {
@@ -186,6 +195,17 @@
             row.find('.subtotal-input').val(formatRupiah(subtotal));
         }
 
+        // Fungsi untuk menghitung total dari semua subtotal
+        function hitungTotal() {
+            let total = 0;
+            $('#table-barang-masuk tbody tr').each(function () {
+                let subtotalStr = $(this).find('.subtotal-input').val();
+                let subtotal = parseRupiah(subtotalStr);
+                total += subtotal;
+            });
+            $('#total-barang-masuk').val(formatRupiah(total));
+        }
+
         $(document).ready(function () {
             // Inisialisasi select2 pada semua select2 yang sudah ada
             $('.select2').select2({
@@ -199,41 +219,43 @@
                 $(this).val(formatRupiah(angka));
             });
 
-            // Hitung subtotal saat qty atau harga berubah
+            // Hitung subtotal dan total saat qty atau harga berubah
             $('#table-barang-masuk').on('input', '.qty-input, .harga-input', function () {
                 let row = $(this).closest('tr');
                 hitungSubtotal(row);
+                hitungTotal();
             });
 
-            // Format subtotal saat load awal
+            // Format subtotal dan total saat load awal
             $('#table-barang-masuk tbody tr').each(function () {
                 hitungSubtotal($(this));
             });
+            hitungTotal();
 
             $('#btn-tambah-baris').click(function () {
                 let newRow = `
-                                                                                                                        <tr>
-                                                                                                                            <td>
-                                                                                                                                <select name="idproduk[]" class="form-control select2 produk-select" required>
-                                                                                                                                    ${produkOptions}
-                                                                                                                                </select>
-                                                                                                                            </td>
-                                                                                                                            <td>
-                                                                                                                                <input type="number" name="Qty[]" class="form-control qty-input" min="1" value="1" required>
-                                                                                                                            </td>
-                                                                                                                            <td>
-                                                                                                                                <input type="text" name="HargaModal[]" class="form-control harga-input" min="0" value="0" required>
-                                                                                                                            </td>
-                                                                                                                            <td>
-                                                                                                                                <input type="text" class="form-control subtotal-input" value="0" readonly>
-                                                                                                                            </td>
-                                                                                                                            <td class="text-center">
-                                                                                                                                <button type="button" class="btn btn-danger btn-sm btn-remove-row">
-                                                                                                                                    <i class="fa fa-trash"></i>
-                                                                                                                                </button>
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    `;
+                                                                                                                                                        <tr>
+                                                                                                                                                            <td>
+                                                                                                                                                                <select name="idproduk[]" class="form-control select2 produk-select" required>
+                                                                                                                                                                    ${produkOptions}
+                                                                                                                                                                </select>
+                                                                                                                                                            </td>
+                                                                                                                                                            <td>
+                                                                                                                                                                <input type="number" name="Qty[]" class="form-control qty-input" min="1" value="1" required>
+                                                                                                                                                            </td>
+                                                                                                                                                            <td>
+                                                                                                                                                                <input type="text" name="HargaModal[]" class="form-control harga-input" min="0" value="0" required>
+                                                                                                                                                            </td>
+                                                                                                                                                            <td>
+                                                                                                                                                                <input type="text" class="form-control subtotal-input" value="0" readonly>
+                                                                                                                                                            </td>
+                                                                                                                                                            <td class="text-center">
+                                                                                                                                                                <button type="button" class="btn btn-danger btn-sm btn-remove-row">
+                                                                                                                                                                    <i class="fa fa-trash"></i>
+                                                                                                                                                                </button>
+                                                                                                                                                            </td>
+                                                                                                                                                        </tr>
+                                                                                                                                                    `;
                 // Tambahkan baris baru
                 $('#table-barang-masuk tbody').append(newRow);
 
@@ -245,91 +267,95 @@
 
                 // Hitung subtotal untuk baris baru
                 hitungSubtotal($('#table-barang-masuk tbody tr:last'));
+                hitungTotal();
                 rowIdx++;
             });
 
             $('#table-barang-masuk').on('click', '.btn-remove-row', function () {
                 $(this).closest('tr').remove();
+                hitungTotal();
             });
 
-            // Hitung subtotal saat load awal
+            // Hitung subtotal dan total saat load awal
             $('#table-barang-masuk tbody tr').each(function () {
                 hitungSubtotal($(this));
             });
+            hitungTotal();
         });
     </script>
-    <script>
+    <scr ipt>
         document.addEventListener('DOMContentLoaded', function () {
-            const dropArea = document.getElementById('drop-area-invoice');
-            const input = document.getElementById('invoice');
-            const preview = document.getElementById('invoice-preview');
-            const dropText = document.getElementById('drop-text-invoice');
+        const dropArea = document.getElementById('drop-area-invoice');
+        const input = document.getElementById('invoice');
+        const preview = document.getElementById('invoice-preview');
+        const dropText = document.getElementById('drop-text-invoice');
 
-            // Klik area untuk trigger input file
-            dropArea.addEventListener('click', function () {
-                input.click();
-            });
-
-            // Drag over
-            dropArea.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                dropArea.classList.add('bg-light');
-            });
-
-            dropArea.addEventListener('dragleave', function (e) {
-                e.preventDefault();
-                dropArea.classList.remove('bg-light');
-            });
-
-            // Drop file
-            dropArea.addEventListener('drop', function (e) {
-                e.preventDefault();
-                dropArea.classList.remove('bg-light');
-                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    input.files = e.dataTransfer.files;
-                    showPreview(e.dataTransfer.files[0]);
-                }
-            });
-
-            // On file change
-            input.addEventListener('change', function (e) {
-                if (input.files && input.files[0]) {
-                    showPreview(input.files[0]);
-                }
-            });
-
-            function showPreview(file) {
-                // Jika file adalah gambar, tampilkan preview gambar
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview Invoice" class="img-fluid rounded" style="max-height:120px;">';
-                        dropText.style.display = 'none';
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    // Jika file adalah dokumen, tampilkan ikon dan nama file
-                    let icon = '';
-                    let ext = file.name.split('.').pop().toLowerCase();
-                    if (['pdf'].includes(ext)) {
-                        icon = '<i class="fa fa-file-pdf text-danger fa-2x"></i>';
-                    } else if (['doc', 'docx'].includes(ext)) {
-                        icon = '<i class="fa fa-file-word text-primary fa-2x"></i>';
-                    } else if (['xls', 'xlsx', 'csv'].includes(ext)) {
-                        icon = '<i class="fa fa-file-excel text-success fa-2x"></i>';
-                    } else if (['ppt', 'pptx'].includes(ext)) {
-                        icon = '<i class="fa fa-file-powerpoint text-warning fa-2x"></i>';
-                    } else if (['zip', 'rar'].includes(ext)) {
-                        icon = '<i class="fa fa-file-archive text-secondary fa-2x"></i>';
-                    } else if (['txt'].includes(ext)) {
-                        icon = '<i class="fa fa-file-alt text-muted fa-2x"></i>';
-                    } else {
-                        icon = '<i class="fa fa-file fa-2x"></i>';
-                    }
-                    preview.innerHTML = icon + '<div class="mt-2">' + file.name + '</div>';
-                    dropText.style.display = 'none';
-                }
-            }
+        // Klik area untuk trigger input file
+        dropArea.addEventListener('click', function () {
+        input.click();
         });
-    </script>
+
+        // Drag over
+        dropArea.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        dropArea.classList.add('bg-light');
+        });
+
+        dropArea.addEventListener('dragleave', function (e) {
+        e.preventDefault();
+        dropArea.classList.remove('bg-light');
+        });
+
+        // Drop file
+        dropArea.addEventListener('drop', function (e) {
+        e.preventDefault();
+        dropArea.classList.remove('bg-light');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        input.files = e.dataTransfer.files;
+        showPreview(e.dataTransfer.files[0]);
+        }
+        });
+
+        // On file change
+        input.addEventListener('change', function (e) {
+        if (input.files && input.files[0]) {
+        showPreview(input.files[0]);
+        }
+        });
+
+        function showPreview(file) {
+        // Jika file adalah gambar, tampilkan preview gambar
+        if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+        preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview Invoice" class="img-fluid rounded"
+            style="max-height:120px;">';
+        dropText.style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+        } else {
+        // Jika file adalah dokumen, tampilkan ikon dan nama file
+        let icon = '';
+        let ext = file.name.split('.').pop().toLowerCase();
+        if (['pdf'].includes(ext)) {
+        icon = '<i class="fa fa-file-pdf text-danger fa-2x"></i>';
+        } else if (['doc', 'docx'].includes(ext)) {
+        icon = '<i class="fa fa-file-word text-primary fa-2x"></i>';
+        } else if (['xls', 'xlsx', 'csv'].includes(ext)) {
+        icon = '<i class="fa fa-file-excel text-success fa-2x"></i>';
+        } else if (['ppt', 'pptx'].includes(ext)) {
+        icon = '<i class="fa fa-file-powerpoint text-warning fa-2x"></i>';
+        } else if (['zip', 'rar'].includes(ext)) {
+        icon = '<i class="fa fa-file-archive text-secondary fa-2x"></i>';
+        } else if (['txt'].includes(ext)) {
+        icon = '<i class="fa fa-file-alt text-muted fa-2x"></i>';
+        } else {
+        icon = '<i class="fa fa-file fa-2x"></i>';
+        }
+        preview.innerHTML = icon + '<div class="mt-2">' + file.name + '</div>';
+        dropText.style.display = 'none';
+        }
+        }
+        });
+    </scr>
 @endpush

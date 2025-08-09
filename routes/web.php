@@ -75,6 +75,7 @@ Route::prefix('barang-masuk')->group(function () {
     Route::GET('/create', [BarangMasukController::class, 'create'])->name('bm.create');
     Route::POST('/simpan', [BarangMasukController::class, 'store'])->name('bm.store');
     Route::GET('/edit/{id}', [BarangMasukController::class, 'edit'])->name('bm.edit');
+    Route::GET('/show/{id}', [BarangMasukController::class, 'show'])->name('bm.show');
     Route::PUT('/update/{id}', [BarangMasukController::class, 'update'])->name('bm.update');
     Route::delete('hapus/{id}', [BarangMasukController::class, 'destroy'])->name('bm.destroy');
 });

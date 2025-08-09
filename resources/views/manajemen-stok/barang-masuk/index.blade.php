@@ -47,9 +47,11 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
+                                    <th>Kode / Nomor</th>
                                     <th>Tanggal Masuk</th>
-                                    <th>Produk</th>
                                     <th>Jumlah</th>
+                                    <th>Modal</th>
+                                    <th>Oleh</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -122,23 +124,28 @@
                             searchable: false
                         },
                         {
-                            data: 'created_at',
-                            name: 'created_at',
-                            render: function (data, type, row) {
-                                // Format tanggal ke format Indonesia
-                                if (!data) return '';
-                                var date = new Date(data);
-                                return date.toLocaleDateString('id-ID');
-                            }
-                        },
-                        {
-                            data: 'DetailBarangMasuk.0.Produk.Nama',
-                            name: 'DetailBarangMasuk.0.Produk.Nama',
+                            data: 'Kode',
+                            name: 'Kode',
                             defaultContent: '-'
                         },
                         {
-                            data: 'DetailBarangMasuk.0.Jumlah',
-                            name: 'DetailBarangMasuk.0.Jumlah',
+                            data: 'Tanggal',
+                            name: 'Tanggal',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'Jumlah',
+                            name: 'Jumlah',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'Modal',
+                            name: 'Modal',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'UserCreate',
+                            name: 'UserCreate',
                             defaultContent: '-'
                         },
                         {
