@@ -28,10 +28,10 @@ class ProdukController extends Controller
                 })
                 ->addColumn('Gambar', function ($row) {
                     if ($row->Gambar) {
-                        $url = asset('uploads/produk/' . $row->Gambar);
+                        $url = asset('storage/uploads/produk/' . $row->Gambar);
                         return '<img src="' . $url . '" alt="Gambar Produk" width="60" height="60" style="object-fit:cover;border-radius:6px;">';
                     } else {
-                        return '<span class="text-muted">Tidak ada gambar</span>';
+                        return '<img src="' . asset('assets/img/pos/imagenotfound.png') . '" alt="Gambar Produk" width="60" height="60" style="object-fit:cover;border-radius:6px;">';
                     }
                 })
                 ->addColumn('HargaModal', function ($row) {
@@ -76,7 +76,7 @@ class ProdukController extends Controller
         if ($request->hasFile('Gambar')) {
             $file = $request->file('Gambar');
             $namaFile = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/produk'), $namaFile);
+            $path = $file->storeAs('public/uploads/produk', $namaFile);
             $data['Gambar'] = $namaFile;
         }
 
@@ -87,23 +87,45 @@ class ProdukController extends Controller
 
     public function edit($id)
     {
+        $produk = Produk::find($id);
         $KategoriItem = KategoriItem::orderBy('Nama', 'ASC')->get();
-        return view('master.produk.edit', compact('KategoriItem'));
+        return view('master.produk.edit', compact('produk', 'KategoriItem'));
     }
 
     public function update(Request $request, $id)
     {
+        $produk = Produk::findOrFail($id);
+
         $request->validate([
-            'Nama' => 'required|string|max:255'
+            'KodeBarang' => 'required|string|max:100|unique:produks,KodeBarang,' . $produk->id,
+            'Nama' => 'required|string|max:255',
+            'KategoriItem' => 'required|exists:kategori_items,id',
+            'JenisItem' => 'required|exists:jenis_items,id',
+            'HargaModal' => 'required|numeric|min:0',
+            'HargaJual' => 'required|numeric|min:0',
+            'Stok' => 'required|integer|min:0',
+            'Deskripsi' => 'required|string',
+            'Gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'Status' => 'required|in:Aktif,Tidak Aktif',
         ]);
 
-        $kategori = Produk::findOrFail($id);
-        $kategori->update([
-            'Nama' => $request->Nama,
-            'UserUpdate' => auth()->user()->name
-        ]);
+        $data = $request->all();
+        $data['HargaModal'] = str_replace('.', '', $request->HargaModal);
+        $data['HargaJual'] = str_replace('.', '', $request->HargaJual);
+        $data['UserUpdate'] = auth()->user()->name;
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+        if ($request->hasFile('Gambar')) {
+            $file = $request->file('Gambar');
+            $namaFile = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('public/uploads/produk', $namaFile);
+            $data['Gambar'] = $namaFile;
+        } else {
+            unset($data['Gambar']);
+        }
+
+        $produk->update($data);
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
     public function getJenisItem($id)
     {

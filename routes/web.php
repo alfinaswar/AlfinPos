@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JenisItemController;
 use App\Http\Controllers\KategoriItemController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -36,6 +37,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
+});
+Route::prefix('transaksi')->group(function () {
+    Route::GET('/pos', [TransaksiController::class, 'index'])->name('pos.index');
+    Route::GET('/create', [TransaksiController::class, 'create'])->name('pos.create');
+    Route::POST('/simpan', [TransaksiController::class, 'store'])->name('pos.store');
+    Route::GET('/edit/{id}', [TransaksiController::class, 'edit'])->name('pos.edit');
+    Route::PUT('/update/{id}', [TransaksiController::class, 'update'])->name('pos.update');
+    Route::delete('hapus/{id}', [TransaksiController::class, 'destroy'])->name('pos.destroy');
 });
 Route::prefix('master-kategori-item')->group(function () {
     Route::GET('/', [KategoriItemController::class, 'index'])->name('kategori.index');
