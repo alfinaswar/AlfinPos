@@ -404,7 +404,11 @@
                                             <div class="row">
                                                 @foreach ($kategori->getProduk as $item)
                                                     <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
-                                                        <div class="product-info default-cover card">
+                                                        <div class="product-info default-cover card"
+                                                            data-product-id="{{$item->id}}" data-product-name="{{$item->Nama}}"
+                                                            data-product-price="{{$item->HargaJual}}"
+                                                            data-category-name="{{$kategori->Nama}}"
+                                                            data-product-image="{{asset('storage/uploads/produk/' . $item->Gambar)}}">
                                                             <a href="javascript:void(0);" class="img-bg">
                                                                 <img src="{{asset('storage/uploads/produk/' . $item->Gambar)}}"
                                                                     alt="Products" width="150px" height="100px"
@@ -429,6 +433,7 @@
                                     @endforeach
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-4 ps-0">
@@ -460,284 +465,66 @@
                                     <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
                                         data-bs-target="#create"><i data-feather="user-plus" class="feather-16"></i></a>
                                 </div>
-                                <div class="input-block">
-                                    <select class="select">
-                                        <option>Search Products</option>
-                                        <option>IPhone 14 64GB</option>
-                                        <option>MacBook Pro</option>
-                                        <option>Rolex Tribute V3</option>
-                                        <option>Red Nike Angelo</option>
-                                        <option>Airpod 2</option>
-                                        <option>Oldest</option>
-                                    </select>
-                                </div>
+
                             </div>
 
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
-                                    <h6 class="d-flex align-items-center mb-0">Produk Dibeli<span class="count">2</span>
+                                    <h6 class="d-flex align-items-center mb-0">Produk Dibeli<span class="count">0</span>
                                     </h6>
-                                    <a href="javascript:void(0);" class="d-flex align-items-center text-danger"><span
-                                            class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all</a>
+                                    <a href="javascript:void(0);" class="d-flex align-items-center text-danger"
+                                        id="clear-all-btn">
+                                        <span class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all
+                                    </a>
                                 </div>
                                 <div class="product-wrap">
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
-                                            data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="{{asset('')}}assets/img/products/pos-product-16.png"
-                                                    alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0005</span>
-                                                <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                                <p>$2000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);"
-                                                class="dec d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i
-                                                    data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="4">
-                                            <a href="javascript:void(0);"
-                                                class="inc d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i
-                                                    data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
-                                            data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="{{asset('')}}assets/img/products/pos-product-17.png"
-                                                    alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0235</span>
-                                                <h6><a href="javascript:void(0);">Iphone 14</a></h6>
-                                                <p>$3000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);"
-                                                class="dec d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i
-                                                    data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="3">
-                                            <a href="javascript:void(0);"
-                                                class="inc d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i
-                                                    data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
-                                            data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="{{asset('')}}assets/img/products/pos-product-16.png"
-                                                    alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0005</span>
-                                                <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                                <p>$2000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);"
-                                                class="dec d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i
-                                                    data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="1">
-                                            <a href="javascript:void(0);"
-                                                class="inc d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i
-                                                    data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
-                                            data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="{{asset('')}}assets/img/products/pos-product-17.png"
-                                                    alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0005</span>
-                                                <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                                <p>$2000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);"
-                                                class="dec d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i
-                                                    data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="1">
-                                            <a href="javascript:void(0);"
-                                                class="inc d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i
-                                                    data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <!-- Template produk yang akan ditambahkan via JavaScript -->
+                                    <!-- Kosongkan bagian ini, akan diisi otomatis -->
                                 </div>
                             </div>
-                            {{-- <div class="block-section">
-                                <div class="selling-info">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Order Tax</label>
-                                                <select class="select">
-                                                    <option>GST 5%</option>
-                                                    <option>GST 10%</option>
-                                                    <option>GST 15%</option>
-                                                    <option>GST 20%</option>
-                                                    <option>GST 25%</option>
-                                                    <option>GST 30%</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Shipping</label>
-                                                <select class="select">
-                                                    <option>15</option>
-                                                    <option>20</option>
-                                                    <option>25</option>
-                                                    <option>30</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Discount</label>
-                                                <select class="select">
-                                                    <option>10%</option>
-                                                    <option>10%</option>
-                                                    <option>15%</option>
-                                                    <option>20%</option>
-                                                    <option>25%</option>
-                                                    <option>30%</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-total">
-                                    <table class="table table-responsive table-borderless">
-                                        <tr>
-                                            <td>Sub Total</td>
-                                            <td class="text-end">$60,454</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tax (GST 5%)</td>
-                                            <td class="text-end">$40.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Shipping</td>
-                                            <td class="text-end">$40.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sub Total</td>
-                                            <td class="text-end">$60,454</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="danger">Discount (10%)</td>
-                                            <td class="danger text-end">$15.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Total</td>
-                                            <td class="text-end">$64,024.5</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div> --}}
 
-                            {{-- <div class="block-section payment-method">
-                                <h6>Payment Method</h6>
-                                <div class="row d-flex align-items-center justify-content-center methods">
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="{{asset('')}}assets/img/icons/cash-pay.svg"
-                                                    alt="Payment Method">
-                                                <span>Cash</span>
-                                            </a>
+                            <div class="checkout-section mt-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- Total Amount Display -->
+                                        <div class="cart-total bg-light p-3 rounded mb-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="mb-0">Total Item: <span id="total-items">0</span></h6>
+                                                <h5 class="mb-0 text-primary">Total: <span id="total-amount">Rp 0</span>
+                                                </h5>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="{{asset('')}}assets/img/icons/credit-card.svg"
-                                                    alt="Payment Method">
-                                                <span>Debit Card</span>
-                                            </a>
+
+                                        <!-- Action Buttons -->
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <button type="button" class="btn btn-outline-secondary" id="save-draft-btn">
+                                                <i data-feather="save" class="feather-16 me-1"></i>
+                                                Save Draft
+                                            </button>
+
+                                            <button type="button" class="btn btn-warning" id="quick-checkout-btn">
+                                                <i data-feather="zap" class="feather-16 me-1"></i>
+                                                Quick Checkout
+                                            </button>
+
+                                            <button type="button" class="btn btn-success" id="checkout-btn">
+                                                <i data-feather="shopping-cart" class="feather-16 me-1"></i>
+                                                Checkout
+                                            </button>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="{{asset('')}}assets/img/icons/qr-scan.svg"
-                                                    alt="Payment Method">
-                                                <span>Scan</span>
-                                            </a>
+                                        <input type="hidden" id="draft-id" value="">
+
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-info"
+                                                id="export-cart-btn">
+                                                <i data-feather="download" class="feather-16 me-1"></i>
+                                                Export Data
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div> --}}
-                            <div class="d-grid btn-block">
-                                <a class="btn btn-secondary" href="javascript:void(0);">
-                                    Grand Total : $64,024.5
-                                </a>
                             </div>
-                            <div class="btn-row d-sm-flex align-items-center justify-content-between">
 
-                                <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="trash-2"
-                                            class="feather-16"></i></span>Batalkan</a>
-                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
-                                    data-bs-toggle="modal" data-bs-target="#payment-completed"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16"></i></span>Selesaikan Pembayaran</a>
-                            </div>
 
                         </aside>
                     </div>
@@ -2104,7 +1891,9 @@
             </li>
         </ul>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- jQuery -->
     <script src="{{asset('')}}assets/js/jquery-3.7.1.min.js"></script>
 
@@ -2143,7 +1932,334 @@
     <script src="{{asset('')}}assets/js/theme-script.js"></script>
     <script src="{{asset('')}}assets/js/script.js"></script>
 
+    <script>
+        // JavaScript yang sudah dibuat di atas
+        // Versi yang dioptimalkan untuk Laravel blade
 
+        let selectedProducts = [];
+
+        function addToCart(productData) {
+            const existingProductIndex = selectedProducts.findIndex(p => p.id === productData.id);
+
+            if (existingProductIndex > -1) {
+                selectedProducts[existingProductIndex].quantity += 1;
+                updateProductQuantity(productData.id, selectedProducts[existingProductIndex].quantity);
+            } else {
+                productData.quantity = 1;
+                selectedProducts.push(productData);
+                addProductToDOM(productData);
+            }
+
+            updateCounter();
+        }
+
+        function addProductToDOM(product) {
+            const productWrap = document.querySelector('.product-wrap');
+
+            const productHTML = `
+            <div class="product-list d-flex align-items-center justify-content-between" data-product-id="${product.id}">
+                <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                    <a href="javascript:void(0);" class="img-bg">
+                        <img src="${product.image}" alt="Products" style="width: 50px; height: 50px; object-fit: cover;">
+                    </a>
+                    <div class="info">
+                        <span>${product.category}</span>
+                        <h6><a href="javascript:void(0);">${product.name}</a></h6>
+                        <p>${product.formattedPrice}</p>
+                    </div>
+                </div>
+                <div class="qty-item text-center">
+                    <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center"
+                       onclick="decreaseQuantity('${product.id}')">
+                        <i data-feather="minus-circle" class="feather-14"></i>
+                    </a>
+                    <input type="text" class="form-control text-center qty-input" name="qty" value="${product.quantity}"
+                           onchange="updateQuantityFromInput('${product.id}', this.value)">
+                    <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center"
+                       onclick="increaseQuantity('${product.id}')">
+                        <i data-feather="plus-circle" class="feather-14"></i>
+                    </a>
+                </div>
+                <div class="d-flex align-items-center action">
+                    <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal" data-bs-target="#edit-product">
+                        <i data-feather="edit" class="feather-14"></i>
+                    </a>
+                    <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);" onclick="removeFromCart('${product.id}')">
+                        <i data-feather="trash-2" class="feather-14"></i>
+                    </a>
+                </div>
+            </div>
+        `;
+
+            productWrap.insertAdjacentHTML('beforeend', productHTML);
+
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        }
+
+        function updateCounter() {
+            const counterElement = document.querySelector('.count');
+            if (counterElement) {
+                counterElement.textContent = selectedProducts.length;
+            }
+        }
+
+        function increaseQuantity(productId) {
+            const productIndex = selectedProducts.findIndex(p => p.id == productId);
+            if (productIndex > -1) {
+                selectedProducts[productIndex].quantity += 1;
+                updateProductQuantity(productId, selectedProducts[productIndex].quantity);
+            }
+        }
+
+        function decreaseQuantity(productId) {
+            const productIndex = selectedProducts.findIndex(p => p.id == productId);
+            if (productIndex > -1) {
+                if (selectedProducts[productIndex].quantity > 1) {
+                    selectedProducts[productIndex].quantity -= 1;
+                    updateProductQuantity(productId, selectedProducts[productIndex].quantity);
+                } else {
+                    removeFromCart(productId);
+                }
+            }
+        }
+
+        function updateQuantityFromInput(productId, newQuantity) {
+            const quantity = parseInt(newQuantity);
+            if (quantity > 0) {
+                const productIndex = selectedProducts.findIndex(p => p.id == productId);
+                if (productIndex > -1) {
+                    selectedProducts[productIndex].quantity = quantity;
+                }
+            } else {
+                removeFromCart(productId);
+            }
+        }
+
+        function updateProductQuantity(productId, quantity) {
+            const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+            if (productElement) {
+                const qtyInput = productElement.querySelector('.qty-input');
+                if (qtyInput) {
+                    qtyInput.value = quantity;
+                }
+            }
+        }
+
+        function removeFromCart(productId) {
+            selectedProducts = selectedProducts.filter(p => p.id != productId);
+
+            const productElement = document.querySelector(`.product-wrap [data-product-id="${productId}"]`);
+            if (productElement) {
+                productElement.remove();
+            }
+
+            updateCounter();
+        }
+
+        function clearAllProducts() {
+            selectedProducts = [];
+            const productWrap = document.querySelector('.product-wrap');
+            productWrap.innerHTML = '';
+            updateCounter();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Event listener untuk klik produk
+            document.addEventListener('click', function (e) {
+                const productCard = e.target.closest('.pos-products .product-info');
+                if (productCard) {
+                    e.preventDefault();
+
+                    const productData = {
+                        id: productCard.dataset.productId,
+                        image: productCard.dataset.productImage,
+                        category: productCard.dataset.categoryName,
+                        name: productCard.dataset.productName,
+                        price: productCard.dataset.productPrice,
+                        formattedPrice: 'Rp ' + parseInt(productCard.dataset.productPrice).toLocaleString('id-ID')
+                    };
+
+                    addToCart(productData);
+
+                    // Visual feedback
+                    productCard.classList.add('selected');
+                    setTimeout(() => {
+                        productCard.classList.remove('selected');
+                    }, 200);
+                }
+            });
+
+            // Event listener untuk clear all
+            const clearAllBtn = document.getElementById('clear-all-btn');
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    clearAllProducts();
+                });
+            }
+        });
+    </script>
+    <script>
+        // Function untuk update total display
+        function updateTotalDisplay() {
+            const totalItems = selectedProducts.reduce((total, product) => total + product.quantity, 0);
+            const totalAmount = selectedProducts.reduce((total, product) => total + (parseInt(product.price) * product.quantity), 0);
+
+            $('#total-items').text(totalItems);
+            $('#total-amount').text('Rp ' + totalAmount.toLocaleString('id-ID'));
+        }
+
+        // Override function updateCounter untuk juga update total display
+        const originalUpdateCounter = updateCounter;
+        updateCounter = function () {
+            originalUpdateCounter();
+            updateTotalDisplay();
+        };
+
+        // Function untuk load draft list
+        function loadDraftList() {
+            $.ajax({
+                url: '/pos/draft-list',
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    if (response.success) {
+                        let draftListHTML = '';
+
+                        if (response.drafts.length > 0) {
+                            response.drafts.forEach(function (draft) {
+                                draftListHTML += `
+                            <div class="card mb-2">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title mb-1">Draft #${draft.id}</h6>
+                                            <small class="text-muted">
+                                                ${draft.total_items} items - Rp ${parseInt(draft.total_amount).toLocaleString('id-ID')}
+                                                <br>
+                                                ${new Date(draft.created_at).toLocaleString('id-ID')}
+                                            </small>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary load-draft-btn" data-draft-id="${draft.id}">
+                                            Load
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                            });
+                        } else {
+                            draftListHTML = '<p class="text-center text-muted">Tidak ada draft tersimpan</p>';
+                        }
+
+                        $('#draft-list').html(draftListHTML);
+                    }
+                },
+                error: function () {
+                    $('#draft-list').html('<p class="text-center text-danger">Gagal memuat draft</p>');
+                }
+            });
+        }
+
+        // Event listener untuk tombol Load Draft
+        $(document).ready(function () {
+            // Tombol untuk membuka modal draft
+            $(document).on('click', '#load-draft-btn', function () {
+                loadDraftList();
+                $('#draftModal').modal('show');
+            });
+
+            // Update total display saat pertama kali load
+            updateTotalDisplay();
+        });
+    </script>
+
+    <!-- CSS tambahan untuk styling -->
+    <style>
+        .checkout-section {
+            border-top: 1px solid #dee2e6;
+            padding-top: 1rem;
+        }
+
+        .cart-total {
+            border: 1px solid #dee2e6;
+        }
+
+        #loading-overlay .loading-content {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-summary .table th {
+            border-top: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Animation untuk tombol saat disabled */
+        .btn:disabled {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+    </style>
+    <style>
+        .pos-products .product-info.selected {
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+
+        .pos-products .product-info {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pos-products .product-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-wrap .product-list {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+
+        .qty-item input {
+            width: 60px;
+        }
+    </style>
 </body>
 
 </html>
