@@ -475,30 +475,50 @@
                             </div>
 
                             <div class="checkout-section mt-3">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- Total Amount Display -->
+                                <div class="card shadow-sm border-0 rounded-3">
+                                    <div class="card-body">
+                                        <!-- Total Belanja -->
                                         <div class="cart-total bg-light p-3 rounded mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h6 class="mb-0 text-muted">Total Item</h6>
+                                                <h6 class="mb-0 fw-bold"><span id="total-items">0</span></h6>
+                                            </div>
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="mb-0">Total Item: <span id="total-items">0</span></h6>
-                                                <h5 class="mb-0 text-primary">Total: <span id="total-amount">Rp 0</span>
-                                                </h5>
+                                                <h5 class="mb-0 fw-bold">Total Belanja</h5>
+                                                <h4 class="mb-0 text-primary fw-bold" id="total-amount">Rp 0</h4>
                                             </div>
                                         </div>
 
-                                        <!-- Action Buttons -->
-                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="width: 100%;">
-                                            <button type="button" class="btn btn-success w-100" id="checkout-btn">
-                                                <i data-feather="shopping-cart" class="feather-16 me-1"></i>
-                                                Checkout
+                                        <!-- Uang Diterima -->
+                                        <div class="mb-3">
+                                            <label for="uang-dibayar" class="form-label fw-semibold">Uang
+                                                Diterima</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rp</span>
+                                                <input type="text" id="uang-dibayar" class="form-control text-end"
+                                                    placeholder="0">
+                                            </div>
+                                        </div>
+
+                                        <!-- Kembalian -->
+                                        <div class="bg-success bg-opacity-10 p-3 rounded mb-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="mb-0 fw-bold text-success">Kembalian</h6>
+                                                <h5 class="mb-0 fw-bold text-success" id="kembalian">Rp 0</h5>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tombol Checkout -->
+                                        <div class="d-grid">
+                                            <button type="button" class="btn btn-success btn-lg" id="checkout-btn">
+                                                <i data-feather="shopping-cart" class="me-1"></i> Checkout
                                             </button>
                                         </div>
-                                        <input type="hidden" id="draft-id" value="">
-
-
                                     </div>
                                 </div>
                             </div>
+
+
 
 
                         </aside>
@@ -611,6 +631,27 @@
                     }
                 });
             });
+            // Format angka ke Rupiah
+            function formatRupiah(angka) {
+                return 'Rp ' + (angka ? angka.toLocaleString('id-ID') : '0');
+            }
+
+            // Auto-format input uang diterima
+            $(document).on('input', '#uang-dibayar', function () {
+                let raw = $(this).val().replace(/\D/g, ""); // hanya angka
+                let uangDibayar = parseInt(raw) || 0;
+
+                // format ke Rp
+                $(this).val(uangDibayar.toLocaleString('id-ID'));
+
+                // ambil total belanja
+                const totalText = $('#total-amount').text().replace(/[^\d]/g, '');
+                const totalBelanja = parseInt(totalText) || 0;
+
+                const kembalian = uangDibayar - totalBelanja;
+                $('#kembalian').text(formatRupiah(kembalian >= 0 ? kembalian : 0));
+            });
+
         });
 
     </script>
@@ -655,14 +696,11 @@
                     <input type="text" class="form-control text-center qty-input" name="qty" value="${product.quantity}"
                            onchange="updateQuantityFromInput('${product.id}', this.value)">
                     <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center"
-                       onclick="increaseQuantity('${product.id}')">
+                       onclick="increaseQuantity('${product.id}')">   
                         <i data-feather="plus-circle" class="feather-14"></i>
                     </a>
                 </div>
-                <div class="d-flex align-items-center action">
-                    <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal" data-bs-target="#edit-product">
-                        <i data-feather="edit" class="feather-14"></i>
-                    </a>
+                <div class="action">
                     <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);" onclick="removeFromCart('${product.id}')">
                         <i data-feather="trash-2" class="feather-14"></i>
                     </a>

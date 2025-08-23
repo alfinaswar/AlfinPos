@@ -33,7 +33,53 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        dd($data);
+
+        // Menjumlahkan total quantity dari array products
+        // Hitung subtotal dari array products
+        $subtotal = 0;
+        if (isset($data['products']) && is_array($data['products'])) {
+            foreach ($data['products'] as $product) {
+                $qty = isset($product['quantity']) ? (int) $product['quantity'] : 0;
+                $harga = isset($product['price']) ? (int) $product['price'] : 0;
+                $subtotal += $qty * $harga;
+            }
+        }
+        Transaksi::create([
+            'Kode' => $this->GenerateKodeTransaksi(),
+            'Tanggal' => now(),
+            'IdKasir' => auth()->user()->id,
+            'IdOutlet' => null,
+            'Subtotal' => $subtotal,
+            'TotalDiskon' => null,
+            'Pajak' => null,
+            'BiayaLayanan' => null,
+            'TotalAkhir' => $subtotal,
+            'JumlahBayar' => $data['JumlahBayar'],
+            'kembalian' => $data['kembalian'],
+            'MetodePembayaran' => $data['MetodePembayaran'],
+            'status_transaksi' => $data['status_transaksi'],
+            'JenisDiskon' => $data['JenisDiskon'],
+            'NilaiDiskon' => $data['NilaiDiskon'],
+            'Catatan' => $data['Catatan'],
+            'JumlahItem' => $data['JumlahItem'],
+        ]);
+    }
+    private function GenerateKodeTransaksi()
+    {
+        // Ambil kode transaksi terakhir dari database, lalu generate kode baru
+        $lastTransaksi = Transaksi::orderBy('id', 'desc')->first();
+        $prefix = 'TRX';
+        $date = date('ymd');
+        $lastNumber = 1;
+
+        if ($lastTransaksi && preg_match('/^TRX(\d{6})(\d{5})$/', $lastTransaksi->Kode, $matches)) {
+            if ($matches[1] == $date) {
+                $lastNumber = intval($matches[2]) + 1;
+            }
+        }
+
+        $kodeBaru = $prefix . $date . str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
+        return $kodeBaru;
     }
 
     /**
