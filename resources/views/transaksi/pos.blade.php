@@ -12,36 +12,36 @@
     <title>Dreams Pos Admin Template</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('')}}assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('') }}assets/img/favicon.png">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap.min.css">
 
     <!-- Datetimepicker CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap-datetimepicker.min.css">
 
     <!-- animation CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/animate.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/animate.css">
 
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/select2/css/select2.min.css">
 
     <!-- Datatable CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/dataTables.bootstrap5.min.css">
 
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/all.min.css">
 
     <!-- Daterangepikcer CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/daterangepicker/daterangepicker.css">
 
     <!-- Owl Carousel CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/owlcarousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/owlcarousel/owl.theme.default.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/owlcarousel/owl.theme.default.min.css">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -58,13 +58,13 @@
             <!-- Logo -->
             <div class="header-left active">
                 <a href="index.html" class="logo logo-normal">
-                    <img src="{{asset('')}}assets/img/logo.png" alt="">
+                    <img src="{{ asset('') }}assets/img/logo.png" alt="">
                 </a>
                 <a href="index.html" class="logo logo-white">
-                    <img src="{{asset('')}}assets/img/logo-white.png" alt="">
+                    <img src="{{ asset('') }}assets/img/logo-white.png" alt="">
                 </a>
                 <a href="index.html" class="logo-small">
-                    <img src="{{asset('')}}assets/img/logo-small.png" alt="">
+                    <img src="{{ asset('') }}assets/img/logo-small.png" alt="">
                 </a>
             </div>
             <!-- /Logo -->
@@ -114,21 +114,21 @@
                                     <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
                                     <ul class="customers">
                                         <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="{{asset('')}}assets/img/profiles/avator1.jpg" alt=""
-                                                    class="img-fluid"></a>
+                                                    src="{{ asset('') }}assets/img/profiles/avator1.jpg"
+                                                    alt="" class="img-fluid"></a>
                                         </li>
                                         <li><a href="javascript:void(0);">Jonita<img
-                                                    src="{{asset('')}}assets/img/profiles/avator1.jpg" alt=""
-                                                    class="img-fluid"></a>
+                                                    src="{{ asset('') }}assets/img/profiles/avator1.jpg"
+                                                    alt="" class="img-fluid"></a>
                                         </li>
                                         <li><a href="javascript:void(0);">Aaron<img
-                                                    src="{{asset('')}}assets/img/profiles/avator1.jpg" alt=""
-                                                    class="img-fluid"></a>
+                                                    src="{{ asset('') }}assets/img/profiles/avator1.jpg"
+                                                    alt="" class="img-fluid"></a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <!-- <a class="btn"  id="searchdiv"><img src="{{asset('')}}assets/img/icons/search.svg" alt="img"></a> -->
+                            <!-- <a class="btn"  id="searchdiv"><img src="{{ asset('') }}assets/img/icons/search.svg" alt="img"></a> -->
                         </form>
                     </div>
                 </li>
@@ -140,7 +140,7 @@
                         data-bs-toggle="dropdown">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="{{asset('')}}assets/img/store/store-01.png" alt="Store Logo"
+                                <img src="{{ asset('') }}assets/img/store/store-01.png" alt="Store Logo"
                                     class="img-fluid">
                             </span>
                             <span class="user-detail">
@@ -150,19 +150,23 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/store/store-01.png" alt="Store Logo" class="img-fluid">
+                            <img src="{{ asset('') }}assets/img/store/store-01.png" alt="Store Logo"
+                                class="img-fluid">
                             Grocery Alpha
                         </a>
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/store/store-02.png" alt="Store Logo" class="img-fluid">
+                            <img src="{{ asset('') }}assets/img/store/store-02.png" alt="Store Logo"
+                                class="img-fluid">
                             Grocery Apex
                         </a>
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/store/store-03.png" alt="Store Logo" class="img-fluid">
+                            <img src="{{ asset('') }}assets/img/store/store-03.png" alt="Store Logo"
+                                class="img-fluid">
                             Grocery Bevy
                         </a>
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/store/store-04.png" alt="Store Logo" class="img-fluid">
+                            <img src="{{ asset('') }}assets/img/store/store-04.png" alt="Store Logo"
+                                class="img-fluid">
                             Grocery Eden
                         </a>
                     </div>
@@ -173,20 +177,24 @@
                 <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
                         role="button">
-                        <img src="{{asset('')}}assets/img/flags/us.png" alt="Language" class="img-fluid">
+                        <img src="{{ asset('') }}assets/img/flags/us.png" alt="Language" class="img-fluid">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="javascript:void(0);" class="dropdown-item active">
-                            <img src="{{asset('')}}assets/img/flags/us.png" alt="" height="16"> English
+                            <img src="{{ asset('') }}assets/img/flags/us.png" alt="" height="16">
+                            English
                         </a>
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/flags/fr.png" alt="" height="16"> French
+                            <img src="{{ asset('') }}assets/img/flags/fr.png" alt="" height="16">
+                            French
                         </a>
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/flags/es.png" alt="" height="16"> Spanish
+                            <img src="{{ asset('') }}assets/img/flags/es.png" alt="" height="16">
+                            Spanish
                         </a>
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{asset('')}}assets/img/flags/de.png" alt="" height="16"> German
+                            <img src="{{ asset('') }}assets/img/flags/de.png" alt="" height="16">
+                            German
                         </a>
                     </div>
                 </li>
@@ -219,11 +227,13 @@
                                     <a href="activities.html">
                                         <div class="media d-flex">
                                             <span class="avatar flex-shrink-0">
-                                                <img alt="" src="{{asset('')}}assets/img/profiles/avatar-02.jpg">
+                                                <img alt=""
+                                                    src="{{ asset('') }}assets/img/profiles/avatar-02.jpg">
                                             </span>
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details"><span class="noti-title">John Doe</span> added
-                                                    new task <span class="noti-title">Patient appointment booking</span>
+                                                    new task <span class="noti-title">Patient appointment
+                                                        booking</span>
                                                 </p>
                                                 <p class="noti-time"><span class="notification-time">4 mins ago</span>
                                                 </p>
@@ -235,10 +245,12 @@
                                     <a href="activities.html">
                                         <div class="media d-flex">
                                             <span class="avatar flex-shrink-0">
-                                                <img alt="" src="{{asset('')}}assets/img/profiles/avatar-03.jpg">
+                                                <img alt=""
+                                                    src="{{ asset('') }}assets/img/profiles/avatar-03.jpg">
                                             </span>
                                             <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Tarah Shropshire</span>
+                                                <p class="noti-details"><span class="noti-title">Tarah
+                                                        Shropshire</span>
                                                     changed the task name <span class="noti-title">Appointment booking
                                                         with payment gateway</span></p>
                                                 <p class="noti-time"><span class="notification-time">6 mins ago</span>
@@ -251,7 +263,8 @@
                                     <a href="activities.html">
                                         <div class="media d-flex">
                                             <span class="avatar flex-shrink-0">
-                                                <img alt="" src="{{asset('')}}assets/img/profiles/avatar-06.jpg">
+                                                <img alt=""
+                                                    src="{{ asset('') }}assets/img/profiles/avatar-06.jpg">
                                             </span>
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details"><span class="noti-title">Misty Tison</span>
@@ -268,13 +281,15 @@
                                     <a href="activities.html">
                                         <div class="media d-flex">
                                             <span class="avatar flex-shrink-0">
-                                                <img alt="" src="{{asset('')}}assets/img/profiles/avatar-17.jpg">
+                                                <img alt=""
+                                                    src="{{ asset('') }}assets/img/profiles/avatar-17.jpg">
                                             </span>
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details"><span class="noti-title">Rolland Webber</span>
                                                     completed task <span class="noti-title">Patient and Doctor video
                                                         conferencing</span></p>
-                                                <p class="noti-time"><span class="notification-time">12 mins ago</span>
+                                                <p class="noti-time"><span class="notification-time">12 mins
+                                                        ago</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -284,10 +299,12 @@
                                     <a href="activities.html">
                                         <div class="media d-flex">
                                             <span class="avatar flex-shrink-0">
-                                                <img alt="" src="{{asset('')}}assets/img/profiles/avatar-13.jpg">
+                                                <img alt=""
+                                                    src="{{ asset('') }}assets/img/profiles/avatar-13.jpg">
                                             </span>
                                             <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Bernardo Galaviz</span>
+                                                <p class="noti-details"><span class="noti-title">Bernardo
+                                                        Galaviz</span>
                                                     added new task <span class="noti-title">Private chat module</span>
                                                 </p>
                                                 <p class="noti-time"><span class="notification-time">2 days ago</span>
@@ -312,7 +329,8 @@
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="{{asset('')}}assets/img/profiles/avator1.jpg" alt="" class="img-fluid">
+                                <img src="{{ asset('') }}assets/img/profiles/avator1.jpg" alt=""
+                                    class="img-fluid">
                             </span>
                             <span class="user-detail">
                                 <span class="user-name">John Smilga</span>
@@ -323,7 +341,8 @@
                     <div class="dropdown-menu menu-drop-user">
                         <div class="profilename">
                             <div class="profileset">
-                                <span class="user-img"><img src="{{asset('')}}assets/img/profiles/avator1.jpg" alt="">
+                                <span class="user-img"><img src="{{ asset('') }}assets/img/profiles/avator1.jpg"
+                                        alt="">
                                     <span class="status online"></span></span>
                                 <div class="profilesets">
                                     <h6>John Smilga</h6>
@@ -331,13 +350,15 @@
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i> My
+                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i>
+                                My
                                 Profile</a>
                             <a class="dropdown-item" href="general-settings.html"><i class="me-2"
                                     data-feather="settings"></i>Settings</a>
                             <hr class="m-0">
                             <a class="dropdown-item logout pb-0" href="signin.html"><img
-                                    src="{{asset('')}}assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
+                                    src="{{ asset('') }}assets/img/icons/log-out.svg" class="me-2"
+                                    alt="img">Logout</a>
                         </div>
                     </div>
                 </li>
@@ -361,14 +382,13 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="btn-row d-sm-flex align-items-center">
-                    <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
-                        data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
-                                data-feather="shopping-cart" class="feather-16"></i></span>View Orders</a>
-                    <a href="javascript:void(0);" class="btn btn-info"><span class="me-1 d-flex align-items-center"><i
-                                data-feather="rotate-cw" class="feather-16"></i></span>Reset</a>
+
+                    <a href="javascript:void(0);" class="btn btn-info" onclick="location.reload();"><span
+                            class="me-1 d-flex align-items-center"><i data-feather="rotate-cw"
+                                class="feather-16"></i></span>Reset</a>
                     <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i
-                                data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
+                                data-feather="refresh-ccw" class="feather-16"></i></span>Riwayat Transaksi</a>
                 </div>
 
                 <div class="row align-items-start pos-wrapper">
@@ -379,17 +399,19 @@
                             <ul class="tabs owl-carousel pos-category">
                                 <li id="all">
                                     <a href="javascript:void(0);">
-                                        <img src="{{asset('')}}assets/img/categories/category-01.png" alt="Categories">
+                                        <img src="{{ asset('') }}assets/img/categories/category-01.png"
+                                            alt="Categories">
                                     </a>
                                     <h6><a href="javascript:void(0);">Semua Kategori</a></h6>
                                     <span>80 Items</span>
                                 </li>
                                 @foreach ($produk as $kat)
-                                    <li id="{{$kat->id}}">
+                                    <li id="{{ $kat->id }}">
                                         <a href="javascript:void(0);">
-                                            <img src="{{asset('')}}assets/img/categories/category-02.png" alt="Categories">
+                                            <img src="{{ asset('') }}assets/img/categories/category-02.png"
+                                                alt="Categories">
                                         </a>
-                                        <h6><a href="javascript:void(0);">{{$kat->Nama}}</a></h6>
+                                        <h6><a href="javascript:void(0);">{{ $kat->Nama }}</a></h6>
                                         <span>4 Items</span>
                                     </li>
                                 @endforeach
@@ -400,28 +422,32 @@
                                 </div>
                                 <div class="tabs_container">
                                     @foreach ($produk as $key => $kategori)
-                                        <div class="tab_content active" data-tab="{{$kategori->id}}">
+                                        <div class="tab_content active" data-tab="{{ $kategori->id }}">
                                             <div class="row">
                                                 @foreach ($kategori->getProduk as $item)
                                                     <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                                                         <div class="product-info default-cover card"
-                                                            data-product-id="{{$item->id}}" data-product-name="{{$item->Nama}}"
-                                                            data-product-price="{{$item->HargaJual}}"
-                                                            data-category-name="{{$kategori->Nama}}"
-                                                            data-product-image="{{asset('storage/uploads/produk/' . $item->Gambar)}}">
+                                                            data-product-id="{{ $item->id }}"
+                                                            data-product-name="{{ $item->Nama }}"
+                                                            data-product-price="{{ $item->HargaJual }}"
+                                                            data-category-name="{{ $kategori->Nama }}"
+                                                            data-product-image="{{ asset('storage/uploads/produk/' . $item->Gambar) }}">
                                                             <a href="javascript:void(0);" class="img-bg">
-                                                                <img src="{{asset('storage/uploads/produk/' . $item->Gambar)}}"
+                                                                <img src="{{ asset('storage/uploads/produk/' . $item->Gambar) }}"
                                                                     alt="Products" width="150px" height="100px"
                                                                     style="object-fit: cover;">
-                                                                <span><i data-feather="check" class="feather-16"></i></span>
+                                                                <span><i data-feather="check"
+                                                                        class="feather-16"></i></span>
                                                             </a>
                                                             <h6 class="cat-name"><a
-                                                                    href="javascript:void(0);">{{$kategori->Nama}}</a></h6>
+                                                                    href="javascript:void(0);">{{ $kategori->Nama }}</a>
+                                                            </h6>
                                                             <h6 class="product-name"><a
-                                                                    href="javascript:void(0);">{{$item->Nama}}</a></h6>
+                                                                    href="javascript:void(0);">{{ $item->Nama }}</a>
+                                                            </h6>
                                                             <div
                                                                 class="d-flex align-items-center justify-content-between price">
-                                                                <span>{{$item->HargaJual}}</span>
+                                                                <span>{{ $item->HargaJual }}</span>
                                                                 <p>{{ 'Rp ' . number_format($item->HargaJual, 0, ',', '.') }}
                                                                 </p>
                                                             </div>
@@ -446,8 +472,8 @@
                                 <div class="">
                                     <a class="confirm-text" href="javascript:void(0);"><i data-feather="trash-2"
                                             class="feather-16 text-danger"></i></a>
-                                    <a href="javascript:void(0);" class="text-default"><i data-feather="more-vertical"
-                                            class="feather-16"></i></a>
+                                    <a href="javascript:void(0);" class="text-default"><i
+                                            data-feather="more-vertical" class="feather-16"></i></a>
                                 </div>
                             </div>
                             <div class="customer-info block-section">
@@ -461,11 +487,13 @@
 
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
-                                    <h6 class="d-flex align-items-center mb-0">Produk Dibeli<span class="count">0</span>
+                                    <h6 class="d-flex align-items-center mb-0">Produk Dibeli<span
+                                            class="count">0</span>
                                     </h6>
                                     <a href="javascript:void(0);" class="d-flex align-items-center text-danger"
                                         id="clear-all-btn">
-                                        <span class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all
+                                        <span class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear
+                                        all
                                     </a>
                                 </div>
                                 <div class="product-wrap">
@@ -569,7 +597,84 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
+                    <div class="tabs-sets">
 
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="purchase" role="tabpanel"
+                                aria-labelledby="purchase-tab">
+                                <div class="table-top">
+                                    <div class="search-set">
+                                        <div class="search-input">
+                                            <a class="btn btn-searchset d-flex align-items-center h-100"><img
+                                                    src="assets/img/icons/search-white.svg" alt="img"></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table datanew">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Tanggal</th>
+                                                <th>Kode Transaksi</th>
+                                                <th>Total </th>
+                                                <th>Status</th>
+                                                <th class="no-sort">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($history as $key => $value)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $value->Tanggal }}</td>
+                                                    <td>{{ $value->Kode }}</td>
+                                                    <td>Rp.{{ number_format((int) $value->TotalAkhir, 0, ',', '.') }}
+                                                    </td>
+                                                    <td>
+                                                        @switch($value->status_transaksi)
+                                                            @case('Pending')
+                                                                <span class="badge bg-warning">Pending</span>
+                                                            @break
+
+                                                            @case('Berhasil')
+                                                                <span class="badge bg-success">Berhasil</span>
+                                                            @break
+
+                                                            @case('Dibatalkan')
+                                                                <span class="badge bg-danger">Dibatalkan</span>
+                                                            @break
+
+                                                            @case('Refund Sebagian')
+                                                                <span class="badge bg-info">Refund Sebagian</span>
+                                                            @break
+
+                                                            @case('Refund Penuh')
+                                                                <span class="badge bg-secondary">Refund Penuh</span>
+                                                            @break
+
+                                                            @default
+                                                                <span class="badge bg-light">Status Tidak Diketahui</span>
+                                                        @endswitch
+                                                    </td>
+                                                    <td class="action-table-data">
+                                                        <div class="edit-delete-action">
+                                                            <a class="me-2 p-2" href="javascript:void(0);"><i
+                                                                    data-feather="eye" class="feather-eye"></i></a>
+                                                            <a class="me-2 p-2" href="javascript:void(0);"><i
+                                                                    data-feather="edit" class="feather-edit"></i></a>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -595,8 +700,8 @@
 
     @include('layouts.javascript-pos')
     <script>
-        $(document).ready(function () {
-            $('#checkout-btn').on('click', function () {
+        $(document).ready(function() {
+            $('#checkout-btn').on('click', function() {
                 if (selectedProducts.length === 0) {
                     Swal.fire({
                         icon: 'warning',
@@ -608,24 +713,35 @@
                 }
 
                 $.ajax({
-                    url: '{{route('pos.store')}}', // route Laravel
+                    url: '{{ route('pos.store') }}', // route Laravel
                     type: 'POST',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
                         products: selectedProducts,
                         customer: $('#InformasiPelanggan').val(),
+                        uangditerima: $('#uang-dibayar').val(),
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
-                            alert('Checkout berhasil!');
-                            clearAllProducts();
-                            $('#total-items').text(0);
-                            $('#total-amount').text('Rp 0');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Checkout berhasil!',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                clearAllProducts();
+                                $('#total-items').text(0);
+                                $('#total-amount').text('Rp 0');
+                            });
                         } else {
-                            alert('Checkout gagal: ' + response.message);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Checkout gagal',
+                                text: response.message,
+                                confirmButtonText: 'OK'
+                            });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error(xhr.responseText);
                         alert('Terjadi kesalahan server!');
                     }
@@ -637,7 +753,7 @@
             }
 
             // Auto-format input uang diterima
-            $(document).on('input', '#uang-dibayar', function () {
+            $(document).on('input', '#uang-dibayar', function() {
                 let raw = $(this).val().replace(/\D/g, ""); // hanya angka
                 let uangDibayar = parseInt(raw) || 0;
 
@@ -653,7 +769,6 @@
             });
 
         });
-
     </script>
     <script>
         let selectedProducts = [];
@@ -696,7 +811,7 @@
                     <input type="text" class="form-control text-center qty-input" name="qty" value="${product.quantity}"
                            onchange="updateQuantityFromInput('${product.id}', this.value)">
                     <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center"
-                       onclick="increaseQuantity('${product.id}')">   
+                       onclick="increaseQuantity('${product.id}')">
                         <i data-feather="plus-circle" class="feather-14"></i>
                     </a>
                 </div>
@@ -785,9 +900,9 @@
             updateCounter();
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Event listener untuk klik produk
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 const productCard = e.target.closest('.pos-products .product-info');
                 if (productCard) {
                     e.preventDefault();
@@ -798,7 +913,8 @@
                         category: productCard.dataset.categoryName,
                         name: productCard.dataset.productName,
                         price: productCard.dataset.productPrice,
-                        formattedPrice: 'Rp ' + parseInt(productCard.dataset.productPrice).toLocaleString('id-ID')
+                        formattedPrice: 'Rp ' + parseInt(productCard.dataset.productPrice)
+                            .toLocaleString('id-ID')
                     };
 
                     addToCart(productData);
@@ -814,7 +930,7 @@
             // Event listener untuk clear all
             const clearAllBtn = document.getElementById('clear-all-btn');
             if (clearAllBtn) {
-                clearAllBtn.addEventListener('click', function (e) {
+                clearAllBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     clearAllProducts();
                 });
@@ -824,7 +940,8 @@
     <script>
         function updateTotalDisplay() {
             const totalItems = selectedProducts.reduce((total, product) => total + product.quantity, 0);
-            const totalAmount = selectedProducts.reduce((total, product) => total + (parseInt(product.price) * product.quantity), 0);
+            const totalAmount = selectedProducts.reduce((total, product) => total + (parseInt(product.price) * product
+                .quantity), 0);
 
             $('#total-items').text(totalItems);
             $('#total-amount').text('Rp ' + totalAmount.toLocaleString('id-ID'));
@@ -832,10 +949,11 @@
 
         // Override function updateCounter untuk juga update total display
         const originalUpdateCounter = updateCounter;
-        updateCounter = function () {
+        updateCounter = function() {
             originalUpdateCounter();
             updateTotalDisplay();
         };
+
         function loadDraftList() {
             $.ajax({
                 url: '/pos/draft-list',
@@ -844,12 +962,12 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let draftListHTML = '';
 
                         if (response.drafts.length > 0) {
-                            response.drafts.forEach(function (draft) {
+                            response.drafts.forEach(function(draft) {
                                 draftListHTML += `
                             <div class="card mb-2">
                                 <div class="card-body p-3">
@@ -877,14 +995,14 @@
                         $('#draft-list').html(draftListHTML);
                     }
                 },
-                error: function () {
+                error: function() {
                     $('#draft-list').html('<p class="text-center text-danger">Gagal memuat draft</p>');
                 }
             });
         }
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Tombol untuk membuka modal draft
-            $(document).on('click', '#load-draft-btn', function () {
+            $(document).on('click', '#load-draft-btn', function() {
                 loadDraftList();
                 $('#draftModal').modal('show');
             });

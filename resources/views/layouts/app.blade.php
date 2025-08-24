@@ -12,25 +12,25 @@
     <title>Dreams Pos Admin Template</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('')}}assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('') }}assets/img/favicon.png">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/bootstrap.min.css">
 
     <!-- animation CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/animate.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/animate.css">
 
     <!-- Datatable CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/dataTables.bootstrap5.min.css">
 
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{asset('')}}assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/all.min.css">
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="http://e-lapor.test/assets/plugins/select2/css/select2.min.css">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
 
 </head>
 
@@ -47,13 +47,13 @@
             <!-- Logo -->
             <div class="header-left active">
                 <a href="index.html" class="logo logo-normal">
-                    <img src="{{asset('')}}assets/img/logo.png" alt="">
+                    <img src="{{ asset('') }}assets/img/logo.png" alt="">
                 </a>
                 <a href="index.html" class="logo logo-white">
-                    <img src="{{asset('')}}assets/img/logo-white.png" alt="">
+                    <img src="{{ asset('') }}assets/img/logo-white.png" alt="">
                 </a>
                 <a href="index.html" class="logo-small">
-                    <img src="{{asset('')}}assets/img/logo-small.png" alt="">
+                    <img src="{{ asset('') }}assets/img/logo-small.png" alt="">
                 </a>
                 <a id="toggle_btn" href="javascript:void(0);">
                     <i data-feather="chevrons-left" class="feather-16"></i>
@@ -147,29 +147,38 @@
                         <li class="submenu-open">
                             <h6 class="submenu-hdr">Data Master</h6>
                             <ul>
-                                <li><a href="{{route('kategori.index')}}"><i data-feather="package"></i><span>Kategori
+                                <li><a href="{{ route('kategori.index') }}"><i
+                                            data-feather="package"></i><span>Kategori
                                             Produk</span></a></li>
-                                <li><a href="{{route('jenis.index')}}"><i data-feather="package"></i><span>Jenis
+                                <li><a href="{{ route('jenis.index') }}"><i data-feather="package"></i><span>Jenis
                                             Produk</span></a></li>
-                                <li><a href="{{route('produk.index')}}"><i
+                                <li><a href="{{ route('produk.index') }}"><i
                                             data-feather="clipboard"></i><span>Produk</span></a>
                                 </li>
 
                             </ul>
                         </li>
                         <li class="submenu-open">
+                            <h6 class="submenu-hdr">Transaksi</h6>
+                            <ul>
+                                <li><a href="{{ route('pos.index') }}"><i
+                                            data-feather="package"></i><span>Transaksi</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu-open">
                             <h6 class="submenu-hdr">Stok</h6>
                             <ul>
-                                <li><a href="{{route('bm.index')}}"><i data-feather="package"></i><span>Barang
+                                <li><a href="{{ route('bm.index') }}"><i data-feather="package"></i><span>Barang
                                             Masuk</span></a></li>
                             </ul>
                         </li>
                         <li class="submenu-open">
                             <h6 class="submenu-hdr">Kelola Pengguna</h6>
                             <ul>
-                                <li><a href="{{route('users.index')}}"><i data-feather="user"></i><span>Akun</span></a>
+                                <li><a href="{{ route('users.index') }}"><i
+                                            data-feather="user"></i><span>Akun</span></a>
                                 </li>
-                                <li><a href="{{route('roles.index')}}"><i
+                                <li><a href="{{ route('roles.index') }}"><i
                                             data-feather="shield"></i><span>Role</span></a></li>
                             </ul>
                         </li>
@@ -197,49 +206,50 @@
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#home" id="home-tab" data-bs-toggle="tab"
                                     data-bs-target="#home" role="tab" aria-selected="true">
-                                    <img src="{{asset('')}}assets/img/icons/menu-icon.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/menu-icon.svg" alt="">
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#messages" id="messages-tab" data-bs-toggle="tab"
                                     data-bs-target="#product" role="tab" aria-selected="false">
-                                    <img src="{{asset('')}}assets/img/icons/product.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/product.svg" alt="">
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#profile" id="profile-tab" data-bs-toggle="tab"
                                     data-bs-target="#sales" role="tab" aria-selected="false">
-                                    <img src="{{asset('')}}assets/img/icons/sales1.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/sales1.svg" alt="">
                                 </a>
                             </li>
 
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#report" id="report-tab" data-bs-toggle="tab"
                                     data-bs-target="#purchase" role="tab" aria-selected="true">
-                                    <img src="{{asset('')}}assets/img/icons/purchase1.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/purchase1.svg" alt="">
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#set" id="set-tab" data-bs-toggle="tab"
                                     data-bs-target="#user" role="tab" aria-selected="true">
-                                    <img src="{{asset('')}}assets/img/icons/users1.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/users1.svg" alt="">
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#set2" id="set-tab2" data-bs-toggle="tab"
                                     data-bs-target="#employee" role="tab" aria-selected="true">
-                                    <img src="{{asset('')}}assets/img/icons/calendars.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/calendars.svg" alt="">
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="tablinks nav-link" href="#set3" id="set-tab3" data-bs-toggle="tab"
                                     data-bs-target="#report" role="tab" aria-selected="true">
-                                    <img src="{{asset('')}}assets/img/icons/printer.svg" alt="">
+                                    <img src="{{ asset('') }}assets/img/icons/printer.svg" alt="">
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="tablinks nav-link active" href="#set4" id="set-tab4" data-bs-toggle="tab"
-                                    data-bs-target="#document" role="tab" aria-selected="true">
+                                <a class="tablinks nav-link active" href="#set4" id="set-tab4"
+                                    data-bs-toggle="tab" data-bs-target="#document" role="tab"
+                                    aria-selected="true">
                                     <i data-feather="user"></i>
                                 </a>
                             </li>
@@ -272,7 +282,8 @@
                                         class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="chat.html">Chat</a></li>
-                                    <li class="submenu submenu-two"><a href="javascript:void(0);"><span>Call</span><span
+                                    <li class="submenu submenu-two"><a
+                                            href="javascript:void(0);"><span>Call</span><span
                                                 class="menu-arrow inside-submenu"></span></a>
                                         <ul>
                                             <li><a href="video-call.html">Video Call</a></li>
@@ -318,7 +329,8 @@
                             <li><a href="stock-adjustment.html"><span>Stock Adjustment</span></a></li>
                             <li><a href="stock-transfer.html"><span>Stock Transfer</span></a></li>
                             <li class="submenu">
-                                <a href="javascript:void(0);"><span>Expenses</span><span class="menu-arrow"></span></a>
+                                <a href="javascript:void(0);"><span>Expenses</span><span
+                                        class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="expense-list.html">Expenses</a></li>
                                     <li><a href="expense-category.html">Expense Category</a></li>
@@ -697,7 +709,8 @@
                                         class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="chat.html">Chat</a></li>
-                                    <li class="submenu submenu-two"><a href="javascript:void(0);"><span>Call</span><span
+                                    <li class="submenu submenu-two"><a
+                                            href="javascript:void(0);"><span>Call</span><span
                                                 class="menu-arrow inside-submenu"></span></a>
                                         <ul>
                                             <li><a href="video-call.html">Video Call</a></li>
@@ -715,7 +728,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="javascript:void(0);"><img src="{{asset('')}}assets/img/icons/product.svg"
+                        <a href="javascript:void(0);"><img src="{{ asset('') }}assets/img/icons/product.svg"
                                 alt="img"><span> Inventory </span> <span class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="product-list.html"><span>Products</span></a></li>
@@ -733,7 +746,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="javascript:void(0);"><img src="{{asset('')}}assets/img/icons/purchase1.svg"
+                        <a href="javascript:void(0);"><img src="{{ asset('') }}assets/img/icons/purchase1.svg"
                                 alt="img"><span>Sales &amp; Purchase</span> <span class="menu-arrow"></span></a>
                         <ul>
                             <li class="submenu">
@@ -748,7 +761,8 @@
                                 </ul>
                             </li>
                             <li class="submenu">
-                                <a href="javascript:void(0);"><span>Purchase</span><span class="menu-arrow"></span></a>
+                                <a href="javascript:void(0);"><span>Purchase</span><span
+                                        class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="purchase-list.html"><span>Purchases</span></a></li>
                                     <li><a href="purchase-order-report.html"><span>Purchase Order</span></a></li>
@@ -759,7 +773,8 @@
                                 </ul>
                             </li>
                             <li class="submenu">
-                                <a href="javascript:void(0);"><span>Expenses</span><span class="menu-arrow"></span></a>
+                                <a href="javascript:void(0);"><span>Expenses</span><span
+                                        class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="expense-list.html">Expenses</a></li>
                                     <li><a href="expense-category.html">Expense Category</a></li>
@@ -768,7 +783,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="javascript:void(0);"><img src="{{asset('')}}assets/img/icons/users1.svg"
+                        <a href="javascript:void(0);"><img src="{{ asset('') }}assets/img/icons/users1.svg"
                                 alt="img"><span>User Management</span> <span class="menu-arrow"></span></a>
                         <ul>
                             <li class="submenu">
@@ -997,7 +1012,8 @@
                                 </ul>
                             </li>
                             <li class="submenu">
-                                <a href="javascript:void(0);"><span>Employees</span><span class="menu-arrow"></span></a>
+                                <a href="javascript:void(0);"><span>Employees</span><span
+                                        class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="employees-grid.html"><span>Employees</span></a></li>
                                     <li><a href="department-grid.html"><span>Departments</span></a></li>
@@ -1033,7 +1049,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="javascript:void(0);"><img src="{{asset('')}}assets/img/icons/printer.svg"
+                        <a href="javascript:void(0);"><img src="{{ asset('') }}assets/img/icons/printer.svg"
                                 alt="img"><span>Reports</span> <span class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="sales-report.html"><span>Sales Report</span></a></li>
@@ -1049,7 +1065,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="javascript:void(0);"><img src="{{asset('')}}assets/img/icons/settings.svg"
+                        <a href="javascript:void(0);"><img src="{{ asset('') }}assets/img/icons/settings.svg"
                                 alt="img"><span> Settings</span> <span class="menu-arrow"></span></a>
                         <ul>
                             <li class="submenu">
@@ -1167,20 +1183,20 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="{{asset('')}}assets/plugins/select2/js/select2.min.js"></script>
+    <script src="{{ asset('') }}assets/plugins/select2/js/select2.min.js"></script>
     <!-- Feather Icon JS -->
-    <script src="{{asset('')}}assets/js/feather.min.js"></script>
+    <script src="{{ asset('') }}assets/js/feather.min.js"></script>
     <!-- Slimscroll JS -->
-    <script src="{{asset('')}}assets/js/jquery.slimscroll.min.js"></script>
-    <script src="{{asset('')}}assets/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('')}}assets/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('') }}assets/js/jquery.slimscroll.min.js"></script>
+    <script src="{{ asset('') }}assets/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('') }}assets/js/dataTables.bootstrap5.min.js"></script>
     <!-- Bootstrap Core JS -->
-    <script src="{{asset('')}}assets/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('') }}assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="{{asset('')}}assets/js/theme-script.js"></script>
-    <script src="{{asset('')}}assets/js/script.js"></script>
-    <script src="{{asset('')}}assets/js/custom-select2.js"></script>
+    <script src="{{ asset('') }}assets/js/theme-script.js"></script>
+    <script src="{{ asset('') }}assets/js/script.js"></script>
+    <script src="{{ asset('') }}assets/js/custom-select2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('js')
 </body>

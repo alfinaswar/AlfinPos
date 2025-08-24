@@ -2,28 +2,27 @@
 
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DependentDropdownController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JenisItemController;
 use App\Http\Controllers\KategoriItemController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
-
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+ * |--------------------------------------------------------------------------
+ * | Web Routes
+ * |--------------------------------------------------------------------------
+ * |
+ * | Here is where you can register web routes for your application. These
+ * | routes are loaded by the RouteServiceProvider and all of them will
+ * | be assigned to the "web" middleware group. Make something great!
+ * |
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,7 +38,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('products', ProductController::class);
 });
 Route::prefix('transaksi')->group(function () {
-    Route::GET('/pos', [TransaksiController::class, 'index'])->name('pos.index');
+    Route::GET('/', [TransaksiController::class, 'index'])->name('pos.index');
+    Route::GET('/pos', [TransaksiController::class, 'kasir'])->name('pos.kasir');
     Route::GET('/create', [TransaksiController::class, 'create'])->name('pos.create');
     Route::POST('/simpan', [TransaksiController::class, 'store'])->name('pos.store');
     Route::GET('/edit/{id}', [TransaksiController::class, 'edit'])->name('pos.edit');

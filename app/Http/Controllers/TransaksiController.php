@@ -6,17 +6,76 @@ use App\Models\JenisItem;
 use App\Models\KategoriItem;
 use App\Models\Produk;
 use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Transaksi::with('NamaKasir')->latest();
+
+            // 🔎 Filter Kasir
+            if ($request->kasir) {
+                $data->where('IdKasir', $request->kasir);
+            }
+
+            // 🔎 Filter Tanggal
+            if ($request->start_date && $request->end_date) {
+                $data->whereBetween('Tanggal', [$request->start_date, $request->end_date]);
+            }
+
+            // 🔎 Filter Status
+            if ($request->status) {
+                $data->where('status_transaksi', $request->status);
+            }
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '
+                    <a href="' . route('pos.edit', $row->id) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-id="' . $row->id . '">Hapus</button>
+                ';
+                })
+                ->addColumn('TotalAkhir', function ($row) {
+                    return 'Rp ' . number_format($row->TotalAkhir, 0, ',', '.');
+                })
+                ->addColumn('Subtotal', function ($row) {
+                    return 'Rp ' . number_format($row->Subtotal, 0, ',', '.');
+                })
+                ->addColumn('Status', function ($row) {
+                    $statusMap = [
+                        'Pending' => ['label' => 'Pending', 'class' => 'warning'],
+                        'Berhasil' => ['label' => 'Berhasil', 'class' => 'success'],
+                        'Dibatalkan' => ['label' => 'Dibatalkan', 'class' => 'danger'],
+                        'Refund Sebagian' => ['label' => 'Refund Sebagian', 'class' => 'info'],
+                        'Refund Penuh' => ['label' => 'Refund Penuh', 'class' => 'dark'],
+                    ];
+
+                    $status = $statusMap[$row->status_transaksi] ?? ['label' => 'Tidak Diketahui', 'class' => 'secondary'];
+                    return '<span class="badge badge-' . $status['class'] . '">' . $status['label'] . '</span>';
+                })
+                ->rawColumns(['action', 'TotalAkhir', 'Status'])
+                ->make(true);
+        }
+
+        // untuk filter kasir di dropdown
+        $kasir = User::get();
+        return view('transaksi.index', compact('kasir'));
+    }
+
+    public function kasir()
     {
         $produk = KategoriItem::with(['getProduk', 'getProduk.getJenis', 'getProduk.getKategori'])->orderBy('Nama', 'ASC')->get();
-        return view('transaksi.pos', compact('produk'));
+        $history = Transaksi::whereDate('created_at', now())->latest()->get();
+        return view('transaksi.pos', compact('produk', 'history'));
     }
 
     /**
@@ -33,17 +92,24 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
-        // Menjumlahkan total quantity dari array products
-        // Hitung subtotal dari array products
         $subtotal = 0;
         if (isset($data['products']) && is_array($data['products'])) {
             foreach ($data['products'] as $product) {
                 $qty = isset($product['quantity']) ? (int) $product['quantity'] : 0;
                 $harga = isset($product['price']) ? (int) $product['price'] : 0;
                 $subtotal += $qty * $harga;
+
+                $produk = Produk::find($product['id']);
+                if ($produk) {
+                    $produk->Stok -= $qty;
+                    $produk->save();
+                }
             }
         }
+
+        $jumlahBayar = str_replace('.', '', $data['uangditerima']);
+        $kembalian = $jumlahBayar - $subtotal;
+
         Transaksi::create([
             'Kode' => $this->GenerateKodeTransaksi(),
             'Tanggal' => now(),
@@ -54,16 +120,38 @@ class TransaksiController extends Controller
             'Pajak' => null,
             'BiayaLayanan' => null,
             'TotalAkhir' => $subtotal,
-            'JumlahBayar' => $data['JumlahBayar'],
-            'kembalian' => $data['kembalian'],
-            'MetodePembayaran' => $data['MetodePembayaran'],
-            'status_transaksi' => $data['status_transaksi'],
-            'JenisDiskon' => $data['JenisDiskon'],
-            'NilaiDiskon' => $data['NilaiDiskon'],
-            'Catatan' => $data['Catatan'],
-            'JumlahItem' => $data['JumlahItem'],
+            'JumlahBayar' => $jumlahBayar,
+            'kembalian' => $kembalian,  // Simpan kembalian yang telah dihitung
+            'MetodePembayaran' => null,
+            'status_transaksi' => 'Berhasil',
+            'JenisDiskon' => 'None',
+            'NilaiDiskon' => 0,
+            'Catatan' => null,
+            'JumlahItem' => $qty,
         ]);
+
+        $transaksi = Transaksi::orderBy('id', 'desc')->first();
+        if ($transaksi) {
+            $transaksiId = $transaksi->id;
+            foreach ($data['products'] as $product) {
+                TransaksiDetail::create([
+                    'IdTransaksi' => $transaksiId,
+                    'IdProduk' => $product['id'],
+                    'Qty' => (int) $product['quantity'],
+                    'HargaSatuan' => (int) $product['price'],
+                    'Subtotal' => (int) $product['price'] * (int) $product['quantity'],
+                    'TipeDiskon' => null,
+                    'Diskon' => null,
+                    'TotalAkhir' => (int) $product['price'] * (int) $product['quantity'],
+                    'IdKasir' => auth()->user()->id,
+                    'Shift' => null,
+                ]);
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Transaksi berhasil disimpan.']);
     }
+
     private function GenerateKodeTransaksi()
     {
         // Ambil kode transaksi terakhir dari database, lalu generate kode baru
