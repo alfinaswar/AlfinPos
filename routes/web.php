@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JenisItemController;
 use App\Http\Controllers\KategoriItemController;
+use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\RoleController;
@@ -43,6 +44,8 @@ Route::prefix('transaksi')->group(function () {
     Route::GET('/create', [TransaksiController::class, 'create'])->name('pos.create');
     Route::POST('/simpan', [TransaksiController::class, 'store'])->name('pos.store');
     Route::GET('/edit/{id}', [TransaksiController::class, 'edit'])->name('pos.edit');
+    Route::GET('/show/{id}', [TransaksiController::class, 'show'])->name('pos.show');
+    Route::get('/transaksi/{id}/download', [TransaksiController::class, 'downloadPdf'])->name('pos.download');
     Route::PUT('/update/{id}', [TransaksiController::class, 'update'])->name('pos.update');
     Route::delete('hapus/{id}', [TransaksiController::class, 'destroy'])->name('pos.destroy');
 });
@@ -61,6 +64,14 @@ Route::prefix('master-item')->group(function () {
     Route::GET('/edit/{id}', [ItemController::class, 'edit'])->name('item.edit');
     Route::PUT('/update/{id}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('hapus/{id}', [ItemController::class, 'destroy'])->name('item.destroy');
+});
+Route::prefix('master-shift')->group(function () {
+    Route::GET('/', [MasterShiftController::class, 'index'])->name('shift.index');
+    Route::GET('/create', [MasterShiftController::class, 'create'])->name('shift.create');
+    Route::POST('/simpan', [MasterShiftController::class, 'store'])->name('shift.store');
+    Route::GET('/edit/{id}', [MasterShiftController::class, 'edit'])->name('shift.edit');
+    Route::PUT('/update/{id}', [MasterShiftController::class, 'update'])->name('shift.update');
+    Route::delete('hapus/{id}', [MasterShiftController::class, 'destroy'])->name('shift.destroy');
 });
 Route::prefix('jenis-item')->group(function () {
     Route::GET('/', [JenisItemController::class, 'index'])->name('jenis.index');

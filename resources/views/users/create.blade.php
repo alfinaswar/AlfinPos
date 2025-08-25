@@ -7,7 +7,7 @@
                 <h3 class="page-title">Manajemen Akun</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Users</li>
+                    <li class="breadcrumb-item active">Buat User</li>
                 </ul>
             </div>
         </div>
@@ -31,83 +31,50 @@
                 <div class="card-header bg-dark">
                     <h4 class="card-title mb-0">Formulir Buat Akun</h4>
                     <p class="card-text mb-0">
-                        Silakan isi data pengguna baru di bawah ini.
+                        Silakan isi data pengguna di bawah ini.
                     </p>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
-                        {{-- Bagian Data Autentikasi --}}
-                        <div class="mb-4  rounded p-3">
-                            <h5 class="mb-3">Data Autentikasi</h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="username" class="form-label"><strong>Username</strong></label>
-                                    <input type="text" name="username" class="form-control" id="username"
-                                        placeholder="Username" value="{{ old('username') }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label"><strong>Email</strong></label>
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email"
-                                        value="{{ old('email') }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="password" class="form-label"><strong>Password</strong></label>
-                                    <input type="password" name="password" class="form-control" id="password"
-                                        placeholder="Password">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="role" class="form-label"><strong>Role</strong></label>
-                                    <select name="role" id="role" class="form-select">
-                                        <option value="">Pilih Role</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role }}" {{ old('role') == $role ? 'selected' : '' }}>
-                                                {{ ucfirst($role) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Bagian Data Profil --}}
                         <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label for="username" class="form-label"><strong>Username</strong></label>
+                                <input type="text" name="username" class="form-control" id="username"
+                                    placeholder="Username" value="{{ old('username') }}">
+                            </div>
                             <div class="col-md-6">
                                 <label for="name" class="form-label"><strong>Nama</strong></label>
                                 <input type="text" name="name" class="form-control" id="name" placeholder="Nama"
                                     value="{{ old('name') }}">
                             </div>
                             <div class="col-md-6">
-                                <label for="unit" class="form-label"><strong>Unit</strong></label>
-                                <select name="unit" id="unit" class="form-select">
-                                    <option value="">Pilih Unit</option>
-                                    @foreach ($unit as $u)
-                                        <option value="{{ $u->id }}" {{ old('unit') == $u->id ? 'selected' : '' }}>
-                                            {{ $u->Nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="email" class="form-label"><strong>Email</strong></label>
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Email"
+                                    value="{{ old('email') }}">
                             </div>
+
                             <div class="col-md-6">
-                                <label for="jabatan" class="form-label"><strong>Jabatan</strong></label>
-                                <input type="text" name="jabatan" class="form-control" id="jabatan" placeholder="Jabatan"
-                                    value="{{ old('jabatan') }}">
+                                <label for="password" class="form-label"><strong>Password</strong></label>
+                                <input type="password" name="password" class="form-control" id="password"
+                                    placeholder="Masukkan Password">
+                                <small class="text-muted">Wajib diisi</small>
                             </div>
                             <div class="col-md-6">
                                 <label for="nohp" class="form-label"><strong>No HP</strong></label>
-                                <input type="text" name="nohp" class="form-control" id="nohp" placeholder="Nomor HP"
-                                    value="{{ old('nohp') }}">
+                                <input type="text" name="nohp" class="form-control" id="nohp"
+                                    placeholder="Nomor HP" value="{{ old('nohp') }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="alamat" class="form-label"><strong>Alamat</strong></label>
-                                <input type="text" name="alamat" class="form-control" id="alamat" placeholder="Alamat"
-                                    value="{{ old('alamat') }}">
+                                <input type="text" name="alamat" class="form-control" id="alamat"
+                                    placeholder="Alamat" value="{{ old('alamat') }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="provinsi" class="form-label"><strong>Provinsi</strong></label>
                                 @php
-                                    $provinces = new App\Http\Controllers\DependentDropdownController;
+                                    $provinces = new App\Http\Controllers\DependentDropdownController();
                                     $provinces = $provinces->provinces();
                                 @endphp
                                 <select class="form-select" name="provinsi" id="provinsi">
@@ -160,24 +127,47 @@
                                     placeholder="Pekerjaan" value="{{ old('pekerjaan') }}">
                             </div>
                             <div class="col-md-6">
-                                <label for="status_perkawinan" class="form-label"><strong>Status Perkawinan</strong></label>
+                                <label for="status_perkawinan" class="form-label"><strong>Status
+                                        Perkawinan</strong></label>
                                 <select name="status_perkawinan" id="status_perkawinan" class="form-select">
                                     <option value="">Pilih Status</option>
-                                    <option value="Belum Menikah" {{ old('status_perkawinan') == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
+                                    <option value="Belum Menikah"
+                                        {{ old('status_perkawinan') == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah
+                                    </option>
                                     <option value="Menikah" {{ old('status_perkawinan') == 'Menikah' ? 'selected' : '' }}>
                                         Menikah</option>
-                                    <option value="Cerai" {{ old('status_perkawinan') == 'Cerai' ? 'selected' : '' }}>Cerai
+                                    <option value="Cerai" {{ old('status_perkawinan') == 'Cerai' ? 'selected' : '' }}>
+                                        Cerai
                                     </option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="ttd" class="form-label"><strong>TTD (Tanda Tangan)</strong></label>
-                                <input type="file" name="ttd" class="form-control" id="ttd">
+                                <label for="shift" class="form-label"><strong>Shift</strong></label>
+                                <select name="shift" id="shift" class="form-select">
+                                    <option value="">Pilih Shift</option>
+                                    @foreach ($shift as $s)
+                                        <option value="{{ $s->id }}"
+                                            {{ old('shift') == $s->id ? 'selected' : '' }}>
+                                            {{ $s->NamaShift }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="roles" class="form-label"><strong>Peran</strong></label>
+                                <select name="roles[]" id="roles" class="form-select" multiple>
+                                    @foreach ($roles as $key => $role)
+                                        <option value="{{ $key }}"
+                                            {{ collect(old('roles'))->contains($key) ? 'selected' : '' }}>
+                                            {{ $role }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-12 text-end mt-3">
                                 <a href="{{ route('users.index') }}" class="btn btn-secondary me-2"><i
                                         class="fa fa-arrow-left"></i> Kembali</a>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan
+                                    Akun</button>
                             </div>
                         </div>
                     </form>
@@ -189,31 +179,36 @@
 @push('js')
     <script>
         function onChangeSelect(url, id, name) {
-            // kirim request ajax untuk mendapatkan data dropdown dependent
             $.ajax({
                 url: url,
                 type: 'GET',
                 data: {
                     id: id
                 },
-                success: function (data) {
+                success: function(data) {
                     $('#' + name).empty();
                     $('#' + name).append('<option>==Pilih Salah Satu==</option>');
-                    $.each(data, function (key, value) {
+                    $.each(data, function(key, value) {
                         $('#' + name).append('<option value="' + key + '">' + value + '</option>');
                     });
                 }
             });
         }
-        $(function () {
-            $('#provinsi').on('change', function () {
-                onChangeSelect('{{ route("cities") }}', $(this).val(), 'kota');
+        $(function() {
+            $('#provinsi').on('change', function() {
+                onChangeSelect('{{ route('cities') }}', $(this).val(), 'kota');
+                $('#kota').empty().append('<option value="">==Pilih Salah Satu==</option>');
+                $('#kecamatan').empty().append('<option value="">==Pilih Salah Satu==</option>');
+                $('#desa').empty().append('<option value="">==Pilih Salah Satu==</option>');
             });
-            $('#kota').on('change', function () {
-                onChangeSelect('{{ route("districts") }}', $(this).val(), 'kecamatan');
+            $('#kota').on('change', function() {
+                onChangeSelect('{{ route('districts') }}', $(this).val(), 'kecamatan');
+                $('#kecamatan').empty().append('<option value="">==Pilih Salah Satu==</option>');
+                $('#desa').empty().append('<option value="">==Pilih Salah Satu==</option>');
             })
-            $('#kecamatan').on('change', function () {
-                onChangeSelect('{{ route("villages") }}', $(this).val(), 'desa');
+            $('#kecamatan').on('change', function() {
+                onChangeSelect('{{ route('villages') }}', $(this).val(), 'desa');
+                $('#desa').empty().append('<option value="">==Pilih Salah Satu==</option>');
             })
         });
     </script>

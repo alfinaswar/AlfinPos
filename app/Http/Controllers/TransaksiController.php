@@ -8,6 +8,7 @@ use App\Models\Produk;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -41,6 +42,7 @@ class TransaksiController extends Controller
                 ->addColumn('action', function ($row) {
                     return '
                     <a href="' . route('pos.edit', $row->id) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' . route('pos.show', $row->id) . '" class="btn btn-sm btn-info">Show</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-id="' . $row->id . '">Hapus</button>
                 ';
                 })
@@ -173,9 +175,21 @@ class TransaksiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaksi $transaksi)
+    public function show($id)
     {
-        //
+        $data = Transaksi::with('detailTransaksi.getProduk', 'NamaKasir')->find($id);
+        // dd($data);
+        return view('transaksi.show', compact('data'));
+    }
+
+    public function downloadPdf($id)
+    {
+        $data = Transaksi::with('detailTransaksi.getProduk', 'NamaKasir')->findOrFail($id);
+
+        $pdf = Pdf::loadView('transaksi.detail-pdf', compact('data'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('Transaksi_' . $data->Kode . '.pdf');
     }
 
     /**

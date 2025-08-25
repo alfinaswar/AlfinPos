@@ -6,15 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TransaksiDetail extends Model
+class MasterShift extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'transaksi_details';
+    protected $table = 'master_shifts';
     protected $guarded = ['id'];
-
-    public function getProduk()
-    {
-        return $this->hasOne(Produk::class, 'id', 'IdProduk');
-    }
 }

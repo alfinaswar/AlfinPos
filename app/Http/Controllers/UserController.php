@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\MasterShift;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Arr;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
-use Illuminate\Support\Arr;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -35,7 +36,8 @@ class UserController extends Controller
     public function create(): View
     {
         $roles = Role::pluck('name', 'name')->all();
-        return view('users.create', compact('roles'));
+        $shift = MasterShift::get();
+        return view('users.create', compact('roles', 'shift'));
     }
 
     /**
@@ -84,7 +86,8 @@ class UserController extends Controller
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')
+        return redirect()
+            ->route('users.index')
             ->with('success', 'User created successfully');
     }
 
@@ -111,8 +114,8 @@ class UserController extends Controller
         $user = User::with('getProvinsi', 'getKota', 'getKecamatan', 'getKelurahan')->find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-
-        return view('users.edit', compact('user', 'roles', 'userRole'));
+        $shift = MasterShift::get();
+        return view('users.edit', compact('user', 'roles', 'userRole', 'shift'));
     }
 
     /**
@@ -162,7 +165,8 @@ class UserController extends Controller
 
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')
+        return redirect()
+            ->route('users.index')
             ->with('success', 'User updated successfully');
     }
 
@@ -175,7 +179,8 @@ class UserController extends Controller
     public function destroy($id): RedirectResponse
     {
         User::find($id)->delete();
-        return redirect()->route('users.index')
+        return redirect()
+            ->route('users.index')
             ->with('success', 'User deleted successfully');
     }
 }

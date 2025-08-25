@@ -173,6 +173,15 @@
                             </ul>
                         </li>
                         <li class="submenu-open">
+                            <h6 class="submenu-hdr">HRM</h6>
+                            <ul>
+                                <li><a href="{{ route('shift.index') }}"><i
+                                            data-feather="clock"></i><span>Shift</span></a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="submenu-open">
                             <h6 class="submenu-hdr">Kelola Pengguna</h6>
                             <ul>
                                 <li><a href="{{ route('users.index') }}"><i
