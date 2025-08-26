@@ -10,6 +10,7 @@ use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StockAdjustController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,14 @@ Route::prefix('master-kategori-item')->group(function () {
     Route::GET('/edit/{id}', [KategoriItemController::class, 'edit'])->name('kategori.edit');
     Route::PUT('/update/{id}', [KategoriItemController::class, 'update'])->name('kategori.update');
     Route::delete('hapus/{id}', [KategoriItemController::class, 'destroy'])->name('kategori.destroy');
+});
+Route::prefix('adjust-stok')->group(function () {
+    Route::GET('/', [StockAdjustController::class, 'index'])->name('so.index');
+    Route::GET('/create', [StockAdjustController::class, 'create'])->name('so.create');
+    Route::POST('/simpan', [StockAdjustController::class, 'store'])->name('so.store');
+    Route::GET('/edit/{id}', [StockAdjustController::class, 'edit'])->name('so.edit');
+    Route::PUT('/update/{id}', [StockAdjustController::class, 'update'])->name('so.update');
+    Route::delete('hapus/{id}', [StockAdjustController::class, 'destroy'])->name('so.destroy');
 });
 Route::prefix('master-item')->group(function () {
     Route::GET('/', [ItemController::class, 'index'])->name('item.index');
