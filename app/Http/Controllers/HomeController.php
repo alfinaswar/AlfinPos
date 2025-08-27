@@ -42,7 +42,7 @@ class HomeController extends Controller
         $RiwayatTransaksi = Transaksi::latest()->get()->take(10);
 
         // Query produk terpopuler berdasarkan jumlah terjual (TotalQty)
-        $ProdukPopuler = TransaksiDetail::select('IdProduk')
+        $ProdukPopuler = TransaksiDetail::with('getProduk')->select('IdProduk')
             ->selectRaw('SUM(Qty) as total_terjual')
             ->groupBy('IdProduk')
             ->orderByDesc('total_terjual')

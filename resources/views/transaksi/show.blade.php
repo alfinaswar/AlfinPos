@@ -21,8 +21,8 @@
                                                     class="btn btn-added downloader mt-3 mb-3 m-sm-0">
                                                     <i data-feather="download" class="me-2"></i> Download
                                                 </a>
-                                                <a href="#" class="btn btn-added printer ms-2"
-                                                    onclick="window.print();"><i data-feather="printer" class="me-2"></i>
+                                                <a href="#" class="btn btn-added printer ms-2" onclick="window.print();"><i
+                                                        data-feather="printer" class="me-2"></i>
                                                     Cetak Struk</a>
                                             </div>
                                         </div>
@@ -47,7 +47,8 @@
                                         <div class="emp-details d-flex">
                                             <div class="emp-name-id">
                                                 <h6>Kasir : <span>{{ $data->NamaKasir->name ?? '-' }}</span></h6>
-                                                {{-- <h6>Outlet : <span>{{ $data->outlet->nama_outlet ?? '-' }}</span></h6> --}}
+                                                {{-- <h6>Outlet : <span>{{ $data->outlet->nama_outlet ?? '-' }}</span></h6>
+                                                --}}
                                             </div>
                                             <div class="emp-location-info">
                                                 <h6>Metode Pembayaran : <span>{{ $data->MetodePembayaran ?? 'Cash' }}</span>

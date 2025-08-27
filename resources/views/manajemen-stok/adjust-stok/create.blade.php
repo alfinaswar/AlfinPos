@@ -62,8 +62,8 @@
                         <thead class="table-light">
                             <tr>
                                 <th style="width: 25%">Produk</th>
-                                <th style="width: 15%">Stok Awal</th>
-                                <th style="width: 15%">Stok Akhir</th>
+                                <th style="width: 15%">Stok Saat Ini</th>
+                                <th style="width: 15%">Real Stok</th>
                                 <th style="width: 15%">Penyesuaian</th>
                                 <th style="width: 20%">Jenis</th>
                                 <th style="width: 10%">Aksi</th>
@@ -75,13 +75,15 @@
                                     <select name="IdProduk[]" class="form-control select2 produk-select" required>
                                         <option value="">Pilih Produk</option>
                                         @foreach($produk ?? [] as $p)
-                                            <option value="{{ $p->id }}">{{ $p->Nama }}</option>
+                                            <option value="{{ $p->id }}" data-stok="{{ $p->Stok }}">
+                                                {{ $p->Nama }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     <input type="number" name="StokAwal[]" class="form-control stok-awal-input" min="0"
-                                        value="0" required>
+                                        value="0" required readonly>
                                 </td>
                                 <td>
                                     <input type="number" name="StokAkhir[]" class="form-control stok-akhir-input" min="0"
@@ -133,11 +135,11 @@
     <script>
         let rowIdx = 1;
         const produkOptions = `
-                        <option value="">Pilih Produk</option>
-                        @foreach($produk ?? [] as $p)
-                            <option value="{{ $p->id }}">{{ $p->Nama }}</option>
-                        @endforeach
-                    `;
+                                                                                                                                                                                            <option value="">Pilih Produk</option>
+                                                                                                                                                                                            @foreach($produk ?? [] as $p)
+                                                                                                                                                                                                <option value="{{ $p->id }}" data-stok="{{ $p->Stok ?? 0 }}">{{ $p->Nama }}</option>
+                                                                                                                                                                                            @endforeach
+                                                                                                                                                                                        `;
 
         function formatPenyesuaian(val) {
             // Jika negatif, tampilkan - di depan angka, bukan di belakang
@@ -166,12 +168,15 @@
         }
 
         $(document).ready(function () {
-            // Inisialisasi select2 pada semua select2 yang sudah ada
             $('.select2').select2({
                 dropdownParent: $('#table-adjust-stok').parent()
             });
-
-            // Hitung penyesuaian saat stok awal/akhir berubah
+            $(document).on('change', '.produk-select', function () {
+                let stok = $(this).find(':selected').data('stok');
+                $(this).closest('tr').find('.stok-awal-input').val(stok);
+                let row = $(this).closest('tr');
+                hitungPenyesuaian(row);
+            });
             $('#table-adjust-stok').on('input', '.stok-awal-input, .stok-akhir-input', function () {
                 let row = $(this).closest('tr');
                 hitungPenyesuaian(row);
@@ -180,35 +185,35 @@
             // Tambah baris baru
             $('#btn-tambah-baris').click(function () {
                 let newRow = `
-                                <tr>
-                                    <td>
-                                        <select name="IdProduk[]" class="form-control select2 produk-select" required>
-                                            ${produkOptions}
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="StokAwal[]" class="form-control stok-awal-input" min="0" value="0" required>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="StokAkhir[]" class="form-control stok-akhir-input" min="0" value="0" required>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="Penyesuaian[]" class="form-control penyesuaian-input" value="0" readonly>
-                                    </td>
-                                    <td>
-                                        <select name="Jenis[]" class="form-control jenis-select" required>
-                                            <option value="">Pilih Jenis</option>
-                                            <option value="Penambahan">Penambahan</option>
-                                            <option value="Pengurangan">Pengurangan</option>
-                                        </select>
-                                    </td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-danger btn-sm btn-remove-row">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
+                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                        <td>
+                                                                                                                                                                                                            <select name="IdProduk[]" class="form-control select2 produk-select" required>
+                                                                                                                                                                                                                ${produkOptions}
+                                                                                                                                                                                                            </select>
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                        <td>
+                                                                                                                                                                                                            <input type="number" name="StokAwal[]" class="form-control stok-awal-input" min="0" value="0" readonly required>
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                        <td>
+                                                                                                                                                                                                            <input type="number" name="StokAkhir[]" class="form-control stok-akhir-input" min="0" value="0" required>
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                        <td>
+                                                                                                                                                                                                            <input type="text" name="Penyesuaian[]" class="form-control penyesuaian-input" value="0" readonly>
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                        <td>
+                                                                                                                                                                                                            <select name="Jenis[]" class="form-control jenis-select" required>
+                                                                                                                                                                                                                <option value="">Pilih Jenis</option>
+                                                                                                                                                                                                                <option value="Penambahan">Penambahan</option>
+                                                                                                                                                                                                                <option value="Pengurangan">Pengurangan</option>
+                                                                                                                                                                                                            </select>
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                        <td class="text-center">
+                                                                                                                                                                                                            <button type="button" class="btn btn-danger btn-sm btn-remove-row">
+                                                                                                                                                                                                                <i class="fa fa-trash"></i>
+                                                                                                                                                                                                            </button>
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                    </tr>
+                                                                                                                                                                                                `;
                 $('#table-adjust-stok tbody').append(newRow);
 
                 // Inisialisasi select2 pada select2 yang baru saja ditambahkan

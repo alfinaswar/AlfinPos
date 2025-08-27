@@ -63,6 +63,7 @@ Route::prefix('adjust-stok')->group(function () {
     Route::GET('/create', [StockAdjustController::class, 'create'])->name('so.create');
     Route::POST('/simpan', [StockAdjustController::class, 'store'])->name('so.store');
     Route::GET('/edit/{id}', [StockAdjustController::class, 'edit'])->name('so.edit');
+    Route::GET('/show/{id}', [StockAdjustController::class, 'show'])->name('so.show');
     Route::PUT('/update/{id}', [StockAdjustController::class, 'update'])->name('so.update');
     Route::delete('hapus/{id}', [StockAdjustController::class, 'destroy'])->name('so.destroy');
 });
