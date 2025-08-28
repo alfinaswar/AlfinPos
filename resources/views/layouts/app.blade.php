@@ -207,58 +207,99 @@
                     <li class="submenu-open">
                         <h6 class="submenu-hdr">Data Master</h6>
                         <ul>
-                            <li><a href="{{ route('kategori.index') }}"><i data-feather="package"></i><span>Kategori
-                                        Produk</span></a></li>
-                            <li><a href="{{ route('jenis.index') }}"><i data-feather="package"></i><span>Jenis
-                                        Produk</span></a></li>
-                            <li><a href="{{ route('produk.index') }}"><i
-                                        data-feather="clipboard"></i><span>Produk</span></a>
+                            <li>
+                                <a href="{{ route('kategori.index') }}">
+                                    <i data-feather="layers"></i>
+                                    <span>Kategori Produk</span>
+                                </a>
                             </li>
-
+                            <li>
+                                <a href="{{ route('jenis.index') }}">
+                                    <i data-feather="tag"></i>
+                                    <span>Jenis Produk</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('produk.index') }}">
+                                    <i data-feather="box"></i>
+                                    <span>Produk</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('shift.index') }}">
+                                    <i data-feather="clock"></i>
+                                    <span>Shift</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="submenu-open">
                         <h6 class="submenu-hdr">Transaksi</h6>
                         <ul>
-                            <li><a href="{{ route('pos.index') }}"><i
-                                        data-feather="package"></i><span>Transaksi</span></a></li>
+                            <li>
+                                <a href="{{ route('pos.index') }}">
+                                    <i data-feather="shopping-cart"></i>
+                                    <span>Transaksi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="submenu-open">
+                        <h6 class="submenu-hdr">Laporan</h6>
+                        <ul>
+                            <li>
+                                <a href="{{ route('laporan.index') }}">
+                                    <i data-feather="bar-chart-2"></i>
+                                    <span>Penjualan</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="submenu-open">
                         <h6 class="submenu-hdr">Stok</h6>
                         <ul>
-                            <li><a href="{{ route('bm.index') }}"><i data-feather="package"></i><span>Barang
-                                        Masuk</span></a></li>
-                            <li><a href="{{ route('so.index') }}"><i data-feather="package"></i><span>Adjust
-                                        Stok</span></a></li>
+                            <li>
+                                <a href="{{ route('bm.index') }}">
+                                    <i data-feather="log-in"></i>
+                                    <span>Barang Masuk</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('so.index') }}">
+                                    <i data-feather="refresh-cw"></i>
+                                    <span>Adjust Stok</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="submenu-open">
                         <h6 class="submenu-hdr">HRM</h6>
                         <ul>
-                            <li><a href="{{ route('shift.index') }}"><i data-feather="clock"></i><span>Shift</span></a>
+                            <li>
+                                <a href="{{ route('absen.index') }}">
+                                    <i data-feather="user-check"></i>
+                                    <span>Absensi</span>
+                                </a>
                             </li>
-
                         </ul>
                     </li>
                     <li class="submenu-open">
                         <h6 class="submenu-hdr">Kelola Pengguna</h6>
                         <ul>
-                            <li><a href="{{ route('users.index') }}"><i data-feather="user"></i><span>Akun</span></a>
+                            <li>
+                                <a href="{{ route('users.index') }}">
+                                    <i data-feather="users"></i>
+                                    <span>Akun</span>
+                                </a>
                             </li>
-                            <li><a href="{{ route('roles.index') }}"><i data-feather="shield"></i><span>Role</span></a>
+                            <li>
+                                <a href="{{ route('roles.index') }}">
+                                    <i data-feather="shield"></i>
+                                    <span>Role</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
-
-
-
-
-
-
-
-
-
                 </ul>
             </div>
         </div>

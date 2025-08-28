@@ -51,7 +51,7 @@
                                     <th>Tanggal</th>
                                     <th>Petugas</th>
                                     <th>Status</th>
-                                    <th>Approve At</th>
+                                    <th>Disetujui Pada</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>

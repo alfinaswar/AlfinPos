@@ -42,30 +42,7 @@
                     </p>
                 </div>
                 <div class="card-body">
-                    {{-- Filter Kategori dan Jenis jika diperlukan --}}
-                    {{-- <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="filterKategoriProduk" class="form-label"><strong>Filter Kategori
-                                    Item</strong></label>
-                            <select id="filterKategoriProduk" class="form-select select2">
-                                <option value="">-- Semua Kategori --</option>
-                                @foreach ($KategoriItem as $kategori)
-                                <option value="{{ $kategori->id }}">{{ $kategori->Nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="filterJenisProduk" class="form-label"><strong>Filter Jenis Item</strong></label>
-                            <select id="filterJenisProduk" class="form-select select2">
-                                <option value="">-- Semua Jenis --</option>
-                                {{-- @foreach ($JenisItem as $jenis)
-                                <option value="{{ $jenis->id }}">{{ $jenis->Nama }}</option>
-                                @endforeach --}}
-                            </select>
-                            {{--
-                        </div> --}}
-                        {{--
-                    </div> --}}
+
                     <div class="table-responsive">
                         <table class="table datanew cell-border compact stripe" id="produkTable" width="100%">
                             <thead>
@@ -75,13 +52,10 @@
                                     <th>Nama</th>
                                     <th>Kategori Item</th>
                                     <th>Jenis Item</th>
-
                                     <th>Harga Modal</th>
                                     <th>Harga Jual</th>
                                     <th>Stok</th>
-
                                     <th>Gambar</th>
-
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -97,11 +71,6 @@
 @push('js')
     <script>
         $(document).ready(function () {
-            // Jika ingin filter, aktifkan kode di bawah ini
-            // $('#filterKategoriProduk, #filterJenisProduk').on('change', function () {
-            //     $('#produkTable').DataTable().ajax.reload();
-            // });
-
             $('body').on('click', '.btn-delete', function () {
                 var id = $(this).data('id');
                 Swal.fire({
@@ -143,11 +112,7 @@
                     bDestroy: true,
                     ajax: {
                         url: "{{ route('produk.index') }}",
-                        // Jika ingin filter, aktifkan kode di bawah ini
-                        // data: function (d) {
-                        //     d.kategori_id = $('#filterKategoriProduk').val();
-                        //     d.jenis_id = $('#filterJenisProduk').val();
-                        // }
+
                     },
                     language: {
                         processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Memuat...</span>',
@@ -173,11 +138,15 @@
                         },
                         {
                             data: 'get_kategori.Nama',
-                            name: 'get_kategori.Nama'
+                            name: 'get_kategori.Nama',
+                            orderable: false,
+                            searchable: false
                         },
                         {
                             data: 'get_jenis.Nama',
-                            name: 'get_jenis.Nama'
+                            name: 'get_jenis.Nama',
+                            orderable: false,
+                            searchable: false
                         },
                         {
                             data: 'HargaModal',

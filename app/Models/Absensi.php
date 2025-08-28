@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StockAdjust extends Model
+class Absensi extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'stock_adjusts';
+    protected $table = 'absensis';
     protected $guarded = ['id'];
 
-    public function DetailSO()
+    public function getUser()
     {
-        return $this->hasMany(StockAjustDetail::class, 'IdSo', 'id');
+        return $this->hasOne(User::class, 'IdUser', 'id');
     }
 }

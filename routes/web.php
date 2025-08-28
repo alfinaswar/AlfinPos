@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DependentDropdownController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JenisItemController;
 use App\Http\Controllers\KategoriItemController;
+use App\Http\Controllers\LaporanPenjualan;
 use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
@@ -66,6 +68,8 @@ Route::prefix('adjust-stok')->group(function () {
     Route::GET('/show/{id}', [StockAdjustController::class, 'show'])->name('so.show');
     Route::PUT('/update/{id}', [StockAdjustController::class, 'update'])->name('so.update');
     Route::delete('hapus/{id}', [StockAdjustController::class, 'destroy'])->name('so.destroy');
+    Route::POST('/approve/{id}', [StockAdjustController::class, 'approve'])->name('so.approve');
+    Route::POST('/reject/{id}', [StockAdjustController::class, 'reject'])->name('so.reject');
 });
 Route::prefix('master-item')->group(function () {
     Route::GET('/', [ItemController::class, 'index'])->name('item.index');
@@ -108,6 +112,17 @@ Route::prefix('barang-masuk')->group(function () {
     Route::GET('/show/{id}', [BarangMasukController::class, 'show'])->name('bm.show');
     Route::PUT('/update/{id}', [BarangMasukController::class, 'update'])->name('bm.update');
     Route::delete('hapus/{id}', [BarangMasukController::class, 'destroy'])->name('bm.destroy');
+});
+Route::prefix('hrm')->group(function () {
+    Route::GET('/', [AbsensiController::class, 'index'])->name('absen.index');
+    Route::GET('/create', [AbsensiController::class, 'create'])->name('absen.create');
+    Route::POST('/simpan', [AbsensiController::class, 'store'])->name('absen.store');
+    Route::GET('/edit/{id}', [AbsensiController::class, 'edit'])->name('absen.edit');
+    Route::PUT('/update/{id}', [AbsensiController::class, 'update'])->name('absen.update');
+    Route::delete('hapus/{id}', [AbsensiController::class, 'destroy'])->name('absen.destroy');
+});
+Route::prefix('laporan')->group(function () {
+    Route::GET('/', [LaporanPenjualan::class, 'index'])->name('laporan.index');
 });
 Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');
