@@ -123,6 +123,7 @@ Route::prefix('hrm')->group(function () {
 });
 Route::prefix('laporan')->group(function () {
     Route::GET('/', [LaporanPenjualan::class, 'index'])->name('laporan.index');
+    Route::POST('/download', [LaporanPenjualan::class, 'store'])->name('laporan.store');
 });
 Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriItem;
 use App\Models\Produk;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,34 @@ class LaporanPenjualan extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $query = Transaksi::with('detailTransaksi.getProduk');
+        // dd($query);
+        if ($request->filled('produk')) {
+            $query->whereHas('detailTransaksi', function ($q) use ($request) {
+                $q->where('IdProduk', $request->produk);
+            });
+        }
+
+        if ($request->filled('kategori')) {
+            $query->whereHas('detailTransaksi.getProduk', function ($q) use ($request) {
+                $q->where('KategoriItem', $request->kategori);
+            });
+        }
+
+        if ($request->filled('karyawan')) {
+            $query->where('IdKasir', $request->karyawan);
+        }
+
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween('created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
+        } elseif ($request->filled('tanggal_awal')) {
+            $query->whereDate('created_at', '>=', $request->tanggal_awal);
+        } elseif ($request->filled('tanggal_akhir')) {
+            $query->whereDate('created_at', '<=', $request->tanggal_akhir);
+        }
+
+        $Transaksi = $query->get();
     }
 
     /**

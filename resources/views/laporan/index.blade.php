@@ -23,7 +23,8 @@
                     </p>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('laporan.index') }}" method="GET">
+                    <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label for="produk" class="form-label"><strong>Produk</strong></label>
