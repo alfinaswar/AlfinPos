@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiExport;
 use App\Models\KategoriItem;
 use App\Models\Produk;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanPenjualan extends Controller
 {
@@ -37,7 +39,7 @@ class LaporanPenjualan extends Controller
     {
         $data = $request->all();
         $query = Transaksi::with('detailTransaksi.getProduk');
-        // dd($query);
+
         if ($request->filled('produk')) {
             $query->whereHas('detailTransaksi', function ($q) use ($request) {
                 $q->where('IdProduk', $request->produk);
@@ -62,7 +64,28 @@ class LaporanPenjualan extends Controller
             $query->whereDate('created_at', '<=', $request->tanggal_akhir);
         }
 
-        $Transaksi = $query->get();
+        $transaksi = $query->get();
+
+        // 🔥 Flatten detail transaksi, lalu grouping berdasarkan IdProduk
+        $grouped = $transaksi
+            ->flatMap
+            ->detailTransaksi
+            ->groupBy('IdProduk')
+            ->map(function ($items) {
+                $produk = $items->first()->getProduk;
+                return [
+                    'IdProduk' => $items->first()->IdProduk,
+                    'NamaProduk' => $produk->Nama ?? '-',
+                    'HargaModal' => $produk->HargaModal ?? 0,
+                    'HargaJual' => $produk->HargaJual ?? 0,
+                    'TotalQty' => $items->sum('Qty'),
+                    'TotalJual' => $items->sum('Subtotal'),
+                    'Profit' => ($produk->HargaJual - $produk->HargaModal) * $items->sum('Qty'),
+                ];
+            })
+            ->values();
+
+        return Excel::download(new TransaksiExport($grouped), 'laporan_transaksi.xlsx');
     }
 
     /**

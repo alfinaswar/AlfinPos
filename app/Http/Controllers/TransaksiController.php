@@ -150,8 +150,21 @@ class TransaksiController extends Controller
                 ]);
             }
         }
+        // cetak struk
+        $struk = Transaksi::orderBy('id', 'desc')->first();
 
-        return response()->json(['success' => true, 'message' => 'Transaksi berhasil disimpan.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaksi berhasil disimpan.',
+            'url_struk' => route('pos.struk', $struk->id)
+        ]);
+    }
+
+    public function cetakStruk($id)
+    {
+        $transaksi = Transaksi::with('detailTransaksi.getProduk')->findOrFail($id);
+
+        return view('pos.struk', compact('transaksi'));
     }
 
     private function GenerateKodeTransaksi()

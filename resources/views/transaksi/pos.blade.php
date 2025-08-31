@@ -9,7 +9,7 @@
         content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
-    <title>Dreams Pos Admin Template</title>
+    <title>DreamPos</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('') }}assets/img/favicon.png">
@@ -83,7 +83,6 @@
                 <!-- Search -->
                 <li class="nav-item nav-searchinputs">
                     <div class="top-nav-search">
-
                         <a href="javascript:void(0);" class="responsive-search">
                             <i class="fa fa-search"></i>
                         </a>
@@ -114,253 +113,58 @@
                                     <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
                                     <ul class="customers">
                                         <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="{{ asset('') }}assets/img/profiles/avator1.jpg"
-                                                    alt="" class="img-fluid"></a>
+                                                    src="assets/img/profiles/avator1.jpg" alt=""
+                                                    class="img-fluid"></a>
                                         </li>
                                         <li><a href="javascript:void(0);">Jonita<img
-                                                    src="{{ asset('') }}assets/img/profiles/avator1.jpg"
-                                                    alt="" class="img-fluid"></a>
-                                        </li>
+                                                    src="assets/img/profiles/avatar-01.jpg" alt=""
+                                                    class="img-fluid"></a></li>
                                         <li><a href="javascript:void(0);">Aaron<img
-                                                    src="{{ asset('') }}assets/img/profiles/avator1.jpg"
-                                                    alt="" class="img-fluid"></a>
-                                        </li>
+                                                    src="assets/img/profiles/avatar-10.jpg" alt=""
+                                                    class="img-fluid"></a></li>
                                     </ul>
                                 </div>
                             </div>
-                            <!-- <a class="btn"  id="searchdiv"><img src="{{ asset('') }}assets/img/icons/search.svg" alt="img"></a> -->
                         </form>
                     </div>
                 </li>
                 <!-- /Search -->
 
-                <!-- Select Store -->
-                <li class="nav-item dropdown has-arrow main-drop select-store-dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link select-store"
-                        data-bs-toggle="dropdown">
-                        <span class="user-info">
-                            <span class="user-letter">
-                                <img src="{{ asset('') }}assets/img/store/store-01.png" alt="Store Logo"
-                                    class="img-fluid">
-                            </span>
-                            <span class="user-detail">
-                                <span class="user-name">Select Store</span>
-                            </span>
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/store/store-01.png" alt="Store Logo"
-                                class="img-fluid">
-                            Grocery Alpha
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/store/store-02.png" alt="Store Logo"
-                                class="img-fluid">
-                            Grocery Apex
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/store/store-03.png" alt="Store Logo"
-                                class="img-fluid">
-                            Grocery Bevy
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/store/store-04.png" alt="Store Logo"
-                                class="img-fluid">
-                            Grocery Eden
-                        </a>
-                    </div>
-                </li>
-                <!-- /Select Store -->
 
-                <!-- Flag -->
-                <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
-                        role="button">
-                        <img src="{{ asset('') }}assets/img/flags/us.png" alt="Language" class="img-fluid">
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0);" class="dropdown-item active">
-                            <img src="{{ asset('') }}assets/img/flags/us.png" alt="" height="16">
-                            English
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/flags/fr.png" alt="" height="16">
-                            French
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/flags/es.png" alt="" height="16">
-                            Spanish
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('') }}assets/img/flags/de.png" alt="" height="16">
-                            German
-                        </a>
-                    </div>
-                </li>
-                <!-- /Flag -->
 
-                <li class="nav-item nav-item-box">
-                    <a href="javascript:void(0);" id="btnFullscreen">
-                        <i data-feather="maximize"></i>
-                    </a>
-                </li>
-                <li class="nav-item nav-item-box">
-                    <a href="email.html">
-                        <i data-feather="mail"></i>
-                        <span class="badge rounded-pill">1</span>
-                    </a>
-                </li>
-                <!-- Notifications -->
-                <li class="nav-item dropdown nav-item-box">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                        <i data-feather="bell"></i><span class="badge rounded-pill">2</span>
-                    </a>
-                    <div class="dropdown-menu notifications">
-                        <div class="topnav-dropdown-header">
-                            <span class="notification-title">Notifications</span>
-                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-                        </div>
-                        <div class="noti-content">
-                            <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="media d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img alt=""
-                                                    src="{{ asset('') }}assets/img/profiles/avatar-02.jpg">
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">John Doe</span> added
-                                                    new task <span class="noti-title">Patient appointment
-                                                        booking</span>
-                                                </p>
-                                                <p class="noti-time"><span class="notification-time">4 mins ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="media d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img alt=""
-                                                    src="{{ asset('') }}assets/img/profiles/avatar-03.jpg">
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Tarah
-                                                        Shropshire</span>
-                                                    changed the task name <span class="noti-title">Appointment booking
-                                                        with payment gateway</span></p>
-                                                <p class="noti-time"><span class="notification-time">6 mins ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="media d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img alt=""
-                                                    src="{{ asset('') }}assets/img/profiles/avatar-06.jpg">
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Misty Tison</span>
-                                                    added <span class="noti-title">Domenic Houston</span> and <span
-                                                        class="noti-title">Claire Mapes</span> to project <span
-                                                        class="noti-title">Doctor available module</span></p>
-                                                <p class="noti-time"><span class="notification-time">8 mins ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="media d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img alt=""
-                                                    src="{{ asset('') }}assets/img/profiles/avatar-17.jpg">
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Rolland Webber</span>
-                                                    completed task <span class="noti-title">Patient and Doctor video
-                                                        conferencing</span></p>
-                                                <p class="noti-time"><span class="notification-time">12 mins
-                                                        ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="media d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img alt=""
-                                                    src="{{ asset('') }}assets/img/profiles/avatar-13.jpg">
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Bernardo
-                                                        Galaviz</span>
-                                                    added new task <span class="noti-title">Private chat module</span>
-                                                </p>
-                                                <p class="noti-time"><span class="notification-time">2 days ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="topnav-dropdown-footer">
-                            <a href="activities.html">View all Notifications</a>
-                        </div>
-                    </div>
-                </li>
                 <!-- /Notifications -->
 
-                <li class="nav-item nav-item-box">
-                    <a href="general-settings.html"><i data-feather="settings"></i></a>
+                <li class="nav-item d-flex align-items-center ms-2">
+                    <a href="{{ route('home') }}"
+                        class="btn btn-primary shadow-sm px-4 py-2 d-flex align-items-center gap-2" title="Buka POS"
+                        style="border-radius: 30px; font-weight: 600; font-size: 1rem;">
+
+                        <span class="d-none d-md-inline">Dashboard</span>
+                    </a>
                 </li>
-                <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
+                <li class="nav-item">
+                    <a href="" class="nav-link userset" title="Edit Profil">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="{{ asset('') }}assets/img/profiles/avator1.jpg" alt=""
-                                    class="img-fluid">
+                                <span class="user-icon">
+                                    <i class="fas fa-user-circle fa-2x"></i>
+                                </span>
                             </span>
                             <span class="user-detail">
-                                <span class="user-name">John Smilga</span>
+                                <span class="user-name">{{ auth()->user()->name ?? 'Pengguna' }}</span>
                                 <span class="user-role">Super Admin</span>
                             </span>
                         </span>
                     </a>
-                    <div class="dropdown-menu menu-drop-user">
-                        <div class="profilename">
-                            <div class="profileset">
-                                <span class="user-img"><img src="{{ asset('') }}assets/img/profiles/avator1.jpg"
-                                        alt="">
-                                    <span class="status online"></span></span>
-                                <div class="profilesets">
-                                    <h6>John Smilga</h6>
-                                    <h5>Super Admin</h5>
-                                </div>
-                            </div>
-                            <hr class="m-0">
-                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i>
-                                My
-                                Profile</a>
-                            <a class="dropdown-item" href="general-settings.html"><i class="me-2"
-                                    data-feather="settings"></i>Settings</a>
-                            <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="signin.html"><img
-                                    src="{{ asset('') }}assets/img/icons/log-out.svg" class="me-2"
-                                    alt="img">Logout</a>
-                        </div>
-                    </div>
+                </li>
+                <li class="nav-item">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    <button class="btn btn-danger" style="margin-left: 10px;" title="Keluar"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt me-2" style="width: 18px; height: 18px;"></i>Keluar
+                    </button>
                 </li>
             </ul>
             <!-- /Header Menu -->
@@ -731,6 +535,11 @@
                                 clearAllProducts();
                                 $('#total-items').text(0);
                                 $('#total-amount').text('Rp 0');
+                                if (response.url_struk) {
+                                    window.open(response.url_struk, '_blank');
+                                }
+                                location.reload();
+
                             });
                         } else {
                             Swal.fire({
@@ -953,53 +762,6 @@
             originalUpdateCounter();
             updateTotalDisplay();
         };
-
-        function loadDraftList() {
-            $.ajax({
-                url: '/pos/draft-list',
-                type: 'GET',
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    if (response.success) {
-                        let draftListHTML = '';
-
-                        if (response.drafts.length > 0) {
-                            response.drafts.forEach(function(draft) {
-                                draftListHTML += `
-                            <div class="card mb-2">
-                                <div class="card-body p-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-title mb-1">Draft #${draft.id}</h6>
-                                            <small class="text-muted">
-                                                ${draft.total_items} items - Rp ${parseInt(draft.total_amount).toLocaleString('id-ID')}
-                                                <br>
-                                                ${new Date(draft.created_at).toLocaleString('id-ID')}
-                                            </small>
-                                        </div>
-                                        <button class="btn btn-sm btn-primary load-draft-btn" data-draft-id="${draft.id}">
-                                            Load
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                            });
-                        } else {
-                            draftListHTML = '<p class="text-center text-muted">Tidak ada draft tersimpan</p>';
-                        }
-
-                        $('#draft-list').html(draftListHTML);
-                    }
-                },
-                error: function() {
-                    $('#draft-list').html('<p class="text-center text-danger">Gagal memuat draft</p>');
-                }
-            });
-        }
         $(document).ready(function() {
             // Tombol untuk membuka modal draft
             $(document).on('click', '#load-draft-btn', function() {

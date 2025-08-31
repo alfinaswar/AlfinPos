@@ -48,6 +48,7 @@ Route::prefix('transaksi')->group(function () {
     Route::POST('/simpan', [TransaksiController::class, 'store'])->name('pos.store');
     Route::GET('/edit/{id}', [TransaksiController::class, 'edit'])->name('pos.edit');
     Route::GET('/show/{id}', [TransaksiController::class, 'show'])->name('pos.show');
+    Route::get('/pos/struk/{id}', [TransaksiController::class, 'cetakStruk'])->name('pos.struk');
     Route::get('/transaksi/{id}/download', [TransaksiController::class, 'downloadPdf'])->name('pos.download');
     Route::PUT('/update/{id}', [TransaksiController::class, 'update'])->name('pos.update');
     Route::delete('hapus/{id}', [TransaksiController::class, 'destroy'])->name('pos.destroy');

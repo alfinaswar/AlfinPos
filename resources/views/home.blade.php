@@ -21,22 +21,7 @@
                     <i data-feather="clock" class="feather-14 ms-1"></i>
                 </div>
             </div>
-            <script>
-                function updateTanggalJam() {
-                    const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-                    const bulan = [
-                        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                    ];
-                    const now = new Date();
-                    const tanggal = hari[now.getDay()] + ', ' + now.getDate() + ' ' + bulan[now.getMonth()] + ' ' + now.getFullYear();
-                    const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                    document.getElementById('tanggal-hari-ini').textContent = tanggal;
-                    document.getElementById('jam-hari-ini').textContent = jam;
-                }
-                updateTanggalJam();
-                setInterval(updateTanggalJam, 1000);
-            </script>
+
         </div>
 
         <div class="row sales-cards">
@@ -44,11 +29,13 @@
                 <div class="card d-flex align-items-center justify-content-between default-cover mb-4">
                     <div>
                         <h6>Total Pendapatan Minggu Ini</h6>
-                        <h3>Rp.<span class="counters"
-                                data-count="{{$totalPendapatanMingguIni}}">{{ 'Rp ' . number_format($totalPendapatanMingguIni, 0, ',', '.') }}</span>
+                        <h3>Rp.<span class="counters" data-count="{{ $totalPendapatanMingguIni }}">
+                                {{ 'Rp ' . number_format($totalPendapatanMingguIni, 0, ',', '.') }}
+                            </span>
                         </h3>
                         <p class="sales-range"><span class="text-success"><i data-feather="chevron-up"
-                                    class="feather-16"></i>{{$persentaseKenaikanMingguIni}}&nbsp;</span>increase compare to
+                                    class="feather-16"></i>{{ $persentaseKenaikanMingguIni }}&nbsp;</span>increase compare
+                            to
                             last week</p>
                     </div>
                     <img src="assets/img/icons/weekly-earning.svg" alt="img">
@@ -57,7 +44,7 @@
             <div class="col-xl-3 col-sm-6 col-12">
                 <div class="card color-info bg-primary mb-4">
                     <img src="assets/img/icons/total-sales.svg" alt="img">
-                    <h3 class="counters" data-count="{{$totalTransaksiHariIni}}">{{$totalTransaksiHariIni}}</h3>
+                    <h3 class="counters" data-count="{{ $totalTransaksiHariIni }}">{{ $totalTransaksiHariIni }}</h3>
                     <p>Total Transaksi Hari Ini</p>
                     <i data-feather="rotate-ccw" class="feather-16" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="Refresh"></i>
@@ -66,7 +53,7 @@
             <div class="col-xl-3 col-sm-6 col-12">
                 <div class="card color-info bg-secondary mb-4">
                     <img src="assets/img/icons/purchased-earnings.svg" alt="img">
-                    <h3 class="counters" data-count="{{$totalPendapatanHariIni}}">
+                    <h3 class="counters" data-count="{{ $totalPendapatanHariIni }}">
                         {{ 'Rp ' . number_format($totalPendapatanHariIni, 0, ',', '.') }}
                     </h3>
                     <p>Total Pendapatan Hari Ini</p>
@@ -81,7 +68,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title mb-0">Riwayat Transaksi</h4>
                         <div class="dropdown">
-                            <a href="{{route('pos.index')}}" class="view-all d-flex align-items-center">
+                            <a href="{{ route('pos.index') }}" class="view-all d-flex align-items-center">
                                 Lihat Semua Transaksi<span class="ps-2 d-flex align-items-center"><i
                                         data-feather="arrow-right" class="feather-16"></i></span>
                             </a>
@@ -102,22 +89,30 @@
                                 <tbody>
                                     @forelse ($RiwayatTransaksi as $key => $rt)
                                         <tr>
-                                            <td>{{$key + 1}}</td>
+                                            <td>{{ $key + 1 }}</td>
                                             <td>
-                                                {{$rt->Kode}}
+                                                <a class="text-info" href="{{ route('pos.show', $rt->id) }}">
+                                                    {{ $rt->Kode }}
+                                                </a>
                                             </td>
                                             <td>
-                                                {{$rt->Tanggal}}
+                                                {{ $rt->Tanggal }}
                                             </td>
                                             @php
                                                 $status = $rt->Status ?? 'Pending';
-                                                $badgeClass = [
-                                                    'Pending' => 'badge background-less border-warning text-warning',
-                                                    'Berhasil' => 'badge background-less border-success text-success',
-                                                    'Dibatalkan' => 'badge background-less border-danger text-danger',
-                                                    'Refund Sebagian' => 'badge background-less border-info text-info',
-                                                    'Refund Penuh' => 'badge background-less border-secondary text-secondary',
-                                                ][$status] ?? 'badge background-less border-secondary';
+                                                $badgeClass =
+                                                    [
+                                                        'Pending' =>
+                                                            'badge background-less border-warning text-warning',
+                                                        'Berhasil' =>
+                                                            'badge background-less border-success text-success',
+                                                        'Dibatalkan' =>
+                                                            'badge background-less border-danger text-danger',
+                                                        'Refund Sebagian' =>
+                                                            'badge background-less border-info text-info',
+                                                        'Refund Penuh' =>
+                                                            'badge background-less border-secondary text-secondary',
+                                                    ][$status] ?? 'badge background-less border-secondary';
                                             @endphp
                                             <td><span class="{{ $badgeClass }}">{{ $status }}</span></td>
                                             <td>{{ 'Rp ' . number_format($rt->TotalAkhir, 0, ',', '.') }}</td>
@@ -172,3 +167,26 @@
     </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        function updateTanggalJam() {
+            const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const bulan = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            const now = new Date();
+            const tanggal = hari[now.getDay()] + ', ' + now.getDate() + ' ' + bulan[now.getMonth()] + ' ' + now
+                .getFullYear();
+            const jam = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('tanggal-hari-ini').textContent = tanggal;
+            document.getElementById('jam-hari-ini').textContent = jam;
+        }
+        updateTanggalJam();
+        setInterval(updateTanggalJam, 1000);
+    </script>
+@endpush

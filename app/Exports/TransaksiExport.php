@@ -3,15 +3,22 @@
 namespace App\Exports;
 
 use App\Models\Transaksi;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class TransaksiExport implements FromCollection
+class TransaksiExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    protected $grouped;
+
+    public function __construct($grouped)
     {
-        return Transaksi::all();
+        $this->grouped = $grouped;
+    }
+
+    public function view(): View
+    {
+        return view('laporan.excel.index', [
+            'grouped' => $this->grouped
+        ]);
     }
 }

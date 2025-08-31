@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Produk extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $table = 'produks';
     protected $guarded = ['id'];
 
@@ -16,6 +17,7 @@ class Produk extends Model
     {
         return $this->belongsTo(KategoriItem::class, 'KategoriItem', 'id');
     }
+
     public function getJenis()
     {
         return $this->belongsTo(JenisItem::class, 'JenisItem', 'id');

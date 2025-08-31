@@ -105,7 +105,8 @@
                                     <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
                                     <ul class="customers">
                                         <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="assets/img/profiles/avator1.jpg" alt="" class="img-fluid"></a>
+                                                    src="assets/img/profiles/avator1.jpg" alt=""
+                                                    class="img-fluid"></a>
                                         </li>
                                         <li><a href="javascript:void(0);">Jonita<img
                                                     src="assets/img/profiles/avatar-01.jpg" alt=""
@@ -197,7 +198,7 @@
                         <h6 class="submenu-hdr">Main</h6>
                         <ul>
                             <li>
-                                <a href="{{route('home')}}">
+                                <a href="{{ route('home') }}">
                                     <i data-feather="home"></i>
                                     <span>Dashboard</span>
                                 </a>
@@ -723,7 +724,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>App Settings</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>App Settings</span><span
+                                    class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="invoice-settings.html">Invoice</a></li>
                                 <li><a href="printer-settings.html">Printer</a></li>
@@ -961,7 +963,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>Primary Icons</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>Primary Icons</span><span
+                                    class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
                                 <li><a href="icon-feather.html">Feather Icons</a></li>
@@ -1021,7 +1024,8 @@
                     </ul>
                 </li>
                 <li class="submenu">
-                    <a href="javascript:void(0);" class="active subdrop"><i data-feather="user"></i><span>Profile</span>
+                    <a href="javascript:void(0);" class="active subdrop"><i
+                            data-feather="user"></i><span>Profile</span>
                         <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="profile.html"><span>Profile</span></a></li>
@@ -1184,7 +1188,8 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>App Settings</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>App Settings</span><span
+                                    class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="invoice-settings.html">Invoice</a></li>
                                 <li><a href="printer-settings.html">Printer</a></li>
@@ -1255,17 +1260,7 @@
         </div>
     </div>
     </div>
-    <!-- /Main Wrapper -->
-    <div class="customizer-links" id="setdata">
-        <ul class="sticky-sidebar">
-            <li class="sidebar-icons">
-                <a href="#" class="navigation-add" data-bs-toggle="tooltip" data-bs-placement="left"
-                    data-bs-original-title="Theme">
-                    <i data-feather="settings" class="feather-five"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
+
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
