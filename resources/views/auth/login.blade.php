@@ -9,7 +9,7 @@
         content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
-    <title>Login - Pos admin template</title>
+    <title>Login - Lumina Kasir</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('') }}assets/img/favicon.png">
@@ -46,7 +46,7 @@
 
                             <div class="login-userheading">
                                 <h3>Masuk</h3>
-                                <h4>Akses aplikasi eLaporDinas menggunakan email dan kata sandi Anda.</h4>
+                                <h4>Akses aplikasi Lumina Kasir menggunakan email dan kata sandi Anda.</h4>
                             </div>
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -68,7 +68,8 @@
                             <div class="form-login">
                                 <label for="password">Kata Sandi</label>
                                 <div class="pass-group">
-                                    <input type="password" placeholder="Kata Sandi" name="password" id="password" class="pass-input" required>
+                                    <input type="password" placeholder="Kata Sandi" name="password" id="password"
+                                        class="pass-input" required>
                                     <span class="fas toggle-password fa-eye-slash"></span>
                                 </div>
                             </div>
