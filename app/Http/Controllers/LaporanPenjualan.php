@@ -35,58 +35,115 @@ class LaporanPenjualan extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     $query = Produk::with([
+    //         'getPenjualan' => function ($q) use ($request) {
+    //             if ($request->filled('karyawan')) {
+    //                 $q->where('IdKasir', $request->karyawan);
+    //             }
+    //             if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+    //                 $q->whereBetween('created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
+    //             } elseif ($request->filled('tanggal_awal')) {
+    //                 $q->whereDate('created_at', '>=', $request->tanggal_awal);
+    //             } elseif ($request->filled('tanggal_akhir')) {
+    //                 $q->whereDate('created_at', '<=', $request->tanggal_akhir);
+    //             }
+    //         }
+    //     ]);
+
+    //     if ($request->filled('produk')) {
+    //         $query->where('id', $request->produk);
+    //     }
+
+    //     if ($request->filled('kategori')) {
+    //         $query->where('KategoriItem', $request->kategori);
+    //     }
+
+    //     $produk = $query->get();
+
+    //     $transaksi = $produk->map(function ($p) {
+    //         $qty = $p->getPenjualan->sum('Qty');
+    //         $total = $p->getPenjualan->sum(function ($penj) {
+    //             return $penj->Qty * $penj->HargaSatuan;
+    //         });
+    //         $profit = $p->getPenjualan->sum(function ($penj) {
+    //             return ($penj->HargaSatuan - $penj->HargaModal) * $penj->Qty;
+    //         });
+
+    //         return [
+    //             'Nama' => $p->Nama,
+    //             'HargaModal' => $p->HargaModal,
+    //             'HargaJual' => $p->HargaJual,
+    //             'QtyPenjualan' => $qty,
+    //             'Total' => $total,
+    //             'Profit' => $profit,
+    //         ];
+    //     });
+
+    //     return Excel::download(new TransaksiExport($transaksi), 'laporan_transaksi.xlsx');
+    // }
+
     public function store(Request $request)
     {
-        $data = $request->all();
-        $query = Transaksi::with('detailTransaksi.getProduk');
+        $query = Produk::with([
+            'getPenjualan' => function ($q) use ($request) {
+                if ($request->filled('karyawan')) {
+                    $q->where('IdKasir', $request->karyawan);
+                }
+                if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+                    $q->whereBetween('created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
+                } elseif ($request->filled('tanggal_awal')) {
+                    $q->whereDate('created_at', '>=', $request->tanggal_awal);
+                } elseif ($request->filled('tanggal_akhir')) {
+                    $q->whereDate('created_at', '<=', $request->tanggal_akhir);
+                }
+            }
+        ]);
 
         if ($request->filled('produk')) {
-            $query->whereHas('detailTransaksi', function ($q) use ($request) {
-                $q->where('IdProduk', $request->produk);
-            });
+            $query->where('id', $request->produk);
         }
 
         if ($request->filled('kategori')) {
-            $query->whereHas('detailTransaksi.getProduk', function ($q) use ($request) {
-                $q->where('KategoriItem', $request->kategori);
-            });
+            $query->where('KategoriItem', $request->kategori);
         }
 
-        if ($request->filled('karyawan')) {
-            $query->where('IdKasir', $request->karyawan);
-        }
+        $produk = $query->get();
 
-        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
-            $query->whereBetween('created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
-        } elseif ($request->filled('tanggal_awal')) {
-            $query->whereDate('created_at', '>=', $request->tanggal_awal);
-        } elseif ($request->filled('tanggal_akhir')) {
-            $query->whereDate('created_at', '<=', $request->tanggal_akhir);
-        }
+        // siapkan data pivot per produk + tanggal
+        $transaksi = [];
+        $tanggalList = collect();
 
-        $transaksi = $query->get();
+        foreach ($produk as $p) {
+            $grouped = $p->getPenjualan
+                ->groupBy(fn($penj) => \Carbon\Carbon::parse($penj->created_at)->format('Y-m-d'));
 
-        // 🔥 Flatten detail transaksi, lalu grouping berdasarkan IdProduk
-        $grouped = $transaksi
-            ->flatMap
-            ->detailTransaksi
-            ->groupBy('IdProduk')
-            ->map(function ($items) {
-                $produk = $items->first()->getProduk;
-                return [
-                    'IdProduk' => $items->first()->IdProduk,
-                    'NamaProduk' => $produk->Nama ?? '-',
-                    'HargaModal' => $produk->HargaModal ?? 0,
-                    'HargaJual' => $produk->HargaJual ?? 0,
-                    'TotalQty' => $items->sum('Qty'),
-                    'TotalJual' => $items->sum('Subtotal'),
-                    'Profit' => ($produk->HargaJual - $produk->HargaModal) * $items->sum('Qty'),
+            $row = [
+                'Nama' => $p->Nama,
+                'HargaModal' => $p->HargaModal,
+                'HargaJual' => $p->HargaJual,
+                'Hari' => []
+            ];
+
+            foreach ($grouped as $tanggal => $list) {
+                $row['Hari'][$tanggal] = [
+                    'QtyPenjualan' => $list->sum('Qty'),
+                    'Total' => $list->sum(fn($penj) => $penj->Qty * $penj->HargaSatuan),
+                    'Profit' => $list->sum(fn($penj) => ($penj->HargaSatuan - $penj->HargaModal) * $penj->Qty),
                 ];
-            })
-            ->values();
+                $tanggalList->push($tanggal);
+            }
 
-        return Excel::download(new TransaksiExport($grouped), 'laporan_transaksi.xlsx');
+            $transaksi[] = $row;
+        }
+
+        $tanggalList = $tanggalList->unique()->sort()->values();
+
+        return Excel::download(new TransaksiExport($transaksi, $tanggalList), 'laporan_transaksi_perhari.xlsx');
     }
+
+
 
     /**
      * Display the specified resource.

@@ -21,18 +21,13 @@ class TransaksiController extends Controller
     {
         if ($request->ajax()) {
             $data = Transaksi::with('NamaKasir')->latest();
-
-            // 🔎 Filter Kasir
             if ($request->kasir) {
                 $data->where('IdKasir', $request->kasir);
             }
 
-            // 🔎 Filter Tanggal
             if ($request->start_date && $request->end_date) {
                 $data->whereBetween('Tanggal', [$request->start_date, $request->end_date]);
             }
-
-            // 🔎 Filter Status
             if ($request->status) {
                 $data->where('status_transaksi', $request->status);
             }
@@ -94,13 +89,13 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        // dd($data);
         $subtotal = 0;
         if (isset($data['products']) && is_array($data['products'])) {
             foreach ($data['products'] as $product) {
                 $qty = isset($product['quantity']) ? (int) $product['quantity'] : 0;
                 $harga = isset($product['price']) ? (int) $product['price'] : 0;
                 $subtotal += $qty * $harga;
-
                 $produk = Produk::find($product['id']);
                 if ($produk) {
                     $produk->Stok -= $qty;
@@ -115,7 +110,7 @@ class TransaksiController extends Controller
         Transaksi::create([
             'Kode' => $this->GenerateKodeTransaksi(),
             'Tanggal' => now(),
-            'IdKasir' => auth()->user()->id,
+            'IdKasir' => auth()->user()->id ?? 1,
             'IdOutlet' => null,
             'Subtotal' => $subtotal,
             'TotalDiskon' => null,
@@ -135,17 +130,21 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::orderBy('id', 'desc')->first();
         if ($transaksi) {
             $transaksiId = $transaksi->id;
+
             foreach ($data['products'] as $product) {
+                $produk = Produk::find($product['id']);
                 TransaksiDetail::create([
                     'IdTransaksi' => $transaksiId,
                     'IdProduk' => $product['id'],
                     'Qty' => (int) $product['quantity'],
                     'HargaSatuan' => (int) $product['price'],
+                    'HargaModal' => $produk ? (int) $produk->HargaModal : 0,
+                    'HargaGrosir' => isset($product['HargaGrosir']) ? (int) $product['HargaGrosir'] : null,
                     'Subtotal' => (int) $product['price'] * (int) $product['quantity'],
                     'TipeDiskon' => null,
                     'Diskon' => null,
                     'TotalAkhir' => (int) $product['price'] * (int) $product['quantity'],
-                    'IdKasir' => auth()->user()->id,
+                    'IdKasir' => auth()->user()->id ?? 1,
                     'Shift' => null,
                 ]);
             }

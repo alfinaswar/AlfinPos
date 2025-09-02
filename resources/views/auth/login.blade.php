@@ -41,7 +41,7 @@
                         @csrf
                         <div class="login-userset">
                             <div class="login-logo logo-normal">
-                                <img src="{{ asset('assets/img/logo.png') }}" alt="img">
+                                <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="img">
                             </div>
 
                             <div class="login-userheading">
@@ -61,14 +61,14 @@
                                 <label for="email">Alamat Email</label>
                                 <div class="form-addons">
                                     <input type="email" name="email" id="email" class="form-control"
-                                        value="{{ old('email') }}" required autofocus>
+                                        value="{{ old('email') }}" placeholder="Email" required autofocus>
                                     <img src="{{ asset('') }}assets/img/icons/mail.svg" alt="img">
                                 </div>
                             </div>
                             <div class="form-login">
                                 <label for="password">Kata Sandi</label>
                                 <div class="pass-group">
-                                    <input type="password" name="password" id="password" class="pass-input" required>
+                                    <input type="password" placeholder="Kata Sandi" name="password" id="password" class="pass-input" required>
                                     <span class="fas toggle-password fa-eye-slash"></span>
                                 </div>
                             </div>

@@ -47,13 +47,13 @@
             <!-- Logo -->
             <div class="header-left active">
                 <a href="index.html" class="logo logo-normal">
-                    <img src="{{ asset('') }}assets/img/logo.png" alt="">
+                    <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
                 <a href="index.html" class="logo logo-white">
-                    <img src="{{ asset('') }}assets/img/logo-white.png" alt="">
+                    <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
                 <a href="index.html" class="logo-small">
-                    <img src="{{ asset('') }}assets/img/logo-small.png" alt="">
+                    <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
                 <a id="toggle_btn" href="javascript:void(0);">
                     <i data-feather="chevrons-left" class="feather-16"></i>
@@ -105,8 +105,7 @@
                                     <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
                                     <ul class="customers">
                                         <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="assets/img/profiles/avator1.jpg" alt=""
-                                                    class="img-fluid"></a>
+                                                    src="assets/img/profiles/avator1.jpg" alt="" class="img-fluid"></a>
                                         </li>
                                         <li><a href="javascript:void(0);">Jonita<img
                                                     src="assets/img/profiles/avatar-01.jpg" alt=""
@@ -724,8 +723,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>App Settings</span><span
-                                    class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>App Settings</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="invoice-settings.html">Invoice</a></li>
                                 <li><a href="printer-settings.html">Printer</a></li>
@@ -963,8 +961,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>Primary Icons</span><span
-                                    class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>Primary Icons</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
                                 <li><a href="icon-feather.html">Feather Icons</a></li>
@@ -1024,8 +1021,7 @@
                     </ul>
                 </li>
                 <li class="submenu">
-                    <a href="javascript:void(0);" class="active subdrop"><i
-                            data-feather="user"></i><span>Profile</span>
+                    <a href="javascript:void(0);" class="active subdrop"><i data-feather="user"></i><span>Profile</span>
                         <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="profile.html"><span>Profile</span></a></li>
@@ -1188,8 +1184,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>App Settings</span><span
-                                    class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>App Settings</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="invoice-settings.html">Invoice</a></li>
                                 <li><a href="printer-settings.html">Printer</a></li>

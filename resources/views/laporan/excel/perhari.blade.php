@@ -22,15 +22,15 @@
             <tr>
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $row['Nama'] }}</td>
-                <td>{{ $row['HargaModal'] }}</td>
-                <td>{{ $row['HargaJual'] }}</td>
+                <td>{{ number_format($row['HargaModal'], 0, ',', '.') }}</td>
+                <td>{{ number_format($row['HargaJual'], 0, ',', '.') }}</td>
                 @foreach ($tanggalList as $tgl)
                     @php
                         $hari = $row['Hari'][$tgl] ?? ['QtyPenjualan' => 0, 'Total' => 0, 'Profit' => 0];
                     @endphp
                     <td>{{ $hari['QtyPenjualan'] }}</td>
-                    <td>{{ $hari['Total'] }}</td>
-                    <td>{{ $hari['Profit'] }}</td>
+                    <td>{{ number_format($hari['Total'], 0, ',', '.') }}</td>
+                    <td>{{ number_format($hari['Profit'], 0, ',', '.') }}</td>
                 @endforeach
             </tr>
         @endforeach
