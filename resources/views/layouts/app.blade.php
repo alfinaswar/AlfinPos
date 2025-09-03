@@ -231,6 +231,18 @@
                                     <span>Shift</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('satuan.index') }}">
+                                    <i data-feather="grid"></i>
+                                    <span>Master Satuan</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('konversi-satuan.index') }}">
+                                    <i data-feather="shuffle"></i>
+                                    <span>Konversi Satuan</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="submenu-open">

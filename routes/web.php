@@ -7,7 +7,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JenisItemController;
 use App\Http\Controllers\KategoriItemController;
+use App\Http\Controllers\KonversiItemController;
 use App\Http\Controllers\LaporanPenjualan;
+use App\Http\Controllers\MasterSatuanController;
 use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
@@ -95,6 +97,22 @@ Route::prefix('jenis-item')->group(function () {
     Route::GET('/edit/{id}', [JenisItemController::class, 'edit'])->name('jenis.edit');
     Route::PUT('/update/{id}', [JenisItemController::class, 'update'])->name('jenis.update');
     Route::delete('hapus/{id}', [JenisItemController::class, 'destroy'])->name('jenis.destroy');
+});
+Route::prefix('satuan-item')->group(function () {
+    Route::GET('/', [MasterSatuanController::class, 'index'])->name('satuan.index');
+    Route::GET('/create', [MasterSatuanController::class, 'create'])->name('satuan.create');
+    Route::POST('/simpan', [MasterSatuanController::class, 'store'])->name('satuan.store');
+    Route::GET('/edit/{id}', [MasterSatuanController::class, 'edit'])->name('satuan.edit');
+    Route::PUT('/update/{id}', [MasterSatuanController::class, 'update'])->name('satuan.update');
+    Route::delete('hapus/{id}', [MasterSatuanController::class, 'destroy'])->name('satuan.destroy');
+});
+Route::prefix('konversi-satuan')->group(function () {
+    Route::GET('/', [KonversiItemController::class, 'index'])->name('konversi-satuan.index');
+    Route::GET('/create', [KonversiItemController::class, 'create'])->name('konversi-satuan.create');
+    Route::POST('/simpan', [KonversiItemController::class, 'store'])->name('konversi-satuan.store');
+    Route::GET('/edit/{id}', [KonversiItemController::class, 'edit'])->name('konversi-satuan.edit');
+    Route::PUT('/update/{id}', [KonversiItemController::class, 'update'])->name('konversi-satuan.update');
+    Route::delete('hapus/{id}', [KonversiItemController::class, 'destroy'])->name('konversi-satuan.destroy');
 });
 Route::prefix('produk')->group(function () {
     Route::GET('/get-jenis-item/{id}', [ProdukController::class, 'getJenisItem'])->name('produk.getJenisItem');
