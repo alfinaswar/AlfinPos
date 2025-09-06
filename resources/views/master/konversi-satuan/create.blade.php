@@ -29,7 +29,7 @@
                         @csrf
                         <div class="row g-3">
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="produk" class="form-label"><strong>Nama Produk</strong></label>
                                 <select name="IdProduk" id="produk"
                                     class="select2 form-control @error('IdProduk') is-invalid @enderror">
@@ -75,7 +75,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <label for="harga_modal" class="form-label"><strong>Harga Modal</strong></label>
                                 <input type="number" step="0.01" name="HargaModal"
                                     class="form-control @error('HargaModal') is-invalid @enderror" id="harga_modal"
@@ -97,7 +97,7 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-12 text-end mt-3">
                                 <a href="{{ route('konversi-satuan.index') }}" class="btn btn-secondary me-2">

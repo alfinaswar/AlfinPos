@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-
+ 
     @if (Session::get('success'))
         <script>
             Swal.fire({
@@ -50,8 +50,7 @@
                                     <th>Nama Produk</th>
                                     <th>Satuan</th>
                                     <th>Isi</th>
-                                    <th>Harga Modal</th>
-                                    <th>Harga Jual</th>
+
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -133,14 +132,7 @@
                             data: 'Isi',
                             name: 'Isi'
                         },
-                        {
-                            data: 'HargaModal',
-                            name: 'HargaModal'
-                        },
-                        {
-                            data: 'HargaJual',
-                            name: 'HargaJual'
-                        },
+
                         {
                             data: 'action',
                             name: 'action',

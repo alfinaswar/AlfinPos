@@ -16,9 +16,12 @@ class KonversiItemController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = KonversiItem::latest();
+            $data = KonversiItem::with('getProduk')->latest();
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('NamaProduk', function ($row) {
+                    return $row->getProduk ? $row->getProduk->Nama : '-';
+                })
                 ->addColumn('action', function ($row) {
                     return '
                         <a href="' . route('konversi-satuan.edit', $row->id) . '" class="btn btn-sm btn-warning">Edit</a>
@@ -45,24 +48,20 @@ class KonversiItemController extends Controller
     /**
      * Simpan konversi baru
      */
-    public function store(Request $request, $produkId)
+    public function store(Request $request)
     {
         $request->validate([
             'Satuan' => 'required|string|max:50',
             'Isi' => 'required|integer|min:1',
-            'HargaModal' => 'nullable|numeric|min:0',
-            'HargaJual' => 'nullable|numeric|min:0',
         ]);
 
-        ProdukKonversi::create([
-            'IdProduk' => $produkId,
+        KonversiItem::create([
+            'IdProduk' => $request->IdProduk,
             'Satuan' => $request->Satuan,
             'Isi' => $request->Isi,
-            'HargaModal' => $request->HargaModal,
-            'HargaJual' => $request->HargaJual,
         ]);
 
-        return redirect()->route('produk.konversi.index', $produkId)
+        return redirect()->route('konversi-satuan.index')
             ->with('success', 'Konversi berhasil ditambahkan.');
     }
 
