@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\JenisItem;
 use App\Models\KategoriItem;
+use App\Models\KonversiItem;
 use App\Models\MasterSatuan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Laraindo\RupiahFormat;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -57,13 +59,12 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'KodeBarang' => 'required|string|max:100|unique:produks,KodeBarang',
             'Nama' => 'required|string|max:255',
             'KategoriItem' => 'required|exists:kategori_items,id',
             'JenisItem' => 'required|exists:jenis_items,id',
-            'HargaModal' => 'required|numeric|min:0',
-            'HargaJual' => 'required|numeric|min:0',
             'Stok' => 'required|integer|min:0',
             'Deskripsi' => 'required|string',
             'Gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -71,8 +72,6 @@ class ProdukController extends Controller
         ]);
 
         $data = $request->all();
-        $data['HargaModal'] = str_replace('.', '', $request->HargaModal);
-        $data['HargaJual'] = str_replace('.', '', $request->HargaJual);
         $data['UserCreate'] = auth()->user()->name;
 
         if ($request->hasFile('Gambar')) {
@@ -82,38 +81,58 @@ class ProdukController extends Controller
             $data['Gambar'] = $namaFile;
         }
 
-        Produk::create($data);
+        Produk::create([
+            'KodeBarang' => $request->KodeBarang,
+            'Nama' => $request->Nama,
+            'KategoriItem' => $request->KategoriItem,
+            'JenisItem' => $request->JenisItem,
+            'Stok' => $request->Stok,
+            'Deskripsi' => $request->Deskripsi,
+            'Gambar' => $namaFile,
+            'Status' => $request->Status,
+            'UserCreate' => auth()->user()->name,
+        ]);
+
+        $produk = Produk::latest()->first();
+        foreach ($request->Satuan as $key => $value) {
+            KonversiItem::create([
+                'IdProduk' => $produk->id,
+                'Isi' => $request->Isi[$key],
+                'Satuan' => $value,
+                'HargaModal' => str_replace('.', '', $request->HargaModal[$key]),
+                'HargaJual' => str_replace('.', '', $request->HargaJual[$key]),
+                'UserCreate' => auth()->user()->name,
+            ]);
+        }
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
-        $produk = Produk::find($id);
+        $produk = Produk::with('konversi')->find($id);
         $KategoriItem = KategoriItem::orderBy('Nama', 'ASC')->get();
-        return view('master.produk.edit', compact('produk', 'KategoriItem'));
+        $JenisItem = JenisItem::get();
+        $Satuan = MasterSatuan::orderBy('NamaSatuan', 'ASC')->get();
+        return view('master.produk.edit', compact('produk', 'KategoriItem', 'JenisItem', 'Satuan'));
     }
 
     public function update(Request $request, $id)
     {
-        $produk = Produk::findOrFail($id);
-
         $request->validate([
-            'KodeBarang' => 'required|string|max:100|unique:produks,KodeBarang,' . $produk->id,
+            'KodeBarang' => 'required|string|max:100|unique:produks,KodeBarang,' . $id,
             'Nama' => 'required|string|max:255',
             'KategoriItem' => 'required|exists:kategori_items,id',
             'JenisItem' => 'required|exists:jenis_items,id',
-            'HargaModal' => 'required|numeric|min:0',
-            'HargaJual' => 'required|numeric|min:0',
             'Stok' => 'required|integer|min:0',
             'Deskripsi' => 'required|string',
             'Gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'Status' => 'required|in:Aktif,Tidak Aktif',
         ]);
 
+        $produk = Produk::findOrFail($id);
+
         $data = $request->all();
-        $data['HargaModal'] = str_replace('.', '', $request->HargaModal);
-        $data['HargaJual'] = str_replace('.', '', $request->HargaJual);
         $data['UserUpdate'] = auth()->user()->name;
 
         if ($request->hasFile('Gambar')) {
@@ -121,13 +140,42 @@ class ProdukController extends Controller
             $namaFile = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('public/uploads/produk', $namaFile);
             $data['Gambar'] = $namaFile;
+
+            // Hapus gambar lama jika ada
+            if ($produk->Gambar && Storage::exists('public/uploads/produk/' . $produk->Gambar)) {
+                Storage::delete('public/uploads/produk/' . $produk->Gambar);
+            }
         } else {
-            unset($data['Gambar']);
+            $data['Gambar'] = $produk->Gambar;
         }
 
-        $produk->update($data);
+        $produk->update([
+            'KodeBarang' => $request->KodeBarang,
+            'Nama' => $request->Nama,
+            'KategoriItem' => $request->KategoriItem,
+            'JenisItem' => $request->JenisItem,
+            'Stok' => $request->Stok,
+            'Deskripsi' => $request->Deskripsi,
+            'Gambar' => $data['Gambar'],
+            'Status' => $request->Status,
+            'UserUpdate' => auth()->user()->name,
+        ]);
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
+        KonversiItem::where('IdProduk', $produk->id)->delete();
+        if ($request->Satuan && is_array($request->Satuan)) {
+            foreach ($request->Satuan as $key => $value) {
+                KonversiItem::create([
+                    'IdProduk' => $produk->id,
+                    'Isi' => $request->Isi[$key],
+                    'Satuan' => $value,
+                    'HargaModal' => str_replace('.', '', $request->HargaModal[$key]),
+                    'HargaJual' => str_replace('.', '', $request->HargaJual[$key]),
+                    'UserCreate' => auth()->user()->name,
+                ]);
+            }
+        }
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diupdate.');
     }
 
     public function getJenisItem($id)

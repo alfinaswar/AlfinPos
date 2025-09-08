@@ -27,4 +27,8 @@ class Produk extends Model
     {
         return $this->hasMany(TransaksiDetail::class, 'IdProduk', 'id');
     }
+    public function konversi()
+    {
+        return $this->hasMany(KonversiItem::class, 'IdProduk', 'id');
+    }
 }

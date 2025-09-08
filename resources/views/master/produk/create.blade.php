@@ -16,14 +16,17 @@
 
     <div class="row justify-content-center">
         <div class="col-lg-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    <h4 class="card-title mb-0">Formulir Tambah Produk</h4>
-                    <small>Silakan isi data produk baru di bawah ini.</small>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+            {{-- FORM START --}}
+            <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                {{-- CARD: DATA PRODUK --}}
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="card-title mb-0">Formulir Tambah Produk</h4>
+                        <small>Silakan isi data produk baru di bawah ini.</small>
+                    </div>
+                    <div class="card-body">
                         <div class="row g-3">
 
                             {{-- Kode Barang --}}
@@ -88,6 +91,8 @@
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            {{-- Status --}}
                             <div class="col-md-6">
                                 <label for="status" class="form-label"><strong>Status</strong></label>
                                 <select name="Status" id="status"
@@ -112,9 +117,6 @@
                                 @enderror
                             </div>
 
-                            {{-- Konversi Satuan & Harga --}}
-
-
                             {{-- Upload Gambar --}}
                             <div class="col-md-12">
                                 <label for="gambar" class="form-label"><strong>Gambar</strong></label>
@@ -131,94 +133,90 @@
                                 @enderror
                             </div>
 
-                            {{-- Status --}}
-
-
-                            {{-- Tombol --}}
-
-
                         </div>
-
-                </div>
-            </div>
-            <div class="col-md-12 mt-4">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
-                        <h4 class="card-title mb-0">Konversi Dan Harga</h4>
-                        <small>Silakan isi data Konversi Dan Harga baru di bawah ini.</small>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table" id="konversi-table">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th style="width: 50px;">No</th>
-                                        <th>Satuan</th>
-                                        <th>Isi</th>
-                                        <th>Harga Modal</th>
-                                        <th>Harga Jual</th>
-                                        <th style="width: 100px;">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="konversi-table-body">
-                                    <tr>
-                                        <td class="row-number">1</td>
-                                        <td>
-                                            <select name="Satuan[]" class="form-control select2">
-                                                <option value="">Pilih Satuan</option>
-                                                @foreach ($Satuan as $s)
-                                                    <option value="{{ $s->id }}">{{ $s->NamaSatuan }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td><input type="number" name="Isi[]" class="form-control" placeholder="Isi">
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <span class="input-group-text">Rp</span>
-                                                <input type="text" name="HargaModal[]" class="form-control rupiah"
-                                                    placeholder="Harga Modal"
-                                                    onkeyup="this.value = formatRupiah(this.value)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <span class="input-group-text">Rp</span>
-                                                <input type="text" name="HargaJual[]" class="form-control rupiah"
-                                                    placeholder="Harga Jual"
-                                                    onkeyup="this.value = formatRupiah(this.value)">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm remove-row">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </div>
+
+                {{-- CARD: KONVERSI & HARGA --}}
+                <div class="col-md-12 mt-4">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h4 class="card-title mb-0">Konversi Dan Harga</h4>
+                            <small>Silakan isi data Konversi Dan Harga baru di bawah ini.</small>
                         </div>
-                        <button type="button" class="btn btn-success btn-sm mt-2" id="add-konversi-row">
-                            <i class="fa fa-plus"></i> Tambah Satuan Konversi
-                        </button>
-                        <div class="col-12 text-end mt-3">
-                            <a href="{{ route('produk.index') }}" class="btn btn-secondary me-2">
-                                <i class="fa fa-arrow-left"></i> Kembali
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-save"></i> Simpan
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="konversi-table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 50px;">No</th>
+                                            <th>Satuan</th>
+                                            <th>Isi</th>
+                                            <th>Harga Modal</th>
+                                            <th>Harga Jual</th>
+                                            <th style="width: 100px;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="konversi-table-body">
+                                        <tr>
+                                            <td class="row-number">1</td>
+                                            <td>
+                                                <select name="Satuan[]" class="form-control select2">
+                                                    <option value="">Pilih Satuan</option>
+                                                    @foreach ($Satuan as $s)
+                                                        <option value="{{ $s->id }}">{{ $s->NamaSatuan }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td><input type="number" name="Isi[]" class="form-control" placeholder="Isi"></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text" name="HargaModal[]" class="form-control rupiah"
+                                                        placeholder="Harga Modal"
+                                                        onkeyup="this.value = formatRupiah(this.value)">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text" name="HargaJual[]" class="form-control rupiah"
+                                                        placeholder="Harga Jual"
+                                                        onkeyup="this.value = formatRupiah(this.value)">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm remove-row">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm mt-2" id="add-konversi-row">
+                                <i class="fa fa-plus"></i> Tambah Satuan Konversi
                             </button>
                         </div>
                     </div>
-
                 </div>
 
+                {{-- TOMBOL --}}
+                <div class="col-12 text-end mt-3">
+                    <a href="{{ route('produk.index') }}" class="btn btn-secondary me-2">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Simpan
+                    </button>
+                </div>
 
-            </div>
+            </form>
+            {{-- FORM END --}}
         </div>
     </div>
-    </form>
 @endsection
+
 
 @push('js')
     <script>
@@ -233,18 +231,37 @@
             }
 
             function addRow() {
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
                 <td class="row-number"></td>
-                <td> <select name="Satuan[]" class="form-control select2-dynamic">
-                                                <option value="">Pilih Satuan</option>
-                                                @foreach ($Satuan as $s)
-                                                    <option value="{{ $s->id }}">{{ $s->NamaSatuan }}</option>
-                                                @endforeach
-                                            </select></td>
-                <td><input type="number" name="Isi[]" class="form-control" placeholder="Isi"></td>
-                <td><input type="text" name="HargaModal[]" class="form-control rupiah" placeholder="Harga Modal"></td>
-                <td><input type="text" name="HargaJual[]" class="form-control rupiah" placeholder="Harga Jual"></td>
+                <td>
+                    <select name="Satuan[]" class="form-control select2-dynamic">
+                        <option value="">Pilih Satuan</option>
+                        @foreach ($Satuan as $s)
+                            <option value="{{ $s->id }}">{{ $s->NamaSatuan }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <input type="number" name="Isi[]" class="form-control" placeholder="Isi">
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-text">Rp</span>
+                        <input type="text" name="HargaModal[]" class="form-control rupiah"
+                            placeholder="Harga Modal"
+                            onkeyup="this.value = formatRupiah(this.value)">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-text">Rp</span>
+                        <input type="text" name="HargaJual[]" class="form-control rupiah"
+                            placeholder="Harga Jual"
+                            onkeyup="this.value = formatRupiah(this.value)">
+                    </div>
+                </td>
                 <td>
                     <button type="button" class="btn btn-danger btn-sm remove-row">
                         <i class="fa fa-trash"></i>
@@ -254,7 +271,10 @@
                 tableBody.appendChild(row);
                 updateRowNumbers();
 
-                $(row).find('.select2-dynamic').select2();
+                // Inisialisasi select2 jika digunakan
+                if (typeof $ !== 'undefined' && $.fn.select2) {
+                    $(row).find('.select2-dynamic').select2();
+                }
             }
 
             addRowBtn.addEventListener('click', addRow);
@@ -284,11 +304,10 @@
             return rupiah;
         }
 
+        // Catatan: id="hargamodal" dan id="hargajual" tidak ada di form, jadi event ini tidak akan jalan
+        // Jika ingin auto-format di semua input harga, gunakan class selector
         document.addEventListener('DOMContentLoaded', function() {
-            const hargaModal = document.getElementById('hargamodal');
-            const hargaJual = document.getElementById('hargajual');
-
-            [hargaModal, hargaJual].forEach(function(input) {
+            document.querySelectorAll('input.rupiah').forEach(function(input) {
                 input.addEventListener('input', function(e) {
                     let value = this.value.replace(/\./g, '');
                     if (value) {
@@ -298,8 +317,6 @@
                     }
                 });
             });
-
-
         });
 
         function getJenisItem(kategoriId, selectedJenis = null) {
