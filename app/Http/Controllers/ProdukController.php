@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JenisItem;
 use App\Models\KategoriItem;
+use App\Models\MasterSatuan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Laraindo\RupiahFormat;
@@ -50,7 +51,8 @@ class ProdukController extends Controller
     public function create()
     {
         $KategoriItem = KategoriItem::orderBy('Nama', 'ASC')->get();
-        return view('master.produk.create', compact('KategoriItem'));
+        $Satuan = MasterSatuan::orderBy('NamaSatuan', 'ASC')->get();
+        return view('master.produk.create', compact('KategoriItem', 'Satuan'));
     }
 
     public function store(Request $request)
@@ -127,6 +129,7 @@ class ProdukController extends Controller
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
+
     public function getJenisItem($id)
     {
         $jenis = JenisItem::where('KategoriItem', $id)->orderBy('Nama')->get(['id', 'Nama']);

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('IdProduk');
             $table->string('Satuan')->nullable();
             $table->integer('Isi')->nullable();
-            $table->string('HargaModal')->nullable(); // opsional harga per satuan konversi
+            $table->string('HargaModal')->nullable();
             $table->string('HargaJual')->nullable();
             $table->string('UserCreate', 100)->nullable();
             $table->string('UserUpdate', 100)->nullable();
