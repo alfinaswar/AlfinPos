@@ -90,10 +90,10 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        // dd($data);
         $subtotal = 0;
         if (isset($data['products']) && is_array($data['products'])) {
             foreach ($data['products'] as $product) {
+
                 $qty = isset($product['quantity']) ? (int) $product['quantity'] : 0;
                 $harga = isset($product['price']) ? (int) $product['price'] : 0;
                 $subtotal += $qty * $harga;
