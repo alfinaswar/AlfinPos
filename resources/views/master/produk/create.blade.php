@@ -197,19 +197,22 @@
                             <button type="button" class="btn btn-success btn-sm mt-2" id="add-konversi-row">
                                 <i class="fa fa-plus"></i> Tambah Satuan Konversi
                             </button>
+                            <div class="col-12 text-end mt-3">
+                                <a href="{{ route('produk.index') }}" class="btn btn-secondary me-2">
+                                    <i class="fa fa-arrow-left"></i> Kembali
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i> Simpan
+                                </button>
+                            </div>
                         </div>
+
                     </div>
+
+
                 </div>
 
                 {{-- TOMBOL --}}
-                <div class="col-12 text-end mt-3">
-                    <a href="{{ route('produk.index') }}" class="btn btn-secondary me-2">
-                        <i class="fa fa-arrow-left"></i> Kembali
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Simpan
-                    </button>
-                </div>
 
             </form>
             {{-- FORM END --}}

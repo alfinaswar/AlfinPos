@@ -9,7 +9,7 @@
         content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern,  html5, responsive">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
-    <title>Dreams Pos Admin Template</title>
+    <title>Lumina POS</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('') }}assets/img/favicon.png">
@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="{{ asset('') }}assets/plugins/fontawesome/css/all.min.css">
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="http://e-lapor.test/assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/plugins/select2/css/select2.min.css">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
@@ -46,13 +46,13 @@
 
             <!-- Logo -->
             <div class="header-left active">
-                <a href="index.html" class="logo logo-normal">
+                <a href="{{route('home')}}" class="logo logo-normal">
                     <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
-                <a href="index.html" class="logo logo-white">
+                <a href="{{route('home')}}" class="logo logo-white">
                     <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
-                <a href="index.html" class="logo-small">
+                <a href="{{route('home')}}" class="logo-small">
                     <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
                 <a id="toggle_btn" href="javascript:void(0);">
