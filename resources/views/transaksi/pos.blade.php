@@ -220,49 +220,63 @@
                                     </li>
                                 @endforeach
                             </ul>
-                            <div class="pos-products">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="mb-3">Produk</h5>
-                                </div>
-                                <div class="tabs_container">
-                                    @foreach ($produk as $key => $kategori)
-                                        <div class="tab_content active" data-tab="{{ $kategori->id }}">
-                                            <div class="row">
-                                                @foreach ($kategori->getProduk as $item)
-                                                    <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
-                                                        <div class="product-info default-cover card"
-                                                            data-product-id="{{ $item->id }}"
-                                                            data-product-name="{{ $item->Nama }}"
-                                                            data-product-price="{{ $item->HargaJual }}"
-                                                            data-category-name="{{ $kategori->Nama }}"
-                                                            data-product-image="{{ asset('storage/uploads/produk/' . $item->Gambar) }}">
-                                                            <a href="javascript:void(0);" class="img-bg">
-                                                                <img src="{{ asset('storage/uploads/produk/' . $item->Gambar) }}"
-                                                                    alt="Products" width="150px" height="100px"
-                                                                    style="object-fit: cover;">
-                                                                <span><i data-feather="check"
-                                                                        class="feather-16"></i></span>
-                                                            </a>
-                                                            <h6 class="cat-name"><a
-                                                                    href="javascript:void(0);">{{ $kategori->Nama }}</a>
-                                                            </h6>
-                                                            <h6 class="product-name"><a
-                                                                    href="javascript:void(0);">{{ $item->Nama }}</a>
-                                                            </h6>
-                                                            <div
-                                                                class="d-flex align-items-center justify-content-between price">
-                                                                <span>{{ $item->HargaJual }}</span>
-                                                                <p>{{ 'Rp ' . number_format($item->HargaJual, 0, ',', '.') }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
+                           <div class="pos-products">
+    <div class="d-flex align-items-center justify-content-between">
+        <h5 class="mb-3">Produk</h5>
+    </div>
+    <div class="tabs_container">
+        @foreach ($produk as $key => $kategori)
+            <div class="tab_content active" data-tab="{{ $kategori->id }}">
+                <div class="row">
+                    @foreach ($kategori->getProduk as $item)
+                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
+                            <div class="product-info default-cover card"
+                                data-product-id="{{ $item->id }}"
+                                data-product-name="{{ $item->Nama }}"
+                                data-product-price="{{ $item->HargaJual }}"
+                                data-category-name="{{ $kategori->Nama }}"
+                                data-product-image="{{ asset('storage/uploads/produk/' . $item->Gambar) }}"
+                                data-product-konversi='@json($item->konversi ? $item->konversi->map(function($k) { return [
+                                    "id" => $k->id,
+                                    "nama_satuan" => $k->getNamaSatuan->NamaSatuan ?? "Satuan",
+                                    "harga_jual" => $k->HargaJual
+                                ]; }) : [])'
+                            >
+                                <a href="javascript:void(0);" class="img-bg">
+                                    <img src="{{ asset('storage/uploads/produk/' . $item->Gambar) }}"
+                                        alt="Products" width="150px" height="100px"
+                                        style="object-fit: cover;">
+                                    <span><i data-feather="check" class="feather-16"></i></span>
+                                </a>
+                                <h6 class="cat-name"><a href="javascript:void(0);">{{ $kategori->Nama }}</a></h6>
+                                <h6 class="product-name"><a href="javascript:void(0);">{{ $item->Nama }}</a></h6>
+                                @if($item->konversi && $item->konversi->count() > 0)
+                                    <div class="konversi-price mt-2">
+                                        @foreach ($item->konversi as $idx => $konv)
+                                            <div class="d-flex align-items-center justify-content-between"
+                                                @if($idx == 0)
+                                                    style="background-color: #e8f8f5; border-radius: 5px; padding: 4px 8px;"
+                                                @elseif($idx == 1)
+                                                    style="background-color: #f9ebea; border-radius: 5px; padding: 4px 8px;"
+                                                @endif
+                                            >
+                                                <span>{{ $konv->getNamaSatuan->NamaSatuan ?? 'Satuan' }}</span>
+                                                <p class="mb-0" style="color: #1abc9c; font-weight: bold;">
+                                                    {{ 'Rp ' . number_format($konv->HargaJual, 0, ',', '.') }}
+                                                </p>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                </div>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 
                         </div>
                     </div>
@@ -556,20 +570,15 @@
                     }
                 });
             });
-            // Format angka ke Rupiah
             function formatRupiah(angka) {
                 return 'Rp ' + (angka ? angka.toLocaleString('id-ID') : '0');
             }
 
-            // Auto-format input uang diterima
+
             $(document).on('input', '#uang-dibayar', function() {
                 let raw = $(this).val().replace(/\D/g, ""); // hanya angka
                 let uangDibayar = parseInt(raw) || 0;
-
-                // format ke Rp
                 $(this).val(uangDibayar.toLocaleString('id-ID'));
-
-                // ambil total belanja
                 const totalText = $('#total-amount').text().replace(/[^\d]/g, '');
                 const totalBelanja = parseInt(totalText) || 0;
 
@@ -583,11 +592,11 @@
         let selectedProducts = [];
 
         function addToCart(productData) {
-            const existingProductIndex = selectedProducts.findIndex(p => p.id === productData.id);
+            const existingProductIndex = selectedProducts.findIndex(p => p.id === productData.id && p.satuan_id === productData.satuan_id);
 
             if (existingProductIndex > -1) {
                 selectedProducts[existingProductIndex].quantity += 1;
-                updateProductQuantity(productData.id, selectedProducts[existingProductIndex].quantity);
+                updateProductQuantity(productData.id, productData.satuan_id, selectedProducts[existingProductIndex].quantity);
             } else {
                 productData.quantity = 1;
                 selectedProducts.push(productData);
@@ -600,8 +609,12 @@
         function addProductToDOM(product) {
             const productWrap = document.querySelector('.product-wrap');
 
+            // Hapus dulu DOM produk dengan id & satuan yang sama (agar tidak dobel di DOM)
+            const existingElement = productWrap.querySelector(`[data-product-id="${product.id}"][data-satuan-id="${product.satuan_id}"]`);
+            if (existingElement) existingElement.remove();
+
             const productHTML = `
-            <div class="product-list d-flex align-items-center justify-content-between" data-product-id="${product.id}">
+            <div class="product-list d-flex align-items-center justify-content-between" data-product-id="${product.id}" data-satuan-id="${product.satuan_id}">
                 <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
                     <a href="javascript:void(0);" class="img-bg">
                         <img src="${product.image}" alt="Products" style="width: 50px; height: 50px; object-fit: cover;">
@@ -609,23 +622,34 @@
                     <div class="info">
                         <span>${product.category}</span>
                         <h6><a href="javascript:void(0);">${product.name}</a></h6>
-                        <p>${product.formattedPrice}</p>
+                        <div class="d-flex align-items-center gap-2">
+                            <select class="form-select form-select-sm satuan-select" style="width:auto;display:inline-block;" onchange="changeSatuan('${product.id}', this.value)">
+                                ${product.konversi.map(konv => `
+                                    <option value="${konv.id}" ${konv.id == product.satuan_id ? 'selected' : ''} data-harga="${konv.harga_jual}">
+                                        ${konv.nama_satuan} - Rp ${parseInt(konv.harga_jual).toLocaleString('id-ID')}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </div>
+                        <p class="harga-produk mb-0 mt-1" style="font-weight:bold;color:#1abc9c;">
+                            Rp ${parseInt(product.price).toLocaleString('id-ID')}
+                        </p>
                     </div>
                 </div>
                 <div class="qty-item text-center">
                     <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center"
-                       onclick="decreaseQuantity('${product.id}')">
+                       onclick="decreaseQuantity('${product.id}', '${product.satuan_id}')">
                         <i data-feather="minus-circle" class="feather-14"></i>
                     </a>
                     <input type="text" class="form-control text-center qty-input" name="qty" value="${product.quantity}"
-                           onchange="updateQuantityFromInput('${product.id}', this.value)">
+                           onchange="updateQuantityFromInput('${product.id}', '${product.satuan_id}', this.value)">
                     <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center"
-                       onclick="increaseQuantity('${product.id}')">
+                       onclick="increaseQuantity('${product.id}', '${product.satuan_id}')">
                         <i data-feather="plus-circle" class="feather-14"></i>
                     </a>
                 </div>
                 <div class="action">
-                    <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);" onclick="removeFromCart('${product.id}')">
+                    <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);" onclick="removeFromCart('${product.id}', '${product.satuan_id}')">
                         <i data-feather="trash-2" class="feather-14"></i>
                     </a>
                 </div>
@@ -646,41 +670,41 @@
             }
         }
 
-        function increaseQuantity(productId) {
-            const productIndex = selectedProducts.findIndex(p => p.id == productId);
+        function increaseQuantity(productId, satuanId) {
+            const productIndex = selectedProducts.findIndex(p => p.id == productId && p.satuan_id == satuanId);
             if (productIndex > -1) {
                 selectedProducts[productIndex].quantity += 1;
-                updateProductQuantity(productId, selectedProducts[productIndex].quantity);
+                updateProductQuantity(productId, satuanId, selectedProducts[productIndex].quantity);
             }
         }
 
-        function decreaseQuantity(productId) {
-            const productIndex = selectedProducts.findIndex(p => p.id == productId);
+        function decreaseQuantity(productId, satuanId) {
+            const productIndex = selectedProducts.findIndex(p => p.id == productId && p.satuan_id == satuanId);
             if (productIndex > -1) {
                 if (selectedProducts[productIndex].quantity > 1) {
                     selectedProducts[productIndex].quantity -= 1;
-                    updateProductQuantity(productId, selectedProducts[productIndex].quantity);
+                    updateProductQuantity(productId, satuanId, selectedProducts[productIndex].quantity);
                 } else {
-                    removeFromCart(productId);
+                    removeFromCart(productId, satuanId);
                 }
             }
         }
 
-        function updateQuantityFromInput(productId, newQuantity) {
+        function updateQuantityFromInput(productId, satuanId, newQuantity) {
             const quantity = parseInt(newQuantity);
             if (quantity > 0) {
-                const productIndex = selectedProducts.findIndex(p => p.id == productId);
+                const productIndex = selectedProducts.findIndex(p => p.id == productId && p.satuan_id == satuanId);
                 if (productIndex > -1) {
                     selectedProducts[productIndex].quantity = quantity;
                     updateCounter(); // ✅ ini penting
                 }
             } else {
-                removeFromCart(productId);
+                removeFromCart(productId, satuanId);
             }
         }
 
-        function updateProductQuantity(productId, quantity) {
-            const productElement = document.querySelector(`.product-wrap [data-product-id="${productId}"]`);
+        function updateProductQuantity(productId, satuanId, quantity) {
+            const productElement = document.querySelector(`.product-wrap [data-product-id="${productId}"][data-satuan-id="${satuanId}"]`);
             if (productElement) {
                 const qtyInput = productElement.querySelector('.qty-input');
                 if (qtyInput) {
@@ -690,15 +714,19 @@
             updateCounter();
         }
 
-
-        function removeFromCart(productId) {
-            selectedProducts = selectedProducts.filter(p => p.id != productId);
-
-            const productElement = document.querySelector(`.product-wrap [data-product-id="${productId}"]`);
-            if (productElement) {
-                productElement.remove();
+        function removeFromCart(productId, satuanId) {
+            if (satuanId === null || typeof satuanId === 'undefined') {
+                // Hapus SEMUA varian produk dengan id tsb (untuk ganti satuan)
+                selectedProducts = selectedProducts.filter(p => p.id != productId);
+                // Hapus semua DOM produk dengan id tsb
+                document.querySelectorAll(`.product-wrap [data-product-id="${productId}"]`).forEach(el => el.remove());
+            } else {
+                selectedProducts = selectedProducts.filter(p => !(p.id == productId && p.satuan_id == satuanId));
+                const productElement = document.querySelector(`.product-wrap [data-product-id="${productId}"][data-satuan-id="${satuanId}"]`);
+                if (productElement) {
+                    productElement.remove();
+                }
             }
-
             updateCounter();
         }
 
@@ -709,6 +737,35 @@
             updateCounter();
         }
 
+        // Fungsi untuk mengganti satuan pada cart
+        function changeSatuan(productId, satuanId) {
+            // Temukan product di cart (apapun satuannya)
+            const productIndex = selectedProducts.findIndex(p => p.id == productId);
+            if (productIndex === -1) return;
+
+            const product = selectedProducts[productIndex];
+
+            // Jika satuan sama, tidak perlu update
+            if (product.satuan_id == satuanId) return;
+
+            // Dapatkan data konversi dari product.konversi
+            const konv = product.konversi.find(k => k.id == satuanId);
+            if (!konv) return;
+
+            // Update satuan_id, price, formattedPrice
+            product.satuan_id = konv.id;
+            product.satuan_nama = konv.nama_satuan;
+            product.price = konv.harga_jual;
+            product.formattedPrice = 'Rp ' + parseInt(konv.harga_jual).toLocaleString('id-ID');
+
+            // Update DOM: hapus semua varian produk id tsb, lalu render ulang hanya satu
+            removeFromCart(productId, null); // hapus semua varian produk id tsb
+            selectedProducts.push(product); // masukkan kembali produk dengan satuan baru
+            addProductToDOM(product);
+
+            updateCounter();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Event listener untuk klik produk
             document.addEventListener('click', function(e) {
@@ -716,14 +773,41 @@
                 if (productCard) {
                     e.preventDefault();
 
+                    // Ambil data konversi satuan
+                    let konversi = [];
+                    try {
+                        konversi = JSON.parse(productCard.dataset.productKonversi || '[]');
+                    } catch (err) {
+                        konversi = [];
+                    }
+
+                    // Default satuan: ambil yang pertama (atau null jika tidak ada)
+                    let satuan_id = null, satuan_nama = '', harga_jual = productCard.dataset.productPrice;
+                    if (konversi.length > 0) {
+                        satuan_id = konversi[0].id;
+                        satuan_nama = konversi[0].nama_satuan;
+                        harga_jual = konversi[0].harga_jual;
+                    } else {
+                        satuan_id = 'default';
+                        satuan_nama = 'Satuan';
+                        harga_jual = productCard.dataset.productPrice;
+                        konversi = [{
+                            id: 'default',
+                            nama_satuan: 'Satuan',
+                            harga_jual: harga_jual
+                        }];
+                    }
+
                     const productData = {
                         id: productCard.dataset.productId,
                         image: productCard.dataset.productImage,
                         category: productCard.dataset.categoryName,
                         name: productCard.dataset.productName,
-                        price: productCard.dataset.productPrice,
-                        formattedPrice: 'Rp ' + parseInt(productCard.dataset.productPrice)
-                            .toLocaleString('id-ID')
+                        price: harga_jual,
+                        formattedPrice: 'Rp ' + parseInt(harga_jual).toLocaleString('id-ID'),
+                        satuan_id: satuan_id,
+                        satuan_nama: satuan_nama,
+                        konversi: konversi
                     };
 
                     addToCart(productData);
@@ -827,6 +911,13 @@
             100% {
                 left: 100%;
             }
+        }
+        .satuan-select {
+            min-width: 120px;
+            margin-top: 2px;
+        }
+        .harga-produk {
+            font-size: 1rem;
         }
     </style>
     <style>

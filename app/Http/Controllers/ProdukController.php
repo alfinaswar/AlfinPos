@@ -20,7 +20,7 @@ class ProdukController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Produk::with('getKategori', 'getJenis')->latest();
+            $data = Produk::with('getKategori', 'getJenis', 'konversi.getNamaSatuan')->latest();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -38,10 +38,28 @@ class ProdukController extends Controller
                     }
                 })
                 ->addColumn('HargaModal', function ($row) {
-                    return RupiahFormat::currency($row->HargaModal);
+                    $hargaModal = null;
+                    if ($row->konversi && $row->konversi->count() > 0) {
+                        $konversiTiga = $row->konversi->where('id', 3)->first();
+                        if ($konversiTiga) {
+                            $hargaModal = $konversiTiga->HargaModal;
+                        } else {
+                            $hargaModal = $row->konversi->first()->HargaModal;
+                        }
+                    }
+                    return $hargaModal !== null ? RupiahFormat::currency($hargaModal) : '-';
                 })
                 ->addColumn('HargaJual', function ($row) {
-                    return RupiahFormat::currency($row->HargaJual);
+                    $hargaJual = null;
+                    if ($row->konversi && $row->konversi->count() > 0) {
+                        $konversiTiga = $row->konversi->where('id', 3)->first();
+                        if ($konversiTiga) {
+                            $hargaJual = $konversiTiga->HargaJual;
+                        } else {
+                            $hargaJual = $row->konversi->first()->HargaJual;
+                        }
+                    }
+                    return $hargaJual !== null ? RupiahFormat::currency($hargaJual) : '-';
                 })
                 ->rawColumns(['action', 'Gambar', 'HargaModal', 'HargaJual'])
                 ->make(true);

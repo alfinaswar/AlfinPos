@@ -15,4 +15,9 @@ class KonversiItem extends Model
     {
         return $this->belongsTo(Produk::class, 'IdProduk', 'id');
     }
+
+    public function getNamaSatuan()
+    {
+        return $this->hasOne(MasterSatuan::class, 'id', 'Satuan');
+    }
 }

@@ -75,6 +75,7 @@
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
+
                 </div>
                 <h5 class="mb-3"><strong>Detail Barang Masuk</strong></h5>
                 <p class="mb-3">
@@ -85,7 +86,8 @@
                         <thead class="table-light">
                             <tr>
                                 <th style="width: 30%">Produk</th>
-                                <th style="width: 15%">Qty</th>
+                                <th style="width: 12%">Qty</th>
+                                <th style="width: 13%">Satuan</th>
                                 <th style="width: 20%">Harga Modal</th>
                                 <th style="width: 20%">Subtotal</th>
                                 <th style="width: 10%">Aksi</th>
@@ -97,13 +99,28 @@
                                     <select name="idproduk[]" class="form-control select2 produk-select" required>
                                         <option value="">Pilih Produk</option>
                                         @foreach($produk ?? [] as $p)
-                                            <option value="{{ $p->id }}">{{ $p->Nama }}</option>
+                                            <option value="{{ $p->id }}" data-satuan='@json(
+                                                $p->konversi->map(function ($k) {
+                                                    return [
+                                                        'id' => $k->id,
+                                                        'Satuan' => $k->getNamaSatuan ? $k->getNamaSatuan->NamaSatuan : '',
+                                                        'Isi' => $k->Isi
+                                                    ];
+                                                })
+                                            )'>
+                                                {{ $p->Nama }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     <input type="number" name="Qty[]" class="form-control qty-input" min="1" value="1"
                                         required>
+                                </td>
+                                <td>
+                                    <select name="Satuan[]" class="form-control satuan-select" required>
+                                        <option value="">Pilih Satuan</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <input type="text" name="HargaModal[]" class="form-control harga-input" min="0"
@@ -122,14 +139,14 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <button type="button" class="btn btn-success btn-sm" id="btn-tambah-baris">
                                         <i class="fa fa-plus"></i> Tambah Baris
                                     </button>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                <td colspan="4" class="text-end"><strong>Total</strong></td>
                                 <td>
                                     <input type="text" name="Total" id="total-barang-masuk" class="form-control" value="0"
                                         readonly>
@@ -151,82 +168,177 @@
         </div>
     </form>
 @endsection
-
 @push('js')
     <script>
-        let rowIdx = 1;
-        // Perbaiki: gunakan variabel produk yang sama dengan yang di form utama
-        const produkOptions = `
-                                                                                                                                                                    <option value="">Pilih Produk</option>
-                                                                                                                                                                    @foreach($produk ?? [] as $p)
-                                                                                                                                                                        <option value="{{ $p->id }}">{{ $p->Nama }}</option>
-                                                                                                                                                                    @endforeach
-                                                                                                                                                                `;
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Drag & Drop Invoice ---
+            const dropArea = document.getElementById('drop-area-invoice');
+            const inputInvoice = document.getElementById('invoice');
+            const preview = document.getElementById('invoice-preview');
+            const dropText = document.getElementById('drop-text-invoice');
 
-        // Fungsi untuk format angka ke format rupiah dengan titik
-        function formatRupiah(angka) {
-            if (typeof angka === "string") {
-                angka = angka.replace(/[^,\d]/g, "");
+            if (dropArea && inputInvoice && preview && dropText) {
+                dropArea.addEventListener('click', () => inputInvoice.click());
+
+                dropArea.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    dropArea.classList.add('bg-light');
+                });
+
+                dropArea.addEventListener('dragleave', function (e) {
+                    e.preventDefault();
+                    dropArea.classList.remove('bg-light');
+                });
+
+                dropArea.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    dropArea.classList.remove('bg-light');
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        inputInvoice.files = e.dataTransfer.files;
+                        showPreview(e.dataTransfer.files[0]);
+                    }
+                });
+
+                inputInvoice.addEventListener('change', function () {
+                    if (inputInvoice.files && inputInvoice.files[0]) {
+                        showPreview(inputInvoice.files[0]);
+                    }
+                });
+
+                function showPreview(file) {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.innerHTML =
+                                '<img src="' + e.target.result +
+                                '" class="img-thumbnail" style="max-width:200px;max-height:200px;" />';
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        let icon = '';
+                        if (file.type === 'application/pdf') {
+                            icon = '<i class="bi bi-file-earmark-pdf text-danger" style="font-size:2rem;"></i>';
+                        } else if (
+                            file.type === 'application/msword' ||
+                            file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        ) {
+                            icon = '<i class="bi bi-file-earmark-word text-primary" style="font-size:2rem;"></i>';
+                        } else if (
+                            file.type === 'application/vnd.ms-excel' ||
+                            file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        ) {
+                            icon = '<i class="bi bi-file-earmark-excel text-success" style="font-size:2rem;"></i>';
+                        } else {
+                            icon = '<i class="bi bi-file-earmark" style="font-size:2rem;"></i>';
+                        }
+                        preview.innerHTML = icon + '<div>' + file.name + '</div>';
+                    }
+                }
             }
-            let number_string = angka.toString().replace(/[^,\d]/g, ""),
-                split = number_string.split(","),
-                sisa = split[0].length % 3,
-                rupiah = split[0].substr(0, sisa),
-                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-            if (ribuan) {
-                let separator = sisa ? "." : "";
-                rupiah += separator + ribuan.join(".");
+            // --- Barang Masuk Table ---
+            let rowIdx = 1;
+            const produkOptions = `
+                    <option value="">Pilih Produk</option>
+                    @foreach($produk ?? [] as $p)
+                        <option value="{{ $p->id }}" data-satuan='@json(
+                            $p->konversi->map(function ($k) {
+                                return [
+                                    'id' => $k->id,
+                                    'Satuan' => $k->getNamaSatuan ? $k->getNamaSatuan->NamaSatuan : '',
+                                    'Isi' => $k->Isi
+                                ];
+                            })
+                        )'>
+                            {{ $p->Nama }}
+                        </option>
+                    @endforeach
+                `;
+
+            function formatRupiah(angka) {
+                if (typeof angka === "string") {
+                    angka = angka.replace(/[^,\d]/g, "");
+                }
+                let number_string = angka.toString().replace(/[^,\d]/g, ""),
+                    split = number_string.split(","),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    let separator = sisa ? "." : "";
+                    rupiah += separator + ribuan.join(".");
+                }
+
+                rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
+                return rupiah;
             }
 
-            rupiah = split[1] !== undefined ? rupiah + "," + split[1] : rupiah;
-            return rupiah;
-        }
+            function parseRupiah(str) {
+                return parseInt((str || '').replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
+            }
 
-        function parseRupiah(str) {
-            return parseInt(str.replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
-        }
+            function hitungSubtotal($row) {
+                let qty = parseFloat($row.find('.qty-input').val()) || 0;
+                let hargaStr = $row.find('.harga-input').val();
+                let harga = parseRupiah(hargaStr);
+                let subtotal = qty * harga;
+                $row.find('.subtotal-input').val(formatRupiah(subtotal));
+            }
 
-        function hitungSubtotal(row) {
-            let qty = parseFloat(row.find('.qty-input').val()) || 0;
-            let hargaStr = row.find('.harga-input').val();
-            let harga = parseRupiah(hargaStr);
-            let subtotal = qty * harga;
-            row.find('.subtotal-input').val(formatRupiah(subtotal));
-        }
+            function hitungTotal() {
+                let total = 0;
+                $('#table-barang-masuk tbody tr').each(function () {
+                    let subtotalStr = $(this).find('.subtotal-input').val();
+                    let subtotal = parseRupiah(subtotalStr);
+                    total += subtotal;
+                });
+                $('#total-barang-masuk').val(formatRupiah(total));
+            }
 
-        // Fungsi untuk menghitung total dari semua subtotal
-        function hitungTotal() {
-            let total = 0;
-            $('#table-barang-masuk tbody tr').each(function () {
-                let subtotalStr = $(this).find('.subtotal-input').val();
-                let subtotal = parseRupiah(subtotalStr);
-                total += subtotal;
+            function updateSatuanSelect($produkSelect) {
+                let $row = $produkSelect.closest('tr');
+                let $satuanSelect = $row.find('.satuan-select');
+                $satuanSelect.empty().append('<option value="">Pilih Satuan</option>');
+
+                let satuanData = $produkSelect.find('option:selected').data('satuan');
+                if (typeof satuanData === 'string') {
+                    try {
+                        satuanData = JSON.parse(satuanData);
+                    } catch (e) {
+                        satuanData = [];
+                    }
+                }
+
+                if (satuanData && Array.isArray(satuanData)) {
+                    satuanData.forEach(function (s) {
+                        let namaSatuan = s.Satuan || s.NamaSatuan || (s.getNamaSatuan && s.getNamaSatuan.NamaSatuan) || '-';
+                        $satuanSelect.append('<option value="' + s.id + '">' + namaSatuan + '</option>');
+                    });
+                }
+            }
+
+            // Init table events
+            $('.select2').select2({ dropdownParent: $('#table-barang-masuk').parent() });
+
+            updateSatuanSelect($('.produk-select').first());
+
+            $('#table-barang-masuk').on('change', '.produk-select', function () {
+                updateSatuanSelect($(this));
             });
-            $('#total-barang-masuk').val(formatRupiah(total));
-        }
 
-        $(document).ready(function () {
-            // Inisialisasi select2 pada semua select2 yang sudah ada
-            $('.select2').select2({
-                dropdownParent: $('#table-barang-masuk').parent()
-            });
-
-            // Format harga modal saat input
             $('#table-barang-masuk').on('input', '.harga-input', function () {
-                let val = $(this).val();
-                let angka = parseRupiah(val);
+                let angka = parseRupiah($(this).val());
                 $(this).val(formatRupiah(angka));
             });
 
-            // Hitung subtotal dan total saat qty atau harga berubah
             $('#table-barang-masuk').on('input', '.qty-input, .harga-input', function () {
                 let row = $(this).closest('tr');
                 hitungSubtotal(row);
                 hitungTotal();
             });
 
-            // Format subtotal dan total saat load awal
+            // Hitung ulang saat load
             $('#table-barang-masuk tbody tr').each(function () {
                 hitungSubtotal($(this));
             });
@@ -234,39 +346,38 @@
 
             $('#btn-tambah-baris').click(function () {
                 let newRow = `
-                                                                                                                                                                            <tr>
-                                                                                                                                                                                <td>
-                                                                                                                                                                                    <select name="idproduk[]" class="form-control select2 produk-select" required>
-                                                                                                                                                                                        ${produkOptions}
-                                                                                                                                                                                    </select>
-                                                                                                                                                                                </td>
-                                                                                                                                                                                <td>
-                                                                                                                                                                                    <input type="number" name="Qty[]" class="form-control qty-input" min="1" value="1" required>
-                                                                                                                                                                                </td>
-                                                                                                                                                                                <td>
-                                                                                                                                                                                    <input type="text" name="HargaModal[]" class="form-control harga-input" min="0" value="0" required>
-                                                                                                                                                                                </td>
-                                                                                                                                                                                <td>
-                                                                                                                                                                                    <input type="text" class="form-control subtotal-input" value="0" readonly>
-                                                                                                                                                                                </td>
-                                                                                                                                                                                <td class="text-center">
-                                                                                                                                                                                    <button type="button" class="btn btn-danger btn-sm btn-remove-row">
-                                                                                                                                                                                        <i class="fa fa-trash"></i>
-                                                                                                                                                                                    </button>
-                                                                                                                                                                                </td>
-                                                                                                                                                                            </tr>
-                                                                                                                                                                        `;
-                // Tambahkan baris baru
+                    <tr>
+                        <td>
+                            <select name="idproduk[]" class="form-control select2 produk-select" required>
+                                ${produkOptions}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="Qty[]" class="form-control qty-input" min="1" value="1" required>
+                        </td>
+                        <td>
+                            <select name="Satuan[]" class="form-control satuan-select" required>
+                                <option value="">Pilih Satuan</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="HargaModal[]" class="form-control harga-input" value="0" required>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control subtotal-input" value="0" readonly>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger btn-sm btn-remove-row">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    `;
                 $('#table-barang-masuk tbody').append(newRow);
-
-                // Inisialisasi select2 pada select2 yang baru saja ditambahkan
-                // Gunakan dropdownParent agar dropdown tidak tertutup
-                $('#table-barang-masuk tbody tr:last .select2').select2({
-                    dropdownParent: $('#table-barang-masuk').parent()
-                });
-
-                // Hitung subtotal untuk baris baru
-                hitungSubtotal($('#table-barang-masuk tbody tr:last'));
+                let $lastRow = $('#table-barang-masuk tbody tr:last');
+                $lastRow.find('.select2').select2({ dropdownParent: $('#table-barang-masuk').parent() });
+                updateSatuanSelect($lastRow.find('.produk-select'));
+                hitungSubtotal($lastRow);
                 hitungTotal();
                 rowIdx++;
             });
@@ -275,87 +386,6 @@
                 $(this).closest('tr').remove();
                 hitungTotal();
             });
-
-            // Hitung subtotal dan total saat load awal
-            $('#table-barang-masuk tbody tr').each(function () {
-                hitungSubtotal($(this));
-            });
-            hitungTotal();
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropArea = document.getElementById('drop-area-invoice');
-            const input = document.getElementById('invoice');
-            const preview = document.getElementById('invoice-preview');
-            const dropText = document.getElementById('drop-text-invoice');
-
-            // Klik area untuk trigger input file
-            dropArea.addEventListener('click', function () {
-                input.click();
-            });
-
-            // Drag over
-            dropArea.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                dropArea.classList.add('bg-light');
-            });
-
-            dropArea.addEventListener('dragleave', function (e) {
-                e.preventDefault();
-                dropArea.classList.remove('bg-light');
-            });
-
-            // Drop file
-            dropArea.addEventListener('drop', function (e) {
-                e.preventDefault();
-                dropArea.classList.remove('bg-light');
-                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    input.files = e.dataTransfer.files;
-                    showPreview(e.dataTransfer.files[0]);
-                }
-            });
-
-            // On file change
-            input.addEventListener('change', function (e) {
-                if (input.files && input.files[0]) {
-                    showPreview(input.files[0]);
-                }
-            });
-
-            function showPreview(file) {
-                // Jika file adalah gambar, tampilkan preview gambar
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview Invoice" class="img-fluid rounded"
-                        style = "max-height:120px;" > ';
-                        dropText.style.display = 'none';
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    // Jika file adalah dokumen, tampilkan ikon dan nama file
-                    let icon = '';
-                    let ext = file.name.split('.').pop().toLowerCase();
-                    if (['pdf'].includes(ext)) {
-                        icon = '<i class="fa fa-file-pdf text-danger fa-2x"></i>';
-                    } else if (['doc', 'docx'].includes(ext)) {
-                        icon = '<i class="fa fa-file-word text-primary fa-2x"></i>';
-                    } else if (['xls', 'xlsx', 'csv'].includes(ext)) {
-                        icon = '<i class="fa fa-file-excel text-success fa-2x"></i>';
-                    } else if (['ppt', 'pptx'].includes(ext)) {
-                        icon = '<i class="fa fa-file-powerpoint text-warning fa-2x"></i>';
-                    } else if (['zip', 'rar'].includes(ext)) {
-                        icon = '<i class="fa fa-file-archive text-secondary fa-2x"></i>';
-                    } else if (['txt'].includes(ext)) {
-                        icon = '<i class="fa fa-file-alt text-muted fa-2x"></i>';
-                    } else {
-                        icon = '<i class="fa fa-file fa-2x"></i>';
-                    }
-                    preview.innerHTML = icon + '<div class="mt-2">' + file.name + '</div>';
-                    dropText.style.display = 'none';
-                }
-            }
         });
     </script>
 @endpush

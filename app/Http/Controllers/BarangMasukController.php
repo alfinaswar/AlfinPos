@@ -49,7 +49,7 @@ class BarangMasukController extends Controller
 
     public function create()
     {
-        $produk = Produk::orderBy('Nama', 'asc')->get();
+        $produk = Produk::with('konversi.getNamaSatuan')->orderBy('Nama', 'asc')->get();
         return view('manajemen-stok.barang-masuk.create', compact('produk'));
     }
 
@@ -60,6 +60,7 @@ class BarangMasukController extends Controller
             'Invoice' => 'nullable|file|max:5048',
         ]);
         $data = $request->all();
+        // dd($data);
         if ($request->hasFile('Invoice')) {
             $file = $request->file('Invoice');
             $file->storeAs('public/invoice', $file->getClientOriginalName());
@@ -70,20 +71,30 @@ class BarangMasukController extends Controller
         $data['UserCreate'] = auth()->user()->name;
         BarangMasuk::create($data);
 
+
         foreach ($request->idproduk as $key => $value) {
+            $reqSatuan = $request->Satuan[$key]; // ambil satuan sesuai index produk
+            $produk = Produk::with([
+                'konversi' => function ($q) use ($reqSatuan) {
+                    $q->where('id', $reqSatuan);
+                }
+            ])->find($value);
+
             $barangMasuk = BarangMasuk::latest()->first();
             BarangMasukDetail::create([
                 'idBarangMasuk' => $barangMasuk->id,
                 'idProduk' => $value,
                 'Qty' => $request->Qty[$key],
+                'IdSatuan' => $request->Satuan[$key],
+                'NamaSatuan' => $produk->konversi->first()->Satuan,
                 'HargaModal' => str_replace('.', '', $request->HargaModal[$key]),
                 'Subtotal' => str_replace('.', '', $request->Subtotal[$key]),
                 'UserCreate' => auth()->user()->name,
             ]);
 
-            $produk = Produk::find($value);
-            if ($produk) {
-                $produk->Stok = $produk->Stok + $request->Qty[$key];
+            if ($produk && $produk->konversi->first()) {
+                $isi = $produk->konversi->first()->Isi;
+                $produk->Stok = $produk->Stok + $request->Qty[$key] * $isi;
                 $produk->save();
             }
         }
@@ -109,7 +120,6 @@ class BarangMasukController extends Controller
     public function edit($id)
     {
         $bm = BarangMasuk::with('DetailBarangMasuk')->findOrFail($id);
-        // dd($bm);
         $produk = Produk::orderBy('Nama', 'asc')->get();
         return view('manajemen-stok.barang-masuk.edit', compact('bm', 'produk'));
     }
