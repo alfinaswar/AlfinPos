@@ -106,7 +106,7 @@ class ProdukController extends Controller
             'JenisItem' => $request->JenisItem,
             'Stok' => $request->Stok,
             'Deskripsi' => $request->Deskripsi,
-            'Gambar' => $namaFile,
+            // 'Gambar' => $namaFile,
             'Status' => $request->Status,
             'UserCreate' => auth()->user()->name,
         ]);
