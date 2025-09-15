@@ -91,14 +91,13 @@ class ProdukController extends Controller
 
         $data = $request->all();
         $data['UserCreate'] = auth()->user()->name;
-
+        $namaFile = null;
         if ($request->hasFile('Gambar')) {
             $file = $request->file('Gambar');
             $namaFile = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('public/uploads/produk', $namaFile);
             $data['Gambar'] = $namaFile;
         }
-
         Produk::create([
             'KodeBarang' => $request->KodeBarang,
             'Nama' => $request->Nama,
@@ -106,7 +105,7 @@ class ProdukController extends Controller
             'JenisItem' => $request->JenisItem,
             'Stok' => $request->Stok,
             'Deskripsi' => $request->Deskripsi,
-            // 'Gambar' => $namaFile,
+            'Gambar' => $namaFile,
             'Status' => $request->Status,
             'UserCreate' => auth()->user()->name,
         ]);
