@@ -21,6 +21,14 @@ class ProdukController extends Controller
     {
         if ($request->ajax()) {
             $data = Produk::with('getKategori', 'getJenis', 'konversi.getNamaSatuan')->latest();
+
+            if ($request->has('filter_kategori') && !empty($request->filter_kategori)) {
+                $data = $data->where('KategoriItem', $request->filter_kategori);
+            }
+            if ($request->has('filter_nama_produk') && !empty($request->filter_nama_produk)) {
+                $data = $data->where('id', $request->filter_nama_produk);
+            }
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -64,8 +72,9 @@ class ProdukController extends Controller
                 ->rawColumns(['action', 'Gambar', 'HargaModal', 'HargaJual'])
                 ->make(true);
         }
-
-        return view('master.produk.index');
+        $kategori = KategoriItem::orderBy('Nama', 'ASC')->get();
+        $produk = Produk::orderBy('Nama', 'ASC')->get();
+        return view('master.produk.index', compact('kategori', 'produk'));
     }
 
     public function create()
