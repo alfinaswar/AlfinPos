@@ -237,12 +237,12 @@
                                     <span>Master Satuan</span>
                                 </a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="{{ route('konversi-satuan.index') }}">
                                     <i data-feather="shuffle"></i>
                                     <span>Konversi Satuan</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="submenu-open">
