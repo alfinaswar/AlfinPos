@@ -88,7 +88,7 @@ class ProdukController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'KodeBarang' => 'required|string|max:100|unique:produks,KodeBarang',
+            'KodeBarang' => 'required|string|max:100',
             'Nama' => 'required|string|max:255',
             'KategoriItem' => 'required|exists:kategori_items,id',
             'JenisItem' => 'required|exists:jenis_items,id',
@@ -146,7 +146,7 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'KodeBarang' => 'required|string|max:100|unique:produks,KodeBarang,' . $id,
+            'KodeBarang' => 'required|string|max:100',
             'Nama' => 'required|string|max:255',
             'KategoriItem' => 'required|exists:kategori_items,id',
             'JenisItem' => 'required|exists:jenis_items,id',
