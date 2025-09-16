@@ -25,8 +25,8 @@ class ProdukController extends Controller
             if ($request->has('filter_kategori') && !empty($request->filter_kategori)) {
                 $data = $data->where('KategoriItem', $request->filter_kategori);
             }
-            if ($request->has('filter_nama_produk') && !empty($request->filter_nama_produk)) {
-                $data = $data->where('id', $request->filter_nama_produk);
+            if ($request->has('filter_urutan_produk') && !empty($request->filter_urutan_produk)) {
+                $data = $data->orderBy('Nama', $request->filter_urutan_produk);
             }
 
             return DataTables::of($data)

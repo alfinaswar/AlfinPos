@@ -58,13 +58,13 @@
             <!-- Logo -->
             <div class="header-left active">
                 <a href="{{route('pos.kasir')}}" class="logo logo-normal">
-                    <img src="{{ asset('') }}assets/img/logo.png" alt="">
+                    <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
                 <a href="{{route('pos.kasir')}}" class="logo logo-white">
-                    <img src="{{ asset('') }}assets/img/logo-white.png" alt="">
+                    <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
                 <a href="{{route('pos.kasir')}}" class="logo-small">
-                    <img src="{{ asset('') }}assets/img/logo-small.png" alt="">
+                    <img src="{{ asset('assets/img/logo/lumina.png') }}" alt="">
                 </a>
             </div>
             <!-- /Logo -->

@@ -55,16 +55,14 @@
                         </div>
 
                         <div class="col-md-4 mb-2">
-                            <label for="filter_nama_produk" class="form-label">Filter berdasarkan Nama Produk</label>
-                            <select name="filter_nama_produk" id="filter_nama_produk" class="form-control select2">
-                                <option value="">Semua Nama Produk</option>
-                                @foreach($produk as $item)
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->Nama }}
-                                    </option>
-                                @endforeach
+                            <label for="filter_urutan_produk" class="form-label">Urutkan Data Berdasarkan</label>
+                            <select name="filter_urutan_produk" id="filter_urutan_produk" class="form-control select2">
+                                <option value="">Pilih Urutan Data</option>
+                                <option value="ASC">Urutkan dari A - Z</option>
+                                <option value="DESC">Urutkan dari Z - A</option>
                             </select>
                         </div>
+
 
 
                     </div>
@@ -147,7 +145,7 @@
                         url: "{{ route('produk.index') }}",
                         data: function (d) {
                             d.filter_kategori = $('#filter_kategori').val();
-                            d.filter_nama_produk = $('#filter_nama_produk').val();
+                            d.filter_urutan_produk = $('#filter_urutan_produk').val();
                         }
                     },
                     language: {
@@ -171,18 +169,17 @@
                         {
                             data: 'Nama',
                             name: 'Nama'
+
                         },
                         {
                             data: 'get_kategori.Nama',
                             name: 'get_kategori.Nama',
-                            orderable: false,
-                            searchable: false
+
                         },
                         {
                             data: 'get_jenis.Nama',
                             name: 'get_jenis.Nama',
-                            orderable: false,
-                            searchable: false
+
                         },
                         {
                             data: 'HargaModal',
@@ -219,7 +216,7 @@
             });
             $('#btnReset').on('click', function () {
                 $('#filter_kategori').val('').trigger('change');
-                $('#filter_nama_produk').val('').trigger('change');
+                $('#filter_urutan_produk').val('').trigger('change');
                 $('#produkTable').DataTable().ajax.reload();
             });
         });
