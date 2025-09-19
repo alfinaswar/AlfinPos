@@ -144,6 +144,10 @@ Route::prefix('laporan')->group(function () {
     Route::GET('/', [LaporanPenjualan::class, 'index'])->name('laporan.index');
     Route::POST('/download', [LaporanPenjualan::class, 'store'])->name('laporan.store');
 });
+Route::prefix('pos')->group(function () {
+    Route::post('/scan-barcode', [TransaksiController::class, 'scanBarcode'])->name('pos.scan-barcode');
+
+});
 Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');
 Route::get('districts', [DependentDropdownController::class, 'districts'])->name('districts');

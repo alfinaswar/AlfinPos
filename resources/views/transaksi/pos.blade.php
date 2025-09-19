@@ -44,6 +44,8 @@
     <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
     <link rel="stylesheet" href="{{ asset('') }}assets/css/custom-ozora.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -163,7 +165,7 @@
                                             alt="Categories">
                                     </a>
                                     <h6><a href="javascript:void(0);">Semua Kategori</a></h6>
-                                    <span>80 Items</span>
+                                    <span>Items</span>
                                 </li>
                                 @foreach ($produk as $kat)
                                     <li id="{{ $kat->id }}">
@@ -300,16 +302,33 @@
                                     <span>Daftar Pesanan Pelanggan</span>
                                 </div>
                                 <div class="">
-                                    {{-- <span class="fw-bold">
-                                        {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
-                                        <br>
-                                        <span style="font-size: 1.2em;">
-                                            <span id="jam-sekarang">{{ \Carbon\Carbon::now()->format('H:i:s') }}</span>
-                                        </span>
-                                    </span> --}}
+                                    <!-- Tombol untuk membuka modal scan barcode -->
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#scanBarcodeModal">
+                                        <i class="fas fa-barcode"></i> Scan Barcode
+                                    </button>
+                                </div>
+
+                                <!-- Modal Scan Barcode -->
+                                <div class="modal fade" id="scanBarcodeModal" tabindex="-1" aria-labelledby="scanBarcodeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="scanBarcodeModalLabel">Scan Barcode Produk</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="reader" style="width:100%;"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
+
+
                             <div class="customer-info block-section">
                                 <h6>Informasi Pelanggan</h6>
                                 <div class="input-block d-flex align-items-center">
@@ -883,7 +902,53 @@
                                         document.getElementById('jam-sekarang').textContent = jam + ':' + menit + ':' + detik;
                                     }, 1000);
                                 </script>
-    <!-- CSS tambahan untuk styling -->
+    <script>
+    function onScanSuccess(decodedText, decodedResult) {
+        // decodedText = hasil barcode (angka/kode produk)
+        console.log(`Barcode terdeteksi: ${decodedText}`);
+
+        // Kirim ke backend (controller) via AJAX
+        fetch("{{ route('pos.scan-barcode') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ barcode: decodedText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success){
+                // Tambahkan produk ke daftar pesanan (frontend)
+                let productWrap = document.querySelector('.product-wrap');
+                let item = `
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <div>
+                            <strong>${data.product.nama}</strong><br>
+                            <small>${data.product.kode}</small>
+                        </div>
+                        <div class="fw-bold">Rp ${data.product.harga}</div>
+                    </div>
+                `;
+                productWrap.insertAdjacentHTML('beforeend', item);
+
+                // Update total
+                document.getElementById("total-items").innerText = parseInt(document.getElementById("total-items").innerText) + 1;
+                let currentTotal = parseInt(document.getElementById("total-amount").innerText.replace(/\D/g,'')) || 0;
+                let newTotal = currentTotal + data.product.harga;
+                document.getElementById("total-amount").innerText = "Rp " + newTotal.toLocaleString();
+            } else {
+                alert("Produk tidak ditemukan!");
+            }
+        });
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 }
+    );
+    html5QrcodeScanner.render(onScanSuccess);
+</script>
+
 
 </body>
 

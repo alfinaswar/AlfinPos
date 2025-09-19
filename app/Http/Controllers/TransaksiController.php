@@ -78,6 +78,26 @@ class TransaksiController extends Controller
         $history = Transaksi::whereDate('created_at', now())->latest()->get();
         return view('transaksi.pos', compact('produk', 'history'));
     }
+    public function scanBarcode(Request $request)
+    {
+        $barcode = $request->barcode;
+        dd($barcode);
+        // Cari produk di database
+        $product = Produk::where('barcode', $barcode)->first();
+
+        if ($product) {
+            return response()->json([
+                'success' => true,
+                'product' => [
+                    'kode' => $product->kode,
+                    'nama' => $product->nama,
+                    'harga' => $product->harga
+                ]
+            ]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
