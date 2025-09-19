@@ -79,6 +79,7 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
+                                    <th>Barcode</th>
                                     <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Kategori Item</th>
@@ -161,6 +162,10 @@
                             name: 'DT_RowIndex',
                             orderable: false,
                             searchable: false
+                        },
+                        {
+                            data: 'KodeBarcode',
+                            name: 'KodeBarcode'
                         },
                         {
                             data: 'KodeBarang',

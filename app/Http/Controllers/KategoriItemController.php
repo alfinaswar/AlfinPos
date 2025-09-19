@@ -23,7 +23,15 @@ class KategoriItemController extends Controller
                         <button class="btn btn-sm btn-danger btn-delete" data-id="' . $row->id . '">Hapus</button>
                     ';
                 })
-                ->rawColumns(['action'])
+                ->addColumn('Icon', function ($row) {
+                    if ($row->Icon) {
+                        $url = asset('storage/uploads/icon-kategori/' . $row->Icon);
+                        return '<img src="' . $url . '" alt="Icon Kategori" width="100" height="100" style="object-fit:cover;border-radius:6px;">';
+                    } else {
+                        return '<img src="' . asset('assets/img/pos/imagenotfound.png') . '" alt="Icon Kategori" width="100" height="100" style="object-fit:cover;border-radius:6px;">';
+                    }
+                })
+                ->rawColumns(['action', 'Icon'])
                 ->make(true);
         }
 
@@ -38,11 +46,20 @@ class KategoriItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'Nama' => 'required|string|max:255'
+            'Nama' => 'required|string|max:255',
+            'Icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+        $namaFile = null;
+        if ($request->hasFile('Icon')) {
+            $file = $request->file('Icon');
+            $namaFile = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/uploads/icon-kategori', $namaFile);
+        }
 
         KategoriItem::create([
             'Nama' => $request->Nama,
+            'Icon' => $namaFile,
             'UserCreate' => auth()->user()->name,
         ]);
 
@@ -58,13 +75,23 @@ class KategoriItemController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'Nama' => 'required|string|max:255'
+            'Nama' => 'required|string|max:255',
+            'Icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $kategori = KategoriItem::findOrFail($id);
+
+        $namaFile = $kategori->Icon;
+        if ($request->hasFile('Icon')) {
+            $file = $request->file('Icon');
+            $namaFile = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/uploads/icon-kategori', $namaFile);
+        }
+
         $kategori->update([
             'Nama' => $request->Nama,
-            'UserUpdate' => auth()->user()->name
+            'Icon' => $namaFile,
+            'UserUpdate' => auth()->user()->name,
         ]);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');

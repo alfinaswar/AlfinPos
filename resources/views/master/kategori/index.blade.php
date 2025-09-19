@@ -48,6 +48,7 @@
                                 <tr>
                                     <th width="5%">No</th>
                                     <th>Nama</th>
+                                    <th>Ikon Kategori</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -120,6 +121,10 @@
                         {
                             data: 'Nama',
                             name: 'Nama'
+                        },
+                        {
+                            data: 'Icon',
+                            name: 'Icon'
                         },
                         {
                             data: 'action',

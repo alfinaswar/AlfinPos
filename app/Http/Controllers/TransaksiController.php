@@ -70,7 +70,10 @@ class TransaksiController extends Controller
 
     public function kasir()
     {
-        $produk = KategoriItem::with(['getProduk', 'getProduk.getJenis', 'getProduk.getKategori', 'getProduk.konversi.getNamaSatuan'])->orderBy('Nama', 'ASC')->get();
+        $produk = KategoriItem::withCount(['getProduk'])
+            ->with(['getProduk', 'getProduk.getJenis', 'getProduk.getKategori', 'getProduk.konversi.getNamaSatuan'])
+            ->orderBy('Nama', 'ASC')
+            ->get();
         // dd($produk);
         $history = Transaksi::whereDate('created_at', now())->latest()->get();
         return view('transaksi.pos', compact('produk', 'history'));

@@ -10,6 +10,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Laraindo\RupiahFormat;
+use Milon\Barcode\DNS1D;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProdukController extends Controller
@@ -20,15 +21,15 @@ class ProdukController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Produk::with('getKategori', 'getJenis', 'konversi.getNamaSatuan')->latest();
-
+            $data = Produk::query();
             if ($request->has('filter_kategori') && !empty($request->filter_kategori)) {
                 $data = $data->where('KategoriItem', $request->filter_kategori);
             }
             if ($request->has('filter_urutan_produk') && !empty($request->filter_urutan_produk)) {
                 $data = $data->orderBy('Nama', $request->filter_urutan_produk);
+            } else {
+                $data = $data->orderByDesc('created_at');
             }
-
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -46,6 +47,7 @@ class ProdukController extends Controller
                     }
                 })
                 ->addColumn('HargaModal', function ($row) {
+                    $row->loadMissing('konversi');
                     $hargaModal = null;
                     if ($row->konversi && $row->konversi->count() > 0) {
                         $konversiTiga = $row->konversi->where('id', 3)->first();
@@ -58,6 +60,7 @@ class ProdukController extends Controller
                     return $hargaModal !== null ? RupiahFormat::currency($hargaModal) : '-';
                 })
                 ->addColumn('HargaJual', function ($row) {
+                    $row->loadMissing('konversi');
                     $hargaJual = null;
                     if ($row->konversi && $row->konversi->count() > 0) {
                         $konversiTiga = $row->konversi->where('id', 3)->first();
@@ -69,7 +72,24 @@ class ProdukController extends Controller
                     }
                     return $hargaJual !== null ? RupiahFormat::currency($hargaJual) : '-';
                 })
-                ->rawColumns(['action', 'Gambar', 'HargaModal', 'HargaJual'])
+                ->addColumn('KodeBarcode', function ($row) {
+                    if ($row->KodeBarcode) {
+                        $barcodeGenerator = new \Milon\Barcode\DNS1D();
+                        $barcode = $barcodeGenerator->getBarcodeHTML($row->KodeBarcode, 'C128', 1.5, 40);
+                        return '<div style="text-align:center;">' . $barcode . '<div style="font-size:13px; margin-top:2px;">' . $row->KodeBarcode . '</div></div>';
+                    } else {
+                        return '-';
+                    }
+                })
+                ->addColumn('get_kategori.Nama', function ($row) {
+                    $row->loadMissing('getKategori');
+                    return $row->getKategori ? $row->getKategori->Nama : '-';
+                })
+                ->addColumn('get_jenis.Nama', function ($row) {
+                    $row->loadMissing('getJenis');
+                    return $row->getJenis ? $row->getJenis->Nama : '-';
+                })
+                ->rawColumns(['action', 'Gambar', 'HargaModal', 'HargaJual', 'KodeBarcode'])
                 ->make(true);
         }
         $kategori = KategoriItem::orderBy('Nama', 'ASC')->get();
@@ -88,6 +108,7 @@ class ProdukController extends Controller
     {
         // dd($request->all());
         $request->validate([
+            'KodeBarcode' => 'required|string|max:100',
             'KodeBarang' => 'required|string|max:100',
             'Nama' => 'required|string|max:255',
             'KategoriItem' => 'required|exists:kategori_items,id',
@@ -108,6 +129,7 @@ class ProdukController extends Controller
             $data['Gambar'] = $namaFile;
         }
         Produk::create([
+            'KodeBarcode' => $request->KodeBarcode,
             'KodeBarang' => $request->KodeBarang,
             'Nama' => $request->Nama,
             'KategoriItem' => $request->KategoriItem,
@@ -146,6 +168,7 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'KodeBarcode' => 'required|string|max:100',
             'KodeBarang' => 'required|string|max:100',
             'Nama' => 'required|string|max:255',
             'KategoriItem' => 'required|exists:kategori_items,id',
@@ -176,6 +199,7 @@ class ProdukController extends Controller
         }
 
         $produk->update([
+            'KodeBarcode' => $request->KodeBarcode,
             'KodeBarang' => $request->KodeBarang,
             'Nama' => $request->Nama,
             'KategoriItem' => $request->KategoriItem,

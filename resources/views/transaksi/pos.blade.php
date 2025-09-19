@@ -42,6 +42,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('') }}assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('') }}assets/css/custom-ozora.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -126,7 +127,7 @@
             <!-- /Header Menu -->
 
             <!-- Mobile Menu -->
-            <div class="dropdown mobile-user-menu">
+            {{-- <div class="dropdown mobile-user-menu">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -134,7 +135,7 @@
                     <a class="dropdown-item" href="general-settings.html">Settings</a>
                     <a class="dropdown-item" href="signin.html">Logout</a>
                 </div>
-            </div>
+            </div> --}}
             <!-- /Mobile Menu -->
         </div>
         <!-- Header -->
@@ -142,7 +143,6 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="btn-row d-sm-flex align-items-center">
-
                     <a href="javascript:void(0);" class="btn btn-info" onclick="location.reload();"><span
                             class="me-1 d-flex align-items-center"><i data-feather="rotate-cw"
                                 class="feather-16"></i></span>Reset</a>
@@ -157,7 +157,7 @@
                             <h5>Kategori Produk</h5>
                             <p>Pilih Berdasarkan Kategori Produk</p>
                             <ul class="tabs owl-carousel pos-category">
-                                <li id="all">
+                                <li id="">
                                     <a href="javascript:void(0);">
                                         <img src="{{ asset('') }}assets/img/categories/category-01.png"
                                             alt="Categories">
@@ -168,30 +168,66 @@
                                 @foreach ($produk as $kat)
                                     <li id="{{ $kat->id }}">
                                         <a href="javascript:void(0);">
-                                            <img src="{{ asset('') }}assets/img/categories/category-02.png"
-                                                alt="Categories">
+                                            @if($kat->Icon)
+                                                <img src="{{ asset('storage/uploads/icon-kategori/' . $kat->Icon) }}" alt="Icon Kategori" style="max-height: 60px;">
+                                            @else
+                                                <img src="{{ asset('assets/img/pos/imagenotfound.png') }}" alt="Gambar Tidak Ditemukan">
+                                            @endif
                                         </a>
                                         <h6><a href="javascript:void(0);">{{ $kat->Nama }}</a></h6>
-                                        <span>4 Items</span>
+                                        <span>{{$kat->get_produk_count}}</span>
                                     </li>
                                 @endforeach
                             </ul>
                            <div class="pos-products">
-    <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center justify-content-between">
         <h5 class="mb-3">Produk</h5>
     </div>
+<div class="mb-3">
+    <div class="input-group">
+        <span class="input-group-text bg-primary text-white" id="search-addon">
+            <i class="fa fa-search"></i>
+        </span>
+        <input
+            type="text"
+            id="search-barcode-kode"
+            class="form-control"
+            placeholder="🔍 Cari produk dengan Barcode atau Kode..."
+            aria-label="Cari produk"
+            aria-describedby="search-addon"
+        >
+        <button class="btn btn-danger" type="button" id="clear-search">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+    <small class="form-text text-muted ms-2">Ketik kode barcode atau kode produk untuk pencarian cepat.</small>
+</div>
+<script>
+    document.getElementById('clear-search').onclick = function() {
+        document.getElementById('search-barcode-kode').value = '';
+        document.getElementById('search-barcode-kode').focus();
+        // Trigger event pencarian ulang jika ada
+        var event = new Event('input');
+        document.getElementById('search-barcode-kode').dispatchEvent(event);
+    };
+</script>
     <div class="tabs_container">
         @foreach ($produk as $key => $kategori)
             <div class="tab_content active" data-tab="{{ $kategori->id }}">
-                <div class="row">
+                <div class="row produk-list-row">
                     @foreach ($kategori->getProduk as $item)
-                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
+                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 produk-item"
+                            data-kode-barcode="{{ $item->KodeBarcode }}"
+                            data-kode="{{ $item->KodeBarang }}"
+                        >
                             <div class="product-info default-cover card"
                                 data-product-id="{{ $item->id }}"
+                                data-kode-barcode="{{ $item->KodeBarcode }}"
+                                data-kode="{{ $item->KodeBarang }}"
                                 data-product-name="{{ $item->Nama }}"
                                 data-product-price="{{ $item->HargaJual }}"
                                 data-category-name="{{ $kategori->Nama }}"
-                                data-product-image="{{ asset('storage/uploads/produk/' . $item->Gambar) }}"
+                                data-product-image="{{ asset('storage/uploads/produk/' . $item->Gambar ?? 'imagenotfound.png') }}"
                                 data-product-konversi='@json($item->konversi ? $item->konversi->map(function($k) { return [
                                     "id" => $k->id,
                                     "nama_satuan" => $k->getNamaSatuan->NamaSatuan ?? "Satuan",
@@ -199,7 +235,7 @@
                                 ]; }) : [])'
                             >
                                 <a href="javascript:void(0);" class="img-bg">
-                                    <img src="{{ asset('storage/uploads/produk/' . $item->Gambar) }}"
+                                    <img src="{{ asset('storage/uploads/produk/' . $item->Gambar ?? 'imagenotfound.png') }}"
                                         alt="Products" width="150px" height="100px"
                                         style="object-fit: cover;">
                                     <span><i data-feather="check" class="feather-16"></i></span>
@@ -231,7 +267,27 @@
             </div>
         @endforeach
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('search-barcode-kode');
+            searchInput.addEventListener('input', function () {
+                const keyword = this.value.trim().toLowerCase();
+                document.querySelectorAll('.produk-list-row').forEach(function(row) {
+                    row.querySelectorAll('.produk-item').forEach(function(item) {
+                        const kodeBarcode = (item.getAttribute('data-kode-barcode') || '').toLowerCase();
+                        const kode = (item.getAttribute('data-kode') || '').toLowerCase();
+                        if (keyword === '' || kodeBarcode.includes(keyword) || kode.includes(keyword)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </div>
+
 
 
                         </div>
@@ -244,11 +300,15 @@
                                     <span>Daftar Pesanan Pelanggan</span>
                                 </div>
                                 <div class="">
-                                    <a class="confirm-text" href="javascript:void(0);"><i data-feather="trash-2"
-                                            class="feather-16 text-danger"></i></a>
-                                    <a href="javascript:void(0);" class="text-default"><i
-                                            data-feather="more-vertical" class="feather-16"></i></a>
+                                    {{-- <span class="fw-bold">
+                                        {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
+                                        <br>
+                                        <span style="font-size: 1.2em;">
+                                            <span id="jam-sekarang">{{ \Carbon\Carbon::now()->format('H:i:s') }}</span>
+                                        </span>
+                                    </span> --}}
                                 </div>
+
                             </div>
                             <div class="customer-info block-section">
                                 <h6>Informasi Pelanggan</h6>
@@ -813,95 +873,18 @@
             updateTotalDisplay();
         });
     </script>
-
+ <script>
+                                    // Update jam setiap detik
+                                    setInterval(function() {
+                                        var now = new Date();
+                                        var jam = now.getHours().toString().padStart(2, '0');
+                                        var menit = now.getMinutes().toString().padStart(2, '0');
+                                        var detik = now.getSeconds().toString().padStart(2, '0');
+                                        document.getElementById('jam-sekarang').textContent = jam + ':' + menit + ':' + detik;
+                                    }, 1000);
+                                </script>
     <!-- CSS tambahan untuk styling -->
-    <style>
-        .checkout-section {
-            border-top: 1px solid #dee2e6;
-            padding-top: 1rem;
-        }
 
-        .cart-total {
-            border: 1px solid #dee2e6;
-        }
-
-        #loading-overlay .loading-content {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .notification {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .checkout-summary .table th {
-            border-top: none;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* Animation untuk tombol saat disabled */
-        .btn:disabled {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:disabled::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% {
-                left: -100%;
-            }
-
-            100% {
-                left: 100%;
-            }
-        }
-        .satuan-select {
-            min-width: 120px;
-            margin-top: 2px;
-        }
-        .harga-produk {
-            font-size: 1rem;
-        }
-    </style>
-    <style>
-        .pos-products .product-info.selected {
-            transform: scale(0.95);
-            transition: transform 0.2s ease;
-        }
-
-        .pos-products .product-info {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .pos-products .product-info:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-wrap .product-list {
-            border-bottom: 1px solid #f0f0f0;
-            padding: 10px 0;
-            margin-bottom: 10px;
-        }
-
-        .qty-item input {
-            width: 60px;
-        }
-    </style>
 </body>
 
 </html>
