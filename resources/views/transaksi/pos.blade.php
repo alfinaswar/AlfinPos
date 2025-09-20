@@ -45,6 +45,8 @@
     <link rel="stylesheet" href="{{ asset('') }}assets/css/custom-ozora.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -902,12 +904,35 @@
                                         document.getElementById('jam-sekarang').textContent = jam + ':' + menit + ':' + detik;
                                     }, 1000);
                                 </script>
-    <script>
-    function onScanSuccess(decodedText, decodedResult) {
-        // decodedText = hasil barcode (angka/kode produk)
-        console.log(`Barcode terdeteksi: ${decodedText}`);
+   <script>
+    let beep = new Audio('{{ asset('assets/sound/beep.mp3') }}');
+    let beepError = new Audio('{{ asset('assets/sound/beep-error.mp3') }}');
+    beep.load();
+    beepError.load();
 
-        // Kirim ke backend (controller) via AJAX
+    document.body.addEventListener("click", function initBeep() {
+        beep.play().catch(()=>{});
+        beep.pause();
+        beep.currentTime = 0;
+        beepError.play().catch(()=>{});
+        beepError.pause();
+        beepError.currentTime = 0;
+        document.body.removeEventListener("click", initBeep);
+    });
+
+    let lastScanTime = 0;
+    const scanCooldown = 1500;
+
+    function onScanSuccess(decodedText, decodedResult) {
+        let now = Date.now();
+        if (now - lastScanTime < scanCooldown) {
+            console.log("Scan diabaikan (masih cooldown)");
+            return;
+        }
+        lastScanTime = now;
+
+        console.log("Hasil Scan:", decodedText);
+
         fetch("{{ route('pos.scan-barcode') }}", {
             method: "POST",
             headers: {
@@ -916,30 +941,58 @@
             },
             body: JSON.stringify({ barcode: decodedText })
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-            if(data.success){
-                // Tambahkan produk ke daftar pesanan (frontend)
-                let productWrap = document.querySelector('.product-wrap');
-                let item = `
-                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                        <div>
-                            <strong>${data.product.nama}</strong><br>
-                            <small>${data.product.kode}</small>
-                        </div>
-                        <div class="fw-bold">Rp ${data.product.harga}</div>
-                    </div>
-                `;
-                productWrap.insertAdjacentHTML('beforeend', item);
+            if (data.success) {
+                beep.currentTime = 0;
+                beep.play().catch(err => console.warn("Beep gagal:", err));
 
-                // Update total
-                document.getElementById("total-items").innerText = parseInt(document.getElementById("total-items").innerText) + 1;
-                let currentTotal = parseInt(document.getElementById("total-amount").innerText.replace(/\D/g,'')) || 0;
-                let newTotal = currentTotal + data.product.harga;
-                document.getElementById("total-amount").innerText = "Rp " + newTotal.toLocaleString();
+                let satuan_id = data.product.Konversi.length > 0 ? data.product.Konversi[0].id : 0;
+                let existingIndex = selectedProducts.findIndex(p => p.id == data.product.id && p.satuan_id == satuan_id);
+
+                if (existingIndex > -1) {
+                    selectedProducts[existingIndex].quantity += 1;
+                    updateProductQuantity(data.product.id, satuan_id, selectedProducts[existingIndex].quantity);
+                } else {
+                    const product = {
+                        id: data.product.id,
+                        satuan_id: satuan_id,
+                        name: data.product.Nama,
+                        category: data.product.Kategori ?? "-",
+                        price: data.product.HargaJual,
+                        image: data.product.Gambar
+                            ? `/storage/uploads/produk/${data.product.Gambar}`
+                            : `/assets/img/pos/imagenotfound.png`,
+                        konversi: data.product.Konversi,
+                        quantity: 1
+                    };
+                    selectedProducts.push(product);
+                    addProductToDOM(product);
+                }
+                updateCounter();
             } else {
-                alert("Produk tidak ditemukan!");
+                beepError.currentTime = 0;
+                beepError.play().catch(err => console.warn("Beep error gagal:", err));
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Produk Tidak Ditemukan',
+                    text: 'Produk dengan barcode ' + decodedText + ' tidak ditemukan.',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
             }
+        })
+        .catch(err => {
+            beepError.currentTime = 0;
+            beepError.play().catch(err => console.warn("Beep error gagal:", err));
+            console.error(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: 'Terjadi kesalahan koneksi ke server.',
+                timer: 1000,
+                showConfirmButton: false
+            });
         });
     }
 
@@ -948,6 +1001,8 @@
     );
     html5QrcodeScanner.render(onScanSuccess);
 </script>
+
+
 
 
 </body>

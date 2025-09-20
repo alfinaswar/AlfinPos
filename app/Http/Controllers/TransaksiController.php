@@ -81,17 +81,26 @@ class TransaksiController extends Controller
     public function scanBarcode(Request $request)
     {
         $barcode = $request->barcode;
-        dd($barcode);
-        // Cari produk di database
-        $product = Produk::where('barcode', $barcode)->first();
-
+        $product = Produk::with('konversi')->where('KodeBarcode', $barcode)->first();
         if ($product) {
             return response()->json([
                 'success' => true,
                 'product' => [
-                    'kode' => $product->kode,
-                    'nama' => $product->nama,
-                    'harga' => $product->harga
+                    'id' => $product->id,
+                    'KodeBarang' => $product->KodeBarang,
+                    'KodeBarcode' => $product->KodeBarcode,
+                    'Nama' => $product->Nama,
+                    'Stok' => $product->Stok,
+                    'Gambar' => $product->Gambar,
+                    'HargaJual' => $product->HargaJual,
+                    'Kategori' => $product->getKategori ? $product->getKategori->Nama : null,
+                    'Konversi' => $product->konversi ? $product->konversi->map(function ($k) {
+                        return [
+                            'id' => $k->id,
+                            'nama_satuan' => $k->getNamaSatuan->NamaSatuan ?? 'Satuan',
+                            'harga_jual' => $k->HargaJual
+                        ];
+                    }) : [],
                 ]
             ]);
         } else {
