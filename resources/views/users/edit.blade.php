@@ -72,7 +72,7 @@
                                 <input type="text" name="alamat" class="form-control" id="alamat"
                                     placeholder="Alamat" value="{{ old('alamat', $user->alamat) }}">
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="provinsi" class="form-label"><strong>Provinsi</strong></label>
                                 @php
                                     $provinces = new App\Http\Controllers\DependentDropdownController();
@@ -110,7 +110,7 @@
                                         {{ $user->getKelurahan->name ?? '' }}</option>
                                     <option value="">==Pilih Salah Satu==</option>
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
                                 <label for="tanggal_lahir" class="form-label"><strong>Tanggal Lahir</strong></label>
                                 <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir"
