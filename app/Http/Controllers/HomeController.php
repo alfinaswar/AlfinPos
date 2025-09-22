@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
+use App\Models\MasterShift;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use Illuminate\Http\Request;
@@ -48,14 +50,19 @@ class HomeController extends Controller
             ->orderByDesc('total_terjual')
             ->take(5)
             ->get();
-
+        $shift = MasterShift::get();
+        $absenHariIni = Absensi::where('UserCreate', auth()->user()->id)
+            ->whereDate('created_at', now()->toDateString())
+            ->first();
         return view('home', compact(
             'totalPendapatanMingguIni',
             'persentaseKenaikanMingguIni',
             'totalTransaksiHariIni',
             'totalPendapatanHariIni',
             'RiwayatTransaksi',
-            'ProdukPopuler'
+            'ProdukPopuler',
+            'shift',
+            'absenHariIni'
         ));
     }
 }

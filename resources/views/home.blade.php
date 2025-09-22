@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="content">
+        {{-- @include('absensi.modal-absen') --}}
         <div class="welcome d-lg-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center welcome-text">
                 <h3 class="d-flex align-items-center">
