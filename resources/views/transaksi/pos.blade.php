@@ -318,10 +318,9 @@
                                                 <h5 class="modal-title" id="scanBarcodeModalLabel">Scan Barcode Produk</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                                             </div>
-                                            {{-- <div class="modal-body">
+                                            <div class="modal-body">
                                                 <div id="reader" style="width:100%;"></div>
-                                            </div> --}}
-                                            <input type="text" id="barcodeInput" placeholder="Scan Barcode..." autofocus style="opacity:0;position:absolute;left:-9999px;">
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                             </div>
@@ -905,28 +904,29 @@
                                         document.getElementById('jam-sekarang').textContent = jam + ':' + menit + ':' + detik;
                                     }, 1000);
                                 </script>
-<script>
+   <script>
     let beep = new Audio('{{ asset('assets/sound/beep.mp3') }}');
     let beepError = new Audio('{{ asset('assets/sound/beep-error.mp3') }}');
     beep.load();
     beepError.load();
 
-    // Inisialisasi pertama biar bisa play (harus ada user interaction di browser modern)
     document.body.addEventListener("click", function initBeep() {
         beep.play().catch(()=>{});
-        beep.pause(); beep.currentTime = 0;
+        beep.pause();
+        beep.currentTime = 0;
         beepError.play().catch(()=>{});
-        beepError.pause(); beepError.currentTime = 0;
+        beepError.pause();
+        beepError.currentTime = 0;
         document.body.removeEventListener("click", initBeep);
     });
 
     let lastScanTime = 0;
     const scanCooldown = 1500;
 
-    function handleBarcodeScan(decodedText) {
+    function onScanSuccess(decodedText, decodedResult) {
         let now = Date.now();
         if (now - lastScanTime < scanCooldown) {
-            console.log("Scan diabaikan (cooldown)");
+            console.log("Scan diabaikan (masih cooldown)");
             return;
         }
         lastScanTime = now;
@@ -973,29 +973,35 @@
             } else {
                 beepError.currentTime = 0;
                 beepError.play().catch(err => console.warn("Beep error gagal:", err));
-                toastr.error("Produk dengan barcode " + decodedText + " tidak ditemukan.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Produk Tidak Ditemukan',
+                    text: 'Produk dengan barcode ' + decodedText + ' tidak ditemukan.',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
             }
         })
         .catch(err => {
             beepError.currentTime = 0;
             beepError.play().catch(err => console.warn("Beep error gagal:", err));
             console.error(err);
-            toastr.error("Terjadi kesalahan koneksi ke server.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: 'Terjadi kesalahan koneksi ke server.',
+                timer: 1000,
+                showConfirmButton: false
+            });
         });
     }
 
-    // Event listener untuk scanner USB (baca dari input)
-    document.getElementById("barcodeInput").addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            let code = this.value.trim();
-            if (code) {
-                handleBarcodeScan(code);
-            }
-            this.value = ""; // reset input setelah scan
-        }
-    });
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 }
+    );
+    html5QrcodeScanner.render(onScanSuccess);
 </script>
+
 
 
 
