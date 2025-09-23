@@ -151,13 +151,14 @@ class TransaksiController extends Controller
             'BiayaLayanan' => null,
             'TotalAkhir' => $subtotal,
             'JumlahBayar' => $jumlahBayar,
-            'kembalian' => $kembalian,  // Simpan kembalian yang telah dihitung
+            'kembalian' => $kembalian,
             'MetodePembayaran' => null,
             'status_transaksi' => 'Berhasil',
             'JenisDiskon' => 'None',
             'NilaiDiskon' => 0,
             'Catatan' => null,
             'JumlahItem' => $qty,
+            'Shift' => auth()->user()->shift,
         ]);
 
         $transaksi = Transaksi::orderBy('id', 'desc')->first();
@@ -178,7 +179,7 @@ class TransaksiController extends Controller
                     'Diskon' => null,
                     'TotalAkhir' => (int) $product['price'] * (int) $product['quantity'],
                     'IdKasir' => auth()->user()->id ?? 1,
-                    'Shift' => null,
+                    'Shift' => auth()->user()->shift ?? null,
                 ]);
             }
         }

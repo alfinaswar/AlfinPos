@@ -1,5 +1,5 @@
 @if(is_null($absenHariIni))
-    <!-- Modal Absen -->
+
     <div class="modal fade" id="modalAbsen" tabindex="-1" aria-labelledby="modalAbsenLabel" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
@@ -14,16 +14,16 @@
                         @csrf
                         <div class="mb-3">
                             <label for="shift" class="form-label">Pilih Shift</label>
-                            <select class="form-select" id="shift" name="shift" required>
+                            <select class="form-select" id="shift" name="Shift" required>
                                 <option value="">Pilih Shift</option>
                                 @foreach($shift as $s)
-                                    <option value="{{ $s->NamaShift }}">{{ $s->NamaShift }}</option>
+                                    <option value="{{ $s->id }}">{{ $s->NamaShift }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan</label>
-                            <select class="form-select" id="keterangan" name="keterangan" required>
+                            <select class="form-select" id="keterangan" name="Jenis" required>
                                 <option value="">Pilih Keterangan</option>
                                 <option value="Hadir">Hadir</option>
                                 <option value="Izin">Izin</option>
@@ -33,7 +33,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="catatan" class="form-label">Catatan (Opsional)</label>
-                            <textarea class="form-control" id="catatan" name="catatan" rows="2"></textarea>
+                            <textarea class="form-control" id="catatan" name="Catatan" rows="2" maxlength="255"
+                                oninput="document.getElementById('charCount').innerText = this.value.length + '/255';"></textarea>
+                            <div class="form-text text-end"><span id="charCount">0/255</span></div>
                         </div>
                         <button type="submit" class="btn btn-primary">Absen Sekarang</button>
                     </form>
@@ -41,6 +43,21 @@
             </div>
         </div>
     </div>
+
+@endif
+@push('js')
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: '{{ session('success') }}',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+    @endif
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var modalAbsen = document.getElementById('modalAbsen');
@@ -53,4 +70,4 @@
             }
         });
     </script>
-@endif
+@endpush

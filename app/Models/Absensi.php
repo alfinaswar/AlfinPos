@@ -14,6 +14,11 @@ class Absensi extends Model
 
     public function getUser()
     {
-        return $this->hasOne(User::class, 'IdUser', 'id');
+        return $this->hasOne(User::class, 'id', 'UserCreate');
     }
+    public function getShift()
+    {
+        return $this->hasOne(MasterShift::class, 'id', 'Shift');
+    }
+
 }

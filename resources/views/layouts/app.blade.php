@@ -241,7 +241,7 @@
                             </li>
                         </ul>
                     </li>
-                    {{-- <li class="submenu-open">
+                    <li class="submenu-open">
                         <h6 class="submenu-hdr">HRM</h6>
                         <ul>
                             <li>
@@ -251,7 +251,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li> --}}
+                    </li>
                     <li class="submenu-open">
                         <h6 class="submenu-hdr">Kelola Pengguna</h6>
                         <ul>

@@ -45,7 +45,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 Route::prefix('transaksi')->group(function () {
     Route::GET('/', [TransaksiController::class, 'index'])->name('pos.index');
-    Route::GET('/pos', [TransaksiController::class, 'kasir'])->name('pos.kasir');
     Route::GET('/create', [TransaksiController::class, 'create'])->name('pos.create');
     Route::POST('/simpan', [TransaksiController::class, 'store'])->name('pos.store');
     Route::GET('/edit/{id}', [TransaksiController::class, 'edit'])->name('pos.edit');
@@ -55,6 +54,7 @@ Route::prefix('transaksi')->group(function () {
     Route::PUT('/update/{id}', [TransaksiController::class, 'update'])->name('pos.update');
     Route::delete('hapus/{id}', [TransaksiController::class, 'destroy'])->name('pos.destroy');
 });
+
 Route::prefix('master-kategori-item')->group(function () {
     Route::GET('/', [KategoriItemController::class, 'index'])->name('kategori.index');
     Route::GET('/create', [KategoriItemController::class, 'create'])->name('kategori.create');
@@ -146,7 +146,7 @@ Route::prefix('laporan')->group(function () {
 });
 Route::prefix('pos')->group(function () {
     Route::post('/scan-barcode', [TransaksiController::class, 'scanBarcode'])->name('pos.scan-barcode');
-
+    Route::GET('/', [TransaksiController::class, 'kasir'])->name('pos.kasir');
 });
 Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');

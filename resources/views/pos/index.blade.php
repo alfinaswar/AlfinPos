@@ -51,30 +51,10 @@
 </head>
 
 <body>
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Mode Fullscreen Wajib</h5>
-                </div>
-                <div class="modal-body">
-                    Untuk menggunakan aplikasi POS ini, Anda <b>wajib mengaktifkan mode layar penuh (fullscreen)</b> agar pengalaman kasir lebih optimal, tidak ada gangguan tampilan, <b>dan tidak ada gangguan saat scan produk</b>.<br><br>
-                    Silakan klik tombol <b>"Aktifkan Fullscreen"</b> di bawah ini untuk melanjutkan.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary w-100" id="btn-activate-fullscreen">Aktifkan Fullscreen</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
     <div id="global-loader">
         <div class="whirly-loader"> </div>
     </div>
-
+    <!-- Main Wrapper -->
     <div class="main-wrapper">
 
         <!-- Header -->
@@ -119,20 +99,10 @@
                     <a href="{{ route('home') }}"
                         class="btn btn-primary shadow-sm px-4 py-2 d-flex align-items-center gap-2" title="Buka POS"
                         style="border-radius: 30px; font-weight: 600; font-size: 1rem;">
+
                         <span class="d-none d-md-inline">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item d-flex align-items-center ms-2">
-                    <button class="btn btn-outline-secondary shadow-sm px-3 py-2 d-flex align-items-center gap-2"
-                        title="Mode Layar Penuh"
-                        style="border-radius: 30px; font-weight: 600; font-size: 1rem;"
-                        id="fullscreen-btn"
-                        type="button">
-                        <i class="fas fa-expand"></i>
-                        <span class="d-none d-md-inline">Fullscreen</span>
-                    </button>
-                </li>
-
                 <li class="nav-item">
                     <a href="" class="nav-link userset" title="Edit Profil">
                         <span class="user-info">
@@ -1069,58 +1039,6 @@
                                     updateWaktuSekarang();
                                     setInterval(updateWaktuSekarang, 1000);
                                 </script>
-                                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const btn = document.getElementById('fullscreen-btn');
-                        btn.addEventListener('click', function() {
-                            if (!document.fullscreenElement) {
-                                document.documentElement.requestFullscreen();
-                            } else {
-                                if (document.exitFullscreen) {
-                                    document.exitFullscreen();
-                                }
-                            }
-                        });
-                    });
-                </script>
-               <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var modalWelcome = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-            var barcodeInput = document.getElementById('barcodeInput');
-            if (!document.fullscreenElement) {
-                modalWelcome.show();
-            }
-            document.getElementById('btn-activate-fullscreen').addEventListener('click', function() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().then(function() {
-                        modalWelcome.hide();
-                        if (barcodeInput) {
-                            barcodeInput.focus();
-                        }
-                    });
-                } else {
-                    modalWelcome.hide();
-                    if (barcodeInput) {
-                        barcodeInput.focus();
-                    }
-                }
-            });
-            document.addEventListener('fullscreenchange', function() {
-                if (!document.fullscreenElement) {
-                    modalWelcome.show();
-                } else {
-                    if (barcodeInput) {
-                        barcodeInput.focus();
-                    }
-                }
-            });
-
-            // Autofocus ke input barcode saat halaman dimuat jika sudah fullscreen
-            if (document.fullscreenElement && barcodeInput) {
-                barcodeInput.focus();
-            }
-        });
-    </script>
 
 </body>
 

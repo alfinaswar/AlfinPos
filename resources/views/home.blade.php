@@ -3,7 +3,9 @@
 @section('content')
 
     <div class="content">
-        {{-- @include('absensi.modal-absen') --}}
+        @if(auth()->user()->role != 'Super Admin')
+            @include('absensi.modal-absen')
+        @endif
         <div class="welcome d-lg-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center welcome-text">
                 <h3 class="d-flex align-items-center">

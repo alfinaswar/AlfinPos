@@ -51,30 +51,10 @@
 </head>
 
 <body>
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Mode Fullscreen Wajib</h5>
-                </div>
-                <div class="modal-body">
-                    Untuk menggunakan aplikasi POS ini, Anda <b>wajib mengaktifkan mode layar penuh (fullscreen)</b> agar pengalaman kasir lebih optimal, tidak ada gangguan tampilan, <b>dan tidak ada gangguan saat scan produk</b>.<br><br>
-                    Silakan klik tombol <b>"Aktifkan Fullscreen"</b> di bawah ini untuk melanjutkan.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary w-100" id="btn-activate-fullscreen">Aktifkan Fullscreen</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
     <div id="global-loader">
         <div class="whirly-loader"> </div>
     </div>
-
+    <!-- Main Wrapper -->
     <div class="main-wrapper">
 
         <!-- Header -->
@@ -119,20 +99,10 @@
                     <a href="{{ route('home') }}"
                         class="btn btn-primary shadow-sm px-4 py-2 d-flex align-items-center gap-2" title="Buka POS"
                         style="border-radius: 30px; font-weight: 600; font-size: 1rem;">
+
                         <span class="d-none d-md-inline">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item d-flex align-items-center ms-2">
-                    <button class="btn btn-outline-secondary shadow-sm px-3 py-2 d-flex align-items-center gap-2"
-                        title="Mode Layar Penuh"
-                        style="border-radius: 30px; font-weight: 600; font-size: 1rem;"
-                        id="fullscreen-btn"
-                        type="button">
-                        <i class="fas fa-expand"></i>
-                        <span class="d-none d-md-inline">Fullscreen</span>
-                    </button>
-                </li>
-
                 <li class="nav-item">
                     <a href="" class="nav-link userset" title="Edit Profil">
                         <span class="user-info">
@@ -334,11 +304,13 @@
                                     <span>Daftar Pesanan Pelanggan</span>
                                 </div>
                                 <div class="">
-                                    <span id="waktu-sekarang" style="font-weight:bold;"></span>
+                                    <!-- Tombol untuk membuka modal scan barcode -->
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#scanBarcodeModal">
+                                        <i class="fas fa-barcode"></i> Scan Barcode
+                                    </button>
                                 </div>
 
-
-                                {{-- <!-- Modal Scan Barcode  Kamera Biasa-->
+                                <!-- Modal Scan Barcode -->
                                 <div class="modal fade" id="scanBarcodeModal" tabindex="-1" aria-labelledby="scanBarcodeModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
@@ -354,7 +326,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
 
                             </div>
 
@@ -365,8 +337,10 @@
                                     <input type="text" class="form-control" name="InformasiPelanggan"
                                         id="InformasiPelanggan" placeholder="Informasi Pelanggan">
                                 </div>
-                                <input type="text" id="barcodeInput" placeholder="Scan Barcode..." autofocus
-       style="opacity:0;position:absolute;left:-9999px;">
+                                 <div class="input-block d-flex align-items-center">
+                                    <input type="text" id="barcodeInput" placeholder="Scan Barcode..."
+       autofocus>
+                                </div>
 
                             </div>
 
@@ -586,14 +560,6 @@
     @include('layouts.javascript-pos')
     <script>
         $(document).ready(function() {
-
-    $("#barcodeInput").keydown(function(e){
-        if(e.which==17 || e.which==74){
-            e.preventDefault();
-        }else{
-            console.log(e.which);
-        }
-    })
             $('#checkout-btn').on('click', function() {
                 if (selectedProducts.length === 0) {
                     Swal.fire({
@@ -942,7 +908,103 @@
                                         document.getElementById('jam-sekarang').textContent = jam + ':' + menit + ':' + detik;
                                     }, 1000);
                                 </script>
+   {{-- <script>
+    let beep = new Audio('{{ asset('assets/sound/beep.mp3') }}');
+    let beepError = new Audio('{{ asset('assets/sound/beep-error.mp3') }}');
+    beep.load();
+    beepError.load();
 
+    document.body.addEventListener("click", function initBeep() {
+        beep.play().catch(()=>{});
+        beep.pause();
+        beep.currentTime = 0;
+        beepError.play().catch(()=>{});
+        beepError.pause();
+        beepError.currentTime = 0;
+        document.body.removeEventListener("click", initBeep);
+    });
+
+    let lastScanTime = 0;
+    const scanCooldown = 1500;
+
+    function onScanSuccess(decodedText, decodedResult) {
+        let now = Date.now();
+        if (now - lastScanTime < scanCooldown) {
+            console.log("Scan diabaikan (masih cooldown)");
+            return;
+        }
+        lastScanTime = now;
+
+        console.log("Hasil Scan:", decodedText);
+
+        fetch("{{ route('pos.scan-barcode') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ barcode: decodedText })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                beep.currentTime = 0;
+                beep.play().catch(err => console.warn("Beep gagal:", err));
+
+                let satuan_id = data.product.Konversi.length > 0 ? data.product.Konversi[0].id : 0;
+                let existingIndex = selectedProducts.findIndex(p => p.id == data.product.id && p.satuan_id == satuan_id);
+
+                if (existingIndex > -1) {
+                    selectedProducts[existingIndex].quantity += 1;
+                    updateProductQuantity(data.product.id, satuan_id, selectedProducts[existingIndex].quantity);
+                } else {
+                    const product = {
+                        id: data.product.id,
+                        satuan_id: satuan_id,
+                        name: data.product.Nama,
+                        category: data.product.Kategori ?? "-",
+                        price: data.product.HargaJual,
+                        image: data.product.Gambar
+                            ? `/storage/uploads/produk/${data.product.Gambar}`
+                            : `/assets/img/pos/imagenotfound.png`,
+                        konversi: data.product.Konversi,
+                        quantity: 1
+                    };
+                    selectedProducts.push(product);
+                    addProductToDOM(product);
+                }
+                updateCounter();
+            } else {
+                beepError.currentTime = 0;
+                beepError.play().catch(err => console.warn("Beep error gagal:", err));
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Produk Tidak Ditemukan',
+                    text: 'Produk dengan barcode ' + decodedText + ' tidak ditemukan.',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            }
+        })
+        .catch(err => {
+            beepError.currentTime = 0;
+            beepError.play().catch(err => console.warn("Beep error gagal:", err));
+            console.error(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: 'Terjadi kesalahan koneksi ke server.',
+                timer: 1000,
+                showConfirmButton: false
+            });
+        });
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 }
+    );
+    html5QrcodeScanner.render(onScanSuccess);
+</script> --}}
 
 <script>
     let beep = new Audio('{{ asset('assets/sound/beep.mp3') }}');
@@ -950,7 +1012,7 @@
     beep.load();
     beepError.load();
 
-    // Inisialisasi pertama biar bisa play (user interaction dulu)
+    // Inisialisasi pertama biar bisa play (harus ada user interaction di browser modern)
     document.body.addEventListener("click", function initBeep() {
         beep.play().catch(()=>{});
         beep.pause(); beep.currentTime = 0;
@@ -987,17 +1049,11 @@
                 beep.play().catch(err => console.warn("Beep gagal:", err));
 
                 let satuan_id = data.product.Konversi.length > 0 ? data.product.Konversi[0].id : 0;
-                let existingIndex = selectedProducts.findIndex(
-                    p => p.id == data.product.id && p.satuan_id == satuan_id
-                );
+                let existingIndex = selectedProducts.findIndex(p => p.id == data.product.id && p.satuan_id == satuan_id);
 
                 if (existingIndex > -1) {
                     selectedProducts[existingIndex].quantity += 1;
-                    updateProductQuantity(
-                        data.product.id,
-                        satuan_id,
-                        selectedProducts[existingIndex].quantity
-                    );
+                    updateProductQuantity(data.product.id, satuan_id, selectedProducts[existingIndex].quantity);
                 } else {
                     const product = {
                         id: data.product.id,
@@ -1029,98 +1085,19 @@
         });
     }
 
-    const barcodeInput = document.getElementById("barcodeInput");
-
-
-    barcodeInput.addEventListener("keydown", function(e) {
+    // Event listener untuk scanner USB (baca dari input)
+    document.getElementById("barcodeInput").addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             e.preventDefault();
-            const code = this.value.trim();
-            if (code !== "") {
+            let code = this.value.trim();
+            if (code) {
                 handleBarcodeScan(code);
-                this.value = "";
             }
+            this.value = ""; // reset input setelah scan
         }
     });
-
-    // window.addEventListener("load", () => barcodeInput.focus());
-    // document.body.addEventListener("click", () => barcodeInput.focus());
 </script>
-<script>
-                                    function updateWaktuSekarang() {
-                                        const bulan = [
-                                            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                                            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-                                        ];
-                                        const hari = [
-                                            "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
-                                        ];
-                                        const now = new Date();
-                                        const namaHari = hari[now.getDay()];
-                                        const tanggal = now.getDate().toString().padStart(2, '0');
-                                        const namaBulan = bulan[now.getMonth()];
-                                        const tahun = now.getFullYear();
-                                        const jam = now.getHours().toString().padStart(2, '0');
-                                        const menit = now.getMinutes().toString().padStart(2, '0');
-                                        const detik = now.getSeconds().toString().padStart(2, '0');
-                                        const waktu = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} ${jam}:${menit}:${detik}`;
-                                        document.getElementById('waktu-sekarang').textContent = waktu;
-                                    }
-                                    updateWaktuSekarang();
-                                    setInterval(updateWaktuSekarang, 1000);
-                                </script>
-                                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const btn = document.getElementById('fullscreen-btn');
-                        btn.addEventListener('click', function() {
-                            if (!document.fullscreenElement) {
-                                document.documentElement.requestFullscreen();
-                            } else {
-                                if (document.exitFullscreen) {
-                                    document.exitFullscreen();
-                                }
-                            }
-                        });
-                    });
-                </script>
-               <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var modalWelcome = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-            var barcodeInput = document.getElementById('barcodeInput');
-            if (!document.fullscreenElement) {
-                modalWelcome.show();
-            }
-            document.getElementById('btn-activate-fullscreen').addEventListener('click', function() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().then(function() {
-                        modalWelcome.hide();
-                        if (barcodeInput) {
-                            barcodeInput.focus();
-                        }
-                    });
-                } else {
-                    modalWelcome.hide();
-                    if (barcodeInput) {
-                        barcodeInput.focus();
-                    }
-                }
-            });
-            document.addEventListener('fullscreenchange', function() {
-                if (!document.fullscreenElement) {
-                    modalWelcome.show();
-                } else {
-                    if (barcodeInput) {
-                        barcodeInput.focus();
-                    }
-                }
-            });
 
-            // Autofocus ke input barcode saat halaman dimuat jika sudah fullscreen
-            if (document.fullscreenElement && barcodeInput) {
-                barcodeInput.focus();
-            }
-        });
-    </script>
 
 </body>
 

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->date('Tanggal');
             $table->time('JamMasuk')->nullable();
             $table->time('JamPulang')->nullable();
-            $table->enum('Jenis', ['Masuk', 'Tidak Masuk', 'Libur'])->nullable();
+            $table->enum('Jenis', ['Hadir', 'Izin', 'Sakit', 'Cuti'])->nullable();
             $table->enum('Status', ['Tepat Waktu', 'Terlambat'])->nullable();
             $table->string('UserCreate', 100)->nullable();
             $table->string('UserUpdate', 100)->nullable();

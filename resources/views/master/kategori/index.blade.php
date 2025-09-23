@@ -13,18 +13,7 @@
         </div>
     </div>
 
-    @if (Session::get('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: '{{ Session::get('success') }}',
-                iconColor: '#4BCC1F',
-                confirmButtonText: 'Oke',
-                confirmButtonColor: '#4BCC1F',
-            });
-        </script>
-    @endif
+
 
     <div class="row mb-3">
         <div class="col text-end">
@@ -62,6 +51,18 @@
 @endsection
 
 @push('js')
+    @if (Session::get('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ Session::get('success') }}',
+                iconColor: '#4BCC1F',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#4BCC1F',
+            });
+        </script>
+    @endif
     <script>
         $(document).ready(function () {
             $('body').on('click', '.btn-delete', function () {
