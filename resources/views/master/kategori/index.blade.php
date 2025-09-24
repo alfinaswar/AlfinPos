@@ -35,10 +35,11 @@
                         <table class="table datanew cell-border compact stripe" id="kategoriTable" width="100%">
                             <thead>
                                 <tr>
-                                    <th width="5%">No</th>
-                                    <th>Nama</th>
-                                    <th>Ikon Kategori</th>
-                                    <th width="15%">Aksi</th>
+                                    <th style="width: 4%;">No</th>
+                                    <th style="width: 30%;">Nama</th>
+                                    <th style="width: 15%;">Tampil Di Kasir?</th>
+                                    <th style="width: 20%;">Ikon Kategori</th>
+                                    <th style="width: 15%;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -122,6 +123,10 @@
                         {
                             data: 'Nama',
                             name: 'Nama'
+                        },
+                        {
+                            data: 'Visible',
+                            name: 'Visible'
                         },
                         {
                             data: 'Icon',

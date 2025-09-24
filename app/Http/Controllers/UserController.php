@@ -64,7 +64,7 @@ class UserController extends Controller
             'foto_profil' => 'nullable|file|image|max:2048',
             'pekerjaan' => 'nullable|string|max:100',
             'status_perkawinan' => 'required|in:Belum Menikah,Menikah,Cerai',
-            'shift' => 'required|in:Pagi,Siang,Malam',
+            'shift' => 'required',
             'roles' => 'required',
         ]);
 

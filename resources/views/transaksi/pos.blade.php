@@ -236,15 +236,7 @@
     </div>
     <small class="form-text text-muted ms-2">Ketik kode barcode atau kode produk untuk pencarian cepat.</small>
 </div>
-<script>
-    document.getElementById('clear-search').onclick = function() {
-        document.getElementById('search-barcode-kode').value = '';
-        document.getElementById('search-barcode-kode').focus();
-        // Trigger event pencarian ulang jika ada
-        var event = new Event('input');
-        document.getElementById('search-barcode-kode').dispatchEvent(event);
-    };
-</script>
+
     <div class="tabs_container">
         @foreach ($produk as $key => $kategori)
             <div class="tab_content active" data-tab="{{ $kategori->id }}">
@@ -301,25 +293,7 @@
             </div>
         @endforeach
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('search-barcode-kode');
-            searchInput.addEventListener('input', function () {
-                const keyword = this.value.trim().toLowerCase();
-                document.querySelectorAll('.produk-list-row').forEach(function(row) {
-                    row.querySelectorAll('.produk-item').forEach(function(item) {
-                        const kodeBarcode = (item.getAttribute('data-kode-barcode') || '').toLowerCase();
-                        const kode = (item.getAttribute('data-kode') || '').toLowerCase();
-                        if (keyword === '' || kodeBarcode.includes(keyword) || kode.includes(keyword)) {
-                            item.style.display = '';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        });
-    </script>
+
 </div>
 
 
@@ -1121,7 +1095,93 @@
             }
         });
     </script>
+    <script>
+    document.getElementById('clear-search').onclick = function() {
+        document.getElementById('search-barcode-kode').value = '';
+         document.getElementById('barcodeInput').focus();
+        // Trigger event pencarian ulang jika ada
+        var event = new Event('input');
+        document.getElementById('search-barcode-kode').dispatchEvent(event);
+    };
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('search-barcode-kode');
+            searchInput.addEventListener('input', function () {
+                const keyword = this.value.trim().toLowerCase();
+                document.querySelectorAll('.produk-list-row').forEach(function(row) {
+                    row.querySelectorAll('.produk-item').forEach(function(item) {
+                        const kodeBarcode = (item.getAttribute('data-kode-barcode') || '').toLowerCase();
+                        const kode = (item.getAttribute('data-kode') || '').toLowerCase();
+                        if (keyword === '' || kodeBarcode.includes(keyword) || kode.includes(keyword)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+<script>
 
+    document.addEventListener('keydown', function(e) {
+
+        if (e.key === 'F11') {
+            e.preventDefault();
+            return false;
+        }
+        if (e.key === 'F5') {
+            e.preventDefault();
+            return false;
+        }
+        if (e.key === 'Escape' || e.key === 'Esc' || e.key === 'esc') {
+            e.preventDefault();
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
+            e.preventDefault();
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+            e.preventDefault();
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+            e.preventDefault();
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) {
+            e.preventDefault();
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'K' || e.key === 'k')) {
+            e.preventDefault();
+            return false;
+        }
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'S' || e.key === 's')) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Kunci drag
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Kunci select
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+</script>
 </body>
 
 </html>

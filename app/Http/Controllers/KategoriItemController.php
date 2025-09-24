@@ -31,7 +31,14 @@ class KategoriItemController extends Controller
                         return '<img src="' . asset('assets/img/pos/imagenotfound.png') . '" alt="Icon Kategori" width="100" height="100" style="object-fit:cover;border-radius:6px;">';
                     }
                 })
-                ->rawColumns(['action', 'Icon'])
+                ->addColumn('Visible', function ($row) {
+                    if ($row->Visible == 'Y') {
+                        return '<span class="badge bg-success"><i class="fa fa-eye"></i> Tampil</span>';
+                    } else {
+                        return '<span class="badge bg-secondary"><i class="fa fa-eye-slash"></i> Tidak Tampil</span>';
+                    }
+                })
+                ->rawColumns(['action', 'Icon', 'Visible'])
                 ->make(true);
         }
 
@@ -47,6 +54,7 @@ class KategoriItemController extends Controller
     {
         $request->validate([
             'Nama' => 'required|string|max:255',
+            'Visible' => 'required',
             'Icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
@@ -60,6 +68,7 @@ class KategoriItemController extends Controller
         KategoriItem::create([
             'Nama' => $request->Nama,
             'Icon' => $namaFile,
+            'Visible' => $request->Visible,
             'UserCreate' => auth()->user()->name,
         ]);
 
@@ -76,6 +85,7 @@ class KategoriItemController extends Controller
     {
         $request->validate([
             'Nama' => 'required|string|max:255',
+            'Visible' => 'required',
             'Icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
@@ -91,6 +101,7 @@ class KategoriItemController extends Controller
         $kategori->update([
             'Nama' => $request->Nama,
             'Icon' => $namaFile,
+            'Visible' => $request->Visible,
             'UserUpdate' => auth()->user()->name,
         ]);
 

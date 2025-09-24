@@ -39,7 +39,7 @@
                         @method('PUT')
                         <div class="row g-3">
 
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="nama" class="form-label"><strong>Nama Kategori</strong></label>
                                 <input type="text" name="Nama" class="form-control @error('Nama') is-invalid @enderror"
                                     id="nama" placeholder="Nama Kategori" value="{{ old('Nama', $kategori->Nama) }}">
@@ -49,7 +49,21 @@
                                     </div>
                                 @enderror
                             </div>
-
+                            <div class="col-md-6">
+                                <label for="visible" class="form-label"><strong>Tampilkan Di Halaman Kasir?</strong></label>
+                                <select name="Visible" id="visible"
+                                    class="form-control @error('Visible') is-invalid @enderror">
+                                    <option value="Y" {{ old('Visible', $kategori->Visible) == 'Y' ? 'selected' : '' }}>Ya
+                                    </option>
+                                    <option value="N" {{ old('Visible', $kategori->Visible) == 'N' ? 'selected' : '' }}>Tidak
+                                    </option>
+                                </select>
+                                @error('Visible')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                             <div class="col-md-12">
                                 <label for="icon" class="form-label"><strong>Upload Icon Kategori</strong></label>
                                 <div id="drop-area" class="border border-2 border-dashed rounded p-3 text-center"
@@ -131,7 +145,7 @@
                     preview.src = '#';
                     preview.style.display = 'none';
                 @endif
-                    }
+                                }
         }
 
         // Drag and drop logic

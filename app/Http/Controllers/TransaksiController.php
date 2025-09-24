@@ -73,6 +73,7 @@ class TransaksiController extends Controller
         $produk = KategoriItem::withCount(['getProduk'])
             ->with(['getProduk', 'getProduk.getJenis', 'getProduk.getKategori', 'getProduk.konversi.getNamaSatuan'])
             ->orderBy('Nama', 'ASC')
+            ->where('Visible', 'Y')
             ->get();
         // dd($produk);
         $history = Transaksi::whereDate('created_at', now())->latest()->get();
